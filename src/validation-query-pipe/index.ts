@@ -1,3 +1,3 @@
-import { validationQueryPipe } from './validation-query-pipe.t';
+import { validationQueryPipe } from './validation-query-pipe';
 
 export { validationQueryPipe };
