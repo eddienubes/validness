@@ -1,4 +1,8 @@
 .idea
+jest
+*.jest*
+build
+
 
 # Logs
 logs
