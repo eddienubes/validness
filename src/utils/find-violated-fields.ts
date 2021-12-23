@@ -1,7 +1,7 @@
-import { ErrorField } from '../models/error-body-field.model';
+import { ErrorField } from '../common/models/error-field.model';
 import { ValidationError } from '@nestjs/class-validator';
 
-export const findViolatedBodyFields = (errorObjects: ValidationError[]): ErrorField[] => {
+export const findViolatedFields = (errorObjects: ValidationError[]): ErrorField[] => {
   const errors: ErrorField[] = [];
 
   if (!errorObjects.length) {
@@ -20,7 +20,7 @@ export const findViolatedBodyFields = (errorObjects: ValidationError[]): ErrorFi
     }
 
     if (object.children?.length) {
-      errors.push(...findViolatedBodyFields(object.children));
+      errors.push(...findViolatedFields(object.children));
     }
   }
 

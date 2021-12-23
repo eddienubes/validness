@@ -1,4 +1,4 @@
-import { ErrorField } from '../../validation-body-pipe/models/error-body-field.model';
+import { ErrorField } from '../models/error-field.model';
 
 
 export type AnyObject = Record<string, any>;
