@@ -2,12 +2,13 @@ import express from 'express';
 import { RequestHandler, Express, ErrorRequestHandler } from 'express';
 import bodyParser from 'body-parser';
 
-const errorHandler: ErrorRequestHandler = ((err, req, res) => {
+const errorHandler: ErrorRequestHandler = ((err, req, res, next) => {
   res.status(err.statusCode).json({
     errors: [
       {
         title: err.name,
-        message: err.message
+        message: err.message,
+        fields: err.fields
       }
     ]
   });
@@ -32,6 +33,7 @@ export const createRouteWithPipe = (pipe: RequestHandler): Express => {
   const app = express();
   app.use(bodyParser.json());
   app.get('/', pipe, (req, res) => {
+
     res.json({ data: req.body });
   });
   app.use(errorHandler);

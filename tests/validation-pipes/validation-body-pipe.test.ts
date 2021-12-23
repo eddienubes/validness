@@ -36,7 +36,27 @@ describe('Validation Body Pipe', () => {
     const res = await request(app).get('/').send(dto);
 
     expect(res.badRequest).toBeTruthy();
-    expect(res.body).toEqual({})
+    expect(res.body).toEqual({
+      'errors': [
+        {
+          'fields': [
+            {
+              'field': 'name',
+              'violations': [
+                'name must be a string'
+              ]
+            }, {
+              'field': 'age',
+              'violations': [
+                'age must be a number conforming to the specified constraints'
+              ]
+            }
+          ],
+          'message': 'Received invalid values',
+          'title': 'DefaultBodyErrorModel'
+        }
+      ]
+    });
     expect(res.statusCode).toEqual(400);
   });
 });
