@@ -1,6 +1,6 @@
 import { ValidationError } from '@nestjs/class-validator';
-import { ErrorField } from '../../src/validation-body-pipe/models/error-body-field.model';
-import { findViolatedBodyFields } from '../../src/validation-body-pipe/implementation/find-violated-body-fields.impl';
+import { ErrorField } from '../../src/common/models/error-field.model';
+import { findViolatedFields } from '../../src/utils/find-violated-fields';
 
 describe('Find Violated Fields', () => {
   it('should retrieve constraints with fields names out of nested object', () => {
@@ -35,7 +35,7 @@ describe('Find Violated Fields', () => {
       isString: 'violated'
     };
 
-    const fields = findViolatedBodyFields([mainValidError]);
+    const fields = findViolatedFields([mainValidError]);
     expect(fields.sort((a, b) => a.field.length - b.field.length)).toEqual(
       ([
         {
