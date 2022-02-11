@@ -1,6 +1,6 @@
 # Validness
 <p align="center">
-<a href="https://app.travis-ci.com/github/eddienubes/express-validify" target="_blank"><img src="https://app.travis-ci.com/eddienubes/express-validify.svg?branch=master" alt="TravisCI" /></a>
+    <a href="https://app.travis-ci.com/github/eddienubes/validness" target="_blank"><img src="https://app.travis-ci.com/eddienubes/validness.svg?branch=master" alt="TravisCI" /></a>
 </p>
 
 ---
