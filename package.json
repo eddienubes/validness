@@ -9,8 +9,12 @@
   "types": "build/index",
 
   "scripts": {
+    "lint:check": "eslint --max-warnings=2 .",
+    "lint:fix": "eslint --max-warnings=2 --fix .",
+    "valid": "",
     "test": "yarn run jest --config './jest.config.ts'",
-    "build": "rm -rf ./build && tsc -p tsconfig.json"
+    "build:prod": "rm -rf ./build && tsc -p tsconfig.build.json",
+    "build:dev": "rm -rf ./build && tsc -p tsconfig.base.json"
   },
   "peerDependencies": {
     "@nestjs/class-transformer": "^0.4.0",

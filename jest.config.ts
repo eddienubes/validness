@@ -6,6 +6,6 @@ const config: Config.InitialOptions = {
     testEnvironment: 'node',
     setupFilesAfterEnv: ['./jest/jest-setup.ts'],
     roots: ['<rootDir>/tests']
-}
+};
 
 export default config;
