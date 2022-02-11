@@ -5,7 +5,12 @@ const config: Config.InitialOptions = {
     preset: 'ts-jest',
     testEnvironment: 'node',
     setupFilesAfterEnv: ['./jest/jest-setup.ts'],
-    roots: ['<rootDir>/tests']
-}
+    roots: ['<rootDir>/test'],
+    globals: {
+        'ts-jest': {
+            tsConfig: 'tsconfig.base.json'
+        }
+    }
+};
 
 export default config;

@@ -1,16 +1,16 @@
 export class BaseError extends Error {
-  private statusCode: number;
+    private statusCode: number;
 
-  constructor(statusCode: number, message: string) {
-    super(message);
-    this.statusCode = statusCode;
-    this.message = message;
-    this.name = this.constructor.name;
+    constructor(statusCode: number, message: string) {
+        super(message);
+        this.statusCode = statusCode;
+        this.message = message;
+        this.name = this.constructor.name;
 
-    Error.captureStackTrace(this, this.constructor);
-  }
+        Error.captureStackTrace(this, this.constructor);
+    }
 
-  public toJSON(): string {
-    return `[${this.name}]: ${this.message}`;
-  }
+    public toJSON(): string {
+        return `[${this.name}]: ${this.message}`;
+    }
 }

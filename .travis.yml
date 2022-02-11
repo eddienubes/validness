@@ -1,0 +1,9 @@
+language: node_js
+node_js:
+    - 16
+before_script:
+    - yarn run lint:check
+    - yarn run build:dev
+script: yarn run test
+
+
