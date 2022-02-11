@@ -11,7 +11,7 @@
   "scripts": {
     "lint:check": "eslint --max-warnings=2 .",
     "lint:fix": "eslint --max-warnings=2 --fix .",
-    "valid": "",
+    "valid": "yarn run build:dev && yarn run lint:fix",
     "test": "yarn run jest --config './jest.config.ts'",
     "build:prod": "rm -rf ./build && tsc -p tsconfig.build.json",
     "build:dev": "rm -rf ./build && tsc -p tsconfig.base.json"
