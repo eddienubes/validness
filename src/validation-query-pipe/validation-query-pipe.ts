@@ -1,16 +1,16 @@
-import { ClassConstructor } from '../common/types/types';
 import { NextFunction, RequestHandler, Response } from 'express';
 import { plainToClass } from '@nestjs/class-transformer';
 import { validateOrReject, ValidatorOptions } from '@nestjs/class-validator';
 import { ValidationError } from '@nestjs/class-validator';
-import { ErrorConstructor } from '../common/types/types';
 import { DEFAULT_QUERY_VALIDATOR_CONFIG } from '../common/constants/validator';
 import { findViolatedFields } from '../utils/find-violated-fields';
 import { DefaultQueryError } from '../common/models/default-query-error.model';
 import { ConfiguredRequest } from '../common/interfaces/ConfiguratedRequest';
+import { ClassConstructor } from '../common/models/class-constructor.model';
+import { UserCustomError } from '../common/models/user-custom-error.model';
 
 export const validationQueryPipe =
-    (QueryDtoConstructor: ClassConstructor, UserCustomError?: ErrorConstructor, validatorConfig?: ValidatorOptions): RequestHandler =>
+    (QueryDtoConstructor: ClassConstructor, UserError?: typeof UserCustomError, validatorConfig?: ValidatorOptions): RequestHandler =>
     async (req: ConfiguredRequest, res: Response, next: NextFunction): Promise<void> => {
         const { query } = req;
 
@@ -20,10 +20,12 @@ export const validationQueryPipe =
 
         try {
             await validateOrReject(instance, config);
+
+            req.body = instance;
         } catch (e) {
             const errors = findViolatedFields(e as ValidationError[]);
 
-            return next(UserCustomError ? new UserCustomError(errors) : new DefaultQueryError(errors));
+            return next(UserError ? new UserError(errors) : new DefaultQueryError(errors));
         }
 
         return next();
