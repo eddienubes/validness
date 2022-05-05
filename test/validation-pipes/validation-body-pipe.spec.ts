@@ -1,6 +1,6 @@
 import request from 'supertest';
 import { IsNumber, IsString } from '@nestjs/class-validator';
-import { createRouteWithPipe } from '../utils/createRouteAndGetBody';
+import { createRouteWithPipe } from '../test-utils/createRouteAndGetBody';
 import { validationBodyPipe } from '../../src';
 
 class BodyDto {

@@ -1,5 +1,5 @@
 import { IsNumberString, IsString } from '@nestjs/class-validator';
-import { createRouteWithPipe } from '../utils/createRouteAndGetBody';
+import { createRouteWithPipe } from '../test-utils/createRouteAndGetBody';
 import { validationQueryPipe } from '../../src';
 import request from 'supertest';
 

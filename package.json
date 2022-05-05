@@ -1,13 +1,12 @@
 {
-  "name": "express-validify",
-  "version": "1.0.0",
+  "name": "validness",
+  "version": "0.0.2",
   "license": "MIT",
   "files": [
     "build/**/*"
   ],
   "main": "build/index",
   "types": "build/index",
-
   "scripts": {
     "lint:check": "eslint --max-warnings=3 .",
     "lint:fix": "eslint --max-warnings=3 --fix .",
@@ -18,7 +17,8 @@
   },
   "peerDependencies": {
     "@nestjs/class-transformer": "^0.4.0",
-    "@nestjs/class-validator": "^0.13.3"
+    "@nestjs/class-validator": "^0.13.3",
+    "formidable": "^2.0.1"
   },
   "devDependencies": {
     "@nestjs/class-transformer": "^0.4.0",

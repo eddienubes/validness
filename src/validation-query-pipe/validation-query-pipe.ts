@@ -6,8 +6,8 @@ import { DEFAULT_QUERY_VALIDATOR_CONFIG } from '../common/constants/validator';
 import { findViolatedFields } from '../utils/find-violated-fields';
 import { DefaultQueryError } from '../common/models/default-query-error.model';
 import { ConfiguredRequest } from '../common/interfaces/ConfiguratedRequest';
-import { ClassConstructor } from '../common/models/class-constructor.model';
 import { UserCustomError } from '../common/models/user-custom-error.model';
+import { ClassConstructor } from '../common/interfaces/ClassConstructor';
 
 export const validationQueryPipe =
     (QueryDtoConstructor: ClassConstructor, UserError?: typeof UserCustomError, validatorConfig?: ValidatorOptions): RequestHandler =>
