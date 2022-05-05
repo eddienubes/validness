@@ -5,7 +5,7 @@ import { findViolatedFields } from '../utils/find-violated-fields';
 import { ValidationError } from '@nestjs/class-validator';
 import { DefaultBodyErrorModel } from '../common/models/default-body-error.model';
 import { DEFAULT_BODY_VALIDATOR_CONFIG } from '../common/constants/validator';
-import { ConfiguredRequest } from '../common/interfaces/ConfiguratedRequest';
+import { ConfiguredRequest } from '../common/interfaces/configurated-request.interface';
 import { ClassConstructor } from '../common/models/class-constructor.model';
 import { UserCustomError } from '../common/models/user-custom-error.model';
 
