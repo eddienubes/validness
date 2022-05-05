@@ -10,7 +10,11 @@ import { ClassConstructor } from '../common/models/class-constructor.model';
 import { UserCustomError } from '../common/models/user-custom-error.model';
 
 export const validationQueryPipe =
-    (QueryDtoConstructor: ClassConstructor, UserError?: typeof UserCustomError, validatorConfig?: ValidatorOptions): RequestHandler =>
+    (
+        QueryDtoConstructor: ClassConstructor,
+        UserError?: typeof UserCustomError,
+        validatorConfig?: ValidatorOptions
+    ): RequestHandler =>
     async (req: ConfiguredRequest, res: Response, next: NextFunction): Promise<void> => {
         const { query } = req;
 
