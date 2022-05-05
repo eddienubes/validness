@@ -21,7 +21,7 @@ export const validationQueryPipe =
         try {
             await validateOrReject(instance, config);
 
-            req.body = instance;
+            req.query = instance;
         } catch (e) {
             const errors = findViolatedFields(e as ValidationError[]);
 
