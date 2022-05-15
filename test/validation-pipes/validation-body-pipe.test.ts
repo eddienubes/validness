@@ -1,7 +1,8 @@
 import request from 'supertest';
-import { IsNumber, IsString } from '@nestjs/class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested } from '@nestjs/class-validator';
 import { createRouteWithPipe } from '../utils/createRouteAndGetBody';
 import { validationBodyPipe } from '../../src';
+import { Type } from '@nestjs/class-transformer';
 
 class BodyDto {
     @IsString()
@@ -9,6 +10,17 @@ class BodyDto {
 
     @IsNumber()
     age: number;
+
+    @ValidateNested()
+    @Type(() => Picture)
+    picture?: Picture;
+}
+
+class Picture {
+    @IsString()
+    @IsNotEmpty()
+    @IsOptional()
+    name: string;
 }
 
 describe('Validation Body Pipe', () => {
@@ -55,5 +67,34 @@ describe('Validation Body Pipe', () => {
             ]
         });
         expect(res.statusCode).toEqual(400);
+    });
+
+    it('should validated nested dtos', async () => {
+        const dto = new BodyDto();
+        dto.age = 5;
+        dto.name = 'asd';
+        dto.picture = {
+            name: '' // empty string violates the rules
+        };
+
+        const app = createRouteWithPipe(validationBodyPipe(BodyDto));
+
+        const res = await request(app).get('/').send(dto);
+
+        expect(res.statusCode).toEqual(400);
+        expect(res.body).toEqual({
+            errors: [
+                {
+                    fields: [
+                        {
+                            field: 'name',
+                            violations: ['name should not be empty']
+                        }
+                    ],
+                    message: 'Received invalid values',
+                    title: 'DefaultBodyErrorModel'
+                }
+            ]
+        });
     });
 });
