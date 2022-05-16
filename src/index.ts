@@ -11,3 +11,5 @@ export { ErrorField } from './common/models/error-field.model';
 export { UserCustomError } from './common/models/user-custom-error.model';
 
 export { ConfiguredRequest } from './common/interfaces/configurated-request.interface';
+
+export { AnyObject, CustomErrorFactory } from './common/types/types';
