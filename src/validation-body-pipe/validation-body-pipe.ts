@@ -7,10 +7,14 @@ import { DefaultBodyErrorModel } from '../common/models/default-body-error.model
 import { DEFAULT_BODY_VALIDATOR_CONFIG } from '../common/constants/validator';
 import { ConfiguredRequest } from '../common/interfaces/configurated-request.interface';
 import { ClassConstructor } from '../common/models/class-constructor.model';
-import { UserCustomError } from '../common/models/user-custom-error.model';
+import { CustomErrorFactory } from '../common/types/types';
 
 export const validationBodyPipe =
-    (DtoConstructor: ClassConstructor, UserError?: typeof UserCustomError, validatorConfig?: ValidatorOptions): RequestHandler =>
+    (
+        DtoConstructor: ClassConstructor,
+        customErrorFactory?: CustomErrorFactory,
+        validatorConfig?: ValidatorOptions
+    ): RequestHandler =>
     async (req: ConfiguredRequest, res: Response, next: NextFunction): Promise<void> => {
         const { body } = req;
 
@@ -25,7 +29,7 @@ export const validationBodyPipe =
         } catch (e) {
             const errors = findViolatedFields(e as ValidationError[]);
 
-            return next(UserError ? new UserError(errors) : new DefaultBodyErrorModel(errors));
+            return next(customErrorFactory ? customErrorFactory(errors) : new DefaultBodyErrorModel(errors));
         }
 
         return next();
