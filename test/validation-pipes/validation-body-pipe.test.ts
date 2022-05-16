@@ -1,8 +1,9 @@
 import request from 'supertest';
 import { IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested } from '@nestjs/class-validator';
 import { createRouteWithPipe } from '../utils/createRouteAndGetBody';
-import { validationBodyPipe } from '../../src';
+import { ErrorField, validationBodyPipe } from '../../src';
 import { Type } from '@nestjs/class-transformer';
+import { StatusCodes } from 'http-status-codes';
 
 class BodyDto {
     @IsString()
@@ -21,6 +22,13 @@ class Picture {
     @IsNotEmpty()
     @IsOptional()
     name: string;
+}
+
+class MyCustomError extends Error {
+    constructor(message: string, public readonly statusCode: number, public readonly errors: ErrorField[]) {
+        super(message);
+        this.name = MyCustomError.name;
+    }
 }
 
 describe('Validation Body Pipe', () => {
@@ -49,22 +57,18 @@ describe('Validation Body Pipe', () => {
 
         expect(res.badRequest).toBeTruthy();
         expect(res.body).toEqual({
-            errors: [
+            fields: [
                 {
-                    fields: [
-                        {
-                            field: 'name',
-                            violations: ['name must be a string']
-                        },
-                        {
-                            field: 'age',
-                            violations: ['age must be a number conforming to the specified constraints']
-                        }
-                    ],
-                    message: 'Received invalid values',
-                    title: 'DefaultBodyErrorModel'
+                    field: 'name',
+                    violations: ['name must be a string']
+                },
+                {
+                    field: 'age',
+                    violations: ['age must be a number conforming to the specified constraints']
                 }
-            ]
+            ],
+            name: 'DefaultBodyErrorModel',
+            statusCode: 400
         });
         expect(res.statusCode).toEqual(400);
     });
@@ -83,18 +87,44 @@ describe('Validation Body Pipe', () => {
 
         expect(res.statusCode).toEqual(400);
         expect(res.body).toEqual({
+            fields: [
+                {
+                    field: 'name',
+                    violations: ['name should not be empty']
+                }
+            ],
+            name: 'DefaultBodyErrorModel',
+            statusCode: 400
+        });
+    });
+
+    it('should be customised correctly with custom error factory', async () => {
+        const dto = {
+            age: 'age',
+            name: 5
+        };
+
+        const app = createRouteWithPipe(
+            validationBodyPipe(BodyDto, (errors) => new MyCustomError('my custom message', StatusCodes.CONFLICT, errors))
+        );
+
+        const res = await request(app).get('/').send(dto);
+
+        expect(res.badRequest).toBeFalsy();
+        expect(res.body).toEqual({
             errors: [
                 {
-                    fields: [
-                        {
-                            field: 'name',
-                            violations: ['name should not be empty']
-                        }
-                    ],
-                    message: 'Received invalid values',
-                    title: 'DefaultBodyErrorModel'
+                    field: 'name',
+                    violations: ['name must be a string']
+                },
+                {
+                    field: 'age',
+                    violations: ['age must be a number conforming to the specified constraints']
                 }
-            ]
+            ],
+            name: 'MyCustomError',
+            statusCode: 409
         });
+        expect(res.statusCode).toEqual(StatusCodes.CONFLICT);
     });
 });

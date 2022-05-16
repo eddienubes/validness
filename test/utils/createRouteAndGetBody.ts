@@ -4,13 +4,7 @@ import bodyParser from 'body-parser';
 
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     res.status(err.statusCode).json({
-        errors: [
-            {
-                title: err.name,
-                message: err.message,
-                fields: err.fields
-            }
-        ]
+        ...err
     });
 };
 
