@@ -2,7 +2,7 @@ import request from 'supertest';
 import { IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested } from '@nestjs/class-validator';
 import { createRouteWithPipe } from '../utils/createRouteAndGetBody';
 import { ErrorField, validationBodyPipe } from '../../src';
-import { Type } from '@nestjs/class-transformer';
+import { Transform, Type } from '@nestjs/class-transformer';
 import { StatusCodes } from 'http-status-codes';
 
 class BodyDto {
@@ -15,6 +15,11 @@ class BodyDto {
     @ValidateNested()
     @Type(() => Picture)
     picture?: Picture;
+
+    @Transform(({ value }) => value?.trim())
+    @IsNotEmpty()
+    @IsString()
+    transformed: string;
 }
 
 class Picture {
@@ -36,12 +41,16 @@ describe('Validation Body Pipe', () => {
         const dto = new BodyDto();
         dto.age = 5;
         dto.name = 'asd';
+        dto.transformed = '  value  ';
 
         const app = createRouteWithPipe(validationBodyPipe(BodyDto));
 
         const res = await request(app).get('/').send(dto);
 
-        expect(res.body.data).toEqual(dto);
+        expect(res.body.data).toEqual({
+            ...dto,
+            transformed: 'value'
+        });
         expect(res.statusCode).toEqual(200);
     });
 
@@ -65,6 +74,10 @@ describe('Validation Body Pipe', () => {
                 {
                     field: 'age',
                     violations: ['age must be a number conforming to the specified constraints']
+                },
+                {
+                    field: 'transformed',
+                    violations: ['transformed must be a string', 'transformed should not be empty']
                 }
             ],
             name: 'DefaultBodyErrorModel',
@@ -91,6 +104,10 @@ describe('Validation Body Pipe', () => {
                 {
                     field: 'name',
                     violations: ['name should not be empty']
+                },
+                {
+                    field: 'transformed',
+                    violations: ['transformed must be a string', 'transformed should not be empty']
                 }
             ],
             name: 'DefaultBodyErrorModel',
@@ -120,6 +137,10 @@ describe('Validation Body Pipe', () => {
                 {
                     field: 'age',
                     violations: ['age must be a number conforming to the specified constraints']
+                },
+                {
+                    field: 'transformed',
+                    violations: ['transformed must be a string', 'transformed should not be empty']
                 }
             ],
             name: 'MyCustomError',
