@@ -1,11 +1,10 @@
-import { NextFunction, RequestHandler, Response } from 'express';
+import { RequestHandler } from 'express';
 import { plainToClass } from '@nestjs/class-transformer';
 import { validateOrReject, ValidatorOptions } from '@nestjs/class-validator';
 import { ValidationError } from '@nestjs/class-validator';
 import { DEFAULT_QUERY_VALIDATOR_CONFIG } from '../common/constants/validator';
 import { findViolatedFields } from '../utils/find-violated-fields';
 import { DefaultQueryError } from '../common/models/default-query-error.model';
-import { ConfiguredRequest } from '../common/interfaces/configurated-request.interface';
 import { ClassConstructor } from '../common/models/class-constructor.model';
 import { CustomErrorFactory } from '../common/types/types';
 
@@ -15,7 +14,7 @@ export const validationQueryPipe =
         customErrorFactory?: CustomErrorFactory,
         validatorConfig?: ValidatorOptions
     ): RequestHandler =>
-    async (req: ConfiguredRequest, res: Response, next: NextFunction): Promise<void> => {
+    async (req, res, next): Promise<void> => {
         const { query } = req;
 
         const instance = plainToClass(QueryDtoConstructor, query);

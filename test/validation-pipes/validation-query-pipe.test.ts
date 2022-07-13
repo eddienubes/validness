@@ -37,5 +37,15 @@ describe('Validation Query Pipe', () => {
 
         expect(res.statusCode).toEqual(400);
         expect(res.badRequest).toBeTruthy();
+        expect(res.body).toEqual({
+            fields: [
+                {
+                    field: 'age',
+                    violations: ['age must be a number string']
+                }
+            ],
+            name: 'DefaultQueryError',
+            statusCode: 400
+        });
     });
 });

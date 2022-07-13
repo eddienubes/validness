@@ -5,6 +5,13 @@ import { ErrorField, validationBodyPipe } from '../../src';
 import { Transform, Type } from '@nestjs/class-transformer';
 import { StatusCodes } from 'http-status-codes';
 
+class Picture {
+    @IsString()
+    @IsNotEmpty()
+    @IsOptional()
+    name: string;
+}
+
 class BodyDto {
     @IsString()
     name: string;
@@ -20,13 +27,6 @@ class BodyDto {
     @IsNotEmpty()
     @IsString()
     transformed: string;
-}
-
-class Picture {
-    @IsString()
-    @IsNotEmpty()
-    @IsOptional()
-    name: string;
 }
 
 class MyCustomError extends Error {
@@ -80,7 +80,7 @@ describe('Validation Body Pipe', () => {
                     violations: ['transformed must be a string', 'transformed should not be empty']
                 }
             ],
-            name: 'DefaultBodyErrorModel',
+            name: 'DefaultBodyError',
             statusCode: 400
         });
         expect(res.statusCode).toEqual(400);
@@ -110,7 +110,7 @@ describe('Validation Body Pipe', () => {
                     violations: ['transformed must be a string', 'transformed should not be empty']
                 }
             ],
-            name: 'DefaultBodyErrorModel',
+            name: 'DefaultBodyError',
             statusCode: 400
         });
     });

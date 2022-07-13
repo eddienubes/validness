@@ -8,7 +8,7 @@ const config: Config.InitialOptions = {
     roots: ['<rootDir>/test'],
     globals: {
         'ts-jest': {
-            tsconfig: 'tsconfig.base.json'
+            tsconfig: 'tsconfig.json'
         }
     }
 };
