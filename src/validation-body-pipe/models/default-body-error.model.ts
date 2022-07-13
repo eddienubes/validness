@@ -1,5 +1,5 @@
-import { BaseError } from './base-error.model';
-import { ErrorField } from './error-field.model';
+import { BaseError } from '../../common/models/base-error.model';
+import { ErrorField } from '../../common/models/error-field.model';
 import { StatusCodes } from 'http-status-codes';
 
 export class DefaultBodyError extends BaseError {

@@ -1,4 +1,4 @@
-import { ErrorField } from './error-field.model';
+import { ErrorField } from '../models';
 
 export class UserCustomError {
     constructor(public readonly errors: ErrorField[]) {}
