@@ -8,7 +8,7 @@ const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     });
 };
 
-export const createRouteAndGetBody = async <T>(pipe: RequestHandler<unknown, unknown, T>): Promise<T> => {
+export const serverUtils = async <T>(pipe: RequestHandler<unknown, unknown, T>): Promise<T> => {
     const app = express();
 
     return new Promise((resolve, reject) => {
@@ -22,9 +22,14 @@ export const createRouteAndGetBody = async <T>(pipe: RequestHandler<unknown, unk
     });
 };
 
-export const createRouteWithPipe = (pipe: RequestHandler): Express => {
+export const createRouteWithPipe = (pipe: RequestHandler, middleware?: RequestHandler): Express => {
     const app = express();
     app.use(bodyParser.json());
+
+    if (middleware) {
+        app.use(middleware);
+    }
+
     app.get('/', pipe, (req, res) => {
         res.json({ data: req.body });
     });

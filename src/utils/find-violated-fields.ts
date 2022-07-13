@@ -1,5 +1,5 @@
-import { ErrorField } from '../common/models/error-field.model';
 import { ValidationError } from '@nestjs/class-validator';
+import { ErrorField } from '../common/errors';
 
 export const findViolatedFields = (errorObjects: ValidationError[]): ErrorField[] => {
     const errors: ErrorField[] = [];

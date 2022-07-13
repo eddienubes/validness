@@ -4,6 +4,6 @@ node_js:
 before_script:
     - yarn run lint:check
     - yarn run build:dev
-script: yarn run test
+script: yarn run test:all
 
 

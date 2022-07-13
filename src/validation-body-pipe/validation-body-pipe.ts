@@ -2,11 +2,11 @@ import { plainToClass } from '@nestjs/class-transformer';
 import { validateOrReject, ValidatorOptions } from '@nestjs/class-validator';
 import { findViolatedFields } from '../utils/find-violated-fields';
 import { ValidationError } from '@nestjs/class-validator';
-import { DefaultBodyError } from '../common/models/default-body-error.model';
 import { DEFAULT_BODY_VALIDATOR_CONFIG } from '../common/constants/validator';
-import { ClassConstructor } from '../common/models/class-constructor.model';
 import { CustomErrorFactory } from '../common/types/types';
 import { RequestHandler } from 'express';
+import { ClassConstructor } from '../common/interfaces';
+import { DefaultBodyError } from './errors/default-body.error';
 
 export const validationBodyPipe =
     (
@@ -27,8 +27,9 @@ export const validationBodyPipe =
             req.body = instance;
         } catch (e) {
             const errors = findViolatedFields(e as ValidationError[]);
+            const errorFactory = customErrorFactory || req.customErrorFactory;
 
-            return next(customErrorFactory ? customErrorFactory(errors) : new DefaultBodyError(errors));
+            return next(errorFactory ? errorFactory(errors) : new DefaultBodyError(errors));
         }
 
         return next();
