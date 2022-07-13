@@ -1,8 +1,6 @@
 declare namespace Express {
-    import { ValidatorOptions } from '@nestjs/class-validator';
+    import { ValidationConfig } from '../../middlewares';
+    import { Request as RootRequest } from 'express';
 
-    export interface Request {
-        queryValidationConfig?: ValidatorOptions;
-        bodyValidationConfig?: ValidatorOptions;
-    }
+    export type Request = RootRequest & ValidationConfig;
 }

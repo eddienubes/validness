@@ -1,4 +1,4 @@
 import { validationBodyPipe } from './validation-body-pipe';
-import { DefaultBodyError } from './models/default-body-error.model';
+import { DefaultBodyError } from './errors/default-body.error';
 
 export { validationBodyPipe, DefaultBodyError };

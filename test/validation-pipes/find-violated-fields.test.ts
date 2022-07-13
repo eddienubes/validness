@@ -1,6 +1,6 @@
 import { ValidationError } from '@nestjs/class-validator';
-import { ErrorField } from '../../src/common/models/error-field.model';
 import { findViolatedFields } from '../../src/utils/find-violated-fields';
+import { ErrorField } from '../../src';
 
 describe('Find Violated Fields', () => {
     it('should retrieve constraints with fields names out of nested object', () => {
