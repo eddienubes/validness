@@ -1,6 +1,5 @@
-import { BaseError } from '../../common/models/base-error.model';
-import { ErrorField } from '../../common/models/error-field.model';
 import { StatusCodes } from 'http-status-codes';
+import { BaseError, ErrorField } from '../../common/errors';
 
 export class DefaultBodyError extends BaseError {
     constructor(public readonly fields: ErrorField[]) {

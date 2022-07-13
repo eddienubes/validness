@@ -4,9 +4,9 @@ import { validateOrReject, ValidatorOptions } from '@nestjs/class-validator';
 import { ValidationError } from '@nestjs/class-validator';
 import { DEFAULT_QUERY_VALIDATOR_CONFIG } from '../common/constants/validator';
 import { findViolatedFields } from '../utils/find-violated-fields';
-import { DefaultQueryError } from './models/default-query-error.model';
-import { ClassConstructor } from '../common/models/class-constructor.model';
 import { CustomErrorFactory } from '../common/types/types';
+import { ClassConstructor } from '../common/interfaces';
+import { DefaultQueryError } from './errors/default-query.error';
 
 export const validationQueryPipe =
     (
@@ -27,8 +27,9 @@ export const validationQueryPipe =
             req.query = instance;
         } catch (e) {
             const errors = findViolatedFields(e as ValidationError[]);
+            const errorFactory = customErrorFactory || req.customErrorFactory;
 
-            return next(customErrorFactory ? customErrorFactory(errors) : new DefaultQueryError(errors));
+            return next(errorFactory ? errorFactory(errors) : new DefaultQueryError(errors));
         }
 
         return next();

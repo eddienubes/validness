@@ -1,4 +1,4 @@
 import { validationQueryPipe } from './validation-query-pipe';
-import { DefaultQueryError } from './models/default-query-error.model';
+import { DefaultQueryError } from './errors/default-query.error';
 
 export { validationQueryPipe, DefaultQueryError };

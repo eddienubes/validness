@@ -1,40 +1,9 @@
 import request from 'supertest';
-import { IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested } from '@nestjs/class-validator';
-import { createRouteWithPipe } from '../utils/createRouteAndGetBody';
-import { ErrorField, validationBodyPipe } from '../../src';
-import { Transform, Type } from '@nestjs/class-transformer';
+import { validationBodyPipe, validationConfigPipe } from '../../../src';
 import { StatusCodes } from 'http-status-codes';
-
-class Picture {
-    @IsString()
-    @IsNotEmpty()
-    @IsOptional()
-    name: string;
-}
-
-class BodyDto {
-    @IsString()
-    name: string;
-
-    @IsNumber()
-    age: number;
-
-    @ValidateNested()
-    @Type(() => Picture)
-    picture?: Picture;
-
-    @Transform(({ value }) => value?.trim())
-    @IsNotEmpty()
-    @IsString()
-    transformed: string;
-}
-
-class MyCustomError extends Error {
-    constructor(message: string, public readonly statusCode: number, public readonly errors: ErrorField[]) {
-        super(message);
-        this.name = MyCustomError.name;
-    }
-}
+import { BodyDto, MyCustomError } from './models';
+import { createRouteWithPipe } from '../../utils/server-utils';
+import { errorFactory, errorFactoryOverridden } from '../../utils/error-utils';
 
 describe('Validation Body Pipe', () => {
     it('should validate and return correct result', async () => {
@@ -147,5 +116,76 @@ describe('Validation Body Pipe', () => {
             statusCode: 409
         });
         expect(res.statusCode).toEqual(StatusCodes.CONFLICT);
+    });
+
+    it('should reject with error from custom error factory supplied by middleware', async () => {
+        const dto = new BodyDto();
+        dto.age = 5;
+        dto.name = 'asd';
+        dto.picture = {
+            name: '' // empty string violates the rules
+        };
+
+        const app = createRouteWithPipe(
+            validationBodyPipe(BodyDto),
+            validationConfigPipe({
+                customErrorFactory: errorFactory
+            })
+        );
+
+        const res = await request(app).get('/').send(dto);
+
+        expect(res.statusCode).toEqual(403);
+        expect(res.body).toEqual({
+            errors: [
+                {
+                    field: 'name',
+                    violations: ['name should not be empty']
+                },
+                {
+                    field: 'transformed',
+                    violations: ['transformed must be a string', 'transformed should not be empty']
+                }
+            ],
+            field: 'John Doe',
+            name: 'MyError',
+            statusCode: 403
+        });
+    });
+
+    it('should override custom error factory from middleware', async () => {
+        const dto = new BodyDto();
+        dto.age = 5;
+        dto.name = 'asd';
+        dto.picture = {
+            name: '' // empty string violates the rules
+        };
+
+        const app = createRouteWithPipe(
+            validationBodyPipe(BodyDto, errorFactoryOverridden),
+            validationConfigPipe({
+                customErrorFactory: errorFactory
+            })
+        );
+
+        const res = await request(app).get('/').send(dto);
+
+        expect(res.statusCode).toEqual(401);
+        expect(res.body).toEqual({
+            errors: [
+                {
+                    field: 'name',
+                    violations: ['name should not be empty']
+                },
+                {
+                    field: 'transformed',
+                    violations: ['transformed must be a string', 'transformed should not be empty']
+                }
+            ],
+            name: 'MyOverriddenError',
+            newField: 'New Field',
+            oldField: 'Old field',
+            statusCode: 401
+        });
     });
 });
