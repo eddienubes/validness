@@ -1,11 +1,10 @@
 import { plainToClass } from '@nestjs/class-transformer';
-import { validateOrReject, ValidatorOptions } from '@nestjs/class-validator';
-import { findViolatedFields } from '../utils/find-violated-fields';
-import { ValidationError } from '@nestjs/class-validator';
-import { DEFAULT_BODY_VALIDATOR_CONFIG } from '../common/constants/validator';
-import { CustomErrorFactory } from '../common/types/types';
+import { validateOrReject, ValidatorOptions, ValidationError } from '@nestjs/class-validator';
+import { findViolatedFields } from '../../utils/find-violated-fields';
+import { DEFAULT_BODY_VALIDATOR_CONFIG } from '../../common/constants/validator';
+import { CustomErrorFactory } from '../../common/types/types';
 import { RequestHandler } from 'express';
-import { ClassConstructor } from '../common/interfaces';
+import { ClassConstructor } from '../../common/interfaces';
 import { DefaultBodyError } from './errors/default-body.error';
 
 export const validationBodyPipe =

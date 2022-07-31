@@ -1,7 +1,6 @@
 import 'reflect-metadata';
 
-export { validationBodyPipe, DefaultBodyError } from './validation-body-pipe';
-export { validationQueryPipe, DefaultQueryError } from './validation-query-pipe';
+export { validationBodyPipe, DefaultBodyError, validationQueryPipe, DefaultQueryError } from './validators';
 export { validationConfigPipe, ValidationConfig } from './middlewares';
 
 export { BaseError, ErrorField } from './common/errors';

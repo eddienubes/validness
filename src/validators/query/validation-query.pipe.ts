@@ -2,10 +2,10 @@ import { RequestHandler } from 'express';
 import { plainToClass } from '@nestjs/class-transformer';
 import { validateOrReject, ValidatorOptions } from '@nestjs/class-validator';
 import { ValidationError } from '@nestjs/class-validator';
-import { DEFAULT_QUERY_VALIDATOR_CONFIG } from '../common/constants/validator';
-import { findViolatedFields } from '../utils/find-violated-fields';
-import { CustomErrorFactory } from '../common/types/types';
-import { ClassConstructor } from '../common/interfaces';
+import { DEFAULT_QUERY_VALIDATOR_CONFIG } from '../../common/constants/validator';
+import { findViolatedFields } from '../../utils/find-violated-fields';
+import { CustomErrorFactory } from '../../common/types/types';
+import { ClassConstructor } from '../../common/interfaces';
 import { DefaultQueryError } from './errors/default-query.error';
 
 export const validationQueryPipe =
