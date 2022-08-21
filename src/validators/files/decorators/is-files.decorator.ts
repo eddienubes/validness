@@ -1,8 +1,14 @@
-import { MULTIPLE_FILES_METADATA_KEY } from '../constants';
-import { FilesConfiguration } from '../interfaces/files-configuration.interface';
+import { MultipleFilesConfiguration } from '../interfaces/multiple-files-configuration.interface';
+import { FilesMetadata } from '../interfaces/files-metadata.interface';
+import { FILES_VALIDATION_METADATA_KEY } from '../constants';
 
-export const IsFiles = (config?: FilesConfiguration): PropertyDecorator => {
+export const IsFiles = (config?: MultipleFilesConfiguration): PropertyDecorator => {
     return (target, propertyKey) => {
-        Reflect.defineMetadata(MULTIPLE_FILES_METADATA_KEY, config, target, propertyKey);
+        const metadata: FilesMetadata = {
+            multiple: true,
+            ...config
+        };
+
+        Reflect.defineMetadata(FILES_VALIDATION_METADATA_KEY, metadata, target, propertyKey);
     };
 };

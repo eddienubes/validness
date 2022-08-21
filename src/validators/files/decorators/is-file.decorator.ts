@@ -1,8 +1,14 @@
-import { SINGLE_FILE_METADATA_KEY } from '../constants';
-import { FileConfiguration } from '../interfaces/file-configuration.interface';
+import { FILES_VALIDATION_METADATA_KEY } from '../constants';
+import { SingleFileConfiguration } from '../interfaces/single-file-configuration.interface';
+import { FilesMetadata } from '../interfaces/files-metadata.interface';
 
-export const IsFile = (config?: FileConfiguration): PropertyDecorator => {
+export const IsFile = (config?: SingleFileConfiguration): PropertyDecorator => {
     return (target, propertyKey) => {
-        Reflect.defineMetadata(SINGLE_FILE_METADATA_KEY, config, target, propertyKey);
+        const metadata: FilesMetadata = {
+            multiple: false,
+            ...config
+        };
+
+        Reflect.defineMetadata(FILES_VALIDATION_METADATA_KEY, metadata, target, propertyKey);
     };
 };

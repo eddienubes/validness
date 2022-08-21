@@ -1,5 +1,5 @@
 import { IsFile } from '../../../../src/validators/files/decorators/is-file.decorator';
-import { SINGLE_FILE_METADATA_KEY } from '../../../../src/validators/files/constants';
+import { FILES_VALIDATION_METADATA_KEY } from '../../../../src/validators/files/constants';
 
 class Class {
     @IsFile()
@@ -11,7 +11,7 @@ describe('Multer validation file pipe', () => {
         const obj = new Class();
         obj.field = Buffer.from('something');
 
-        const a = Reflect.getMetadata(SINGLE_FILE_METADATA_KEY, obj, 'field');
+        const a = Reflect.getMetadata(FILES_VALIDATION_METADATA_KEY, obj, 'field');
 
         console.log(a);
     });

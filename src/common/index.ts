@@ -1,5 +1,3 @@
-export * from './constants/validators';
-
 export * from './enums/file-validator-type.enum';
 
 export * from './interfaces/class-constructor.interface';

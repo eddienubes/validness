@@ -1,5 +1,5 @@
 import { ValidationConfig } from './validation-config.interface';
-import { VALIDATION_CONFIG_DEFAULTS } from '../common/constants/validators';
+import { VALIDATION_CONFIG_DEFAULTS } from './constants';
 
 export class ConfigStore {
     private config: ValidationConfig = VALIDATION_CONFIG_DEFAULTS;
@@ -7,23 +7,61 @@ export class ConfigStore {
     private static instance: ConfigStore;
 
     public setConfig(overrides: Partial<ValidationConfig>): void {
-        for (const key in overrides) {
-            const typedKey = key as keyof typeof overrides;
-
-            // get user defined config value
-            let value = overrides[typedKey];
-
-            // if it's undefined grab by key from defaults
-            if (!value) {
-                value = VALIDATION_CONFIG_DEFAULTS[typedKey];
-            }
-
-            this.config[typedKey] = value;
-        }
+        this.config = this.mapObjectWithOverridesAndDefaults<ValidationConfig>(
+            this.config,
+            overrides,
+            VALIDATION_CONFIG_DEFAULTS
+        );
     }
 
     public getConfig(): ValidationConfig {
         return { ...this.config };
+    }
+
+    /**
+     * Modifies original object with overrides and defaults for those keys that are not set (undefined)
+     * @param obj original object
+     * @param overrides object with overridden fields
+     * @param defaults defaults
+     */
+    private mapObjectWithOverridesAndDefaults<T>(obj: T, overrides: Partial<T>, defaults: T): T {
+        for (const key in overrides) {
+            const typedKey = key as keyof typeof overrides;
+
+            // get overridden values
+            let value = overrides[typedKey];
+
+            // in case in modifiable object field is not defined we just assign it
+            if (!obj[typedKey]) {
+                obj = {
+                    ...obj,
+                    [typedKey]: value
+                };
+                continue;
+            }
+
+            // recursively handle nested objects
+            if (this.isObject(value)) {
+                obj = {
+                    ...obj,
+                    [typedKey]: this.mapObjectWithOverridesAndDefaults(obj[typedKey], value, defaults[typedKey])
+                };
+                continue;
+            }
+
+            // if it's undefined grab by key from defaults
+            if (!value) {
+                value = defaults[typedKey];
+            }
+
+            obj[typedKey] = value as T[keyof T];
+        }
+
+        return obj;
+    }
+
+    private isObject(candidate: unknown): candidate is object {
+        return typeof candidate === 'object' && candidate !== null && !Array.isArray(candidate);
     }
 
     public static getInstance(): ConfigStore {

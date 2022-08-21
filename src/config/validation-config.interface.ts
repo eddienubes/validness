@@ -1,13 +1,14 @@
 import { ValidatorOptions } from '@nestjs/class-validator';
-import { CustomErrorFactory } from '../common/types/types';
-import { FileValidatorType } from '../common/enums/file-validator-type.enum';
+import { CustomErrorFactory } from '../common';
+import { FileValidatorType } from '../common';
+import { FileValidationConfig } from './file-validation-config.interface';
 
 export interface ValidationConfig {
-    [key: string]: ValidatorOptions | CustomErrorFactory | FileValidatorType | undefined;
+    [key: string]: ValidatorOptions | CustomErrorFactory | FileValidatorType | undefined | FileValidationConfig;
 
     queryValidationConfig: ValidatorOptions;
     bodyValidationConfig: ValidatorOptions;
     customErrorFactory?: CustomErrorFactory;
 
-    coreFileValidatorType: FileValidatorType;
+    fileValidationConfig: FileValidationConfig;
 }
