@@ -1,7 +1,7 @@
 import { FileValidatorType } from '../common';
-import { Options } from 'multer';
+import { Options as MulterOptions } from 'multer';
 
 export interface FileValidationConfig {
-    coreValidationFileType?: FileValidatorType;
-    coreConfig?: Options;
+    coreValidationFileType: FileValidatorType;
+    coreConfig?: MulterOptions;
 }

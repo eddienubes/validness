@@ -1,4 +1,4 @@
-export type FileType = 'audio' | 'image';
+export type FileType = 'audio' | 'video' | 'image';
 
 /**
  * Single file configuration
@@ -7,7 +7,7 @@ export interface SingleFileConfiguration {
     /**
      * Maximum size of a file in bytes. If a field contains multiple files - applied to each one of them
      */
-    maxSizeBytes?: boolean;
+    maxSizeBytes?: number;
 
     /**
      * Mimetypes of a file, i.e. image/png more narrow/strict than type
