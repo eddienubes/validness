@@ -1,11 +1,11 @@
 import { plainToClass } from '@nestjs/class-transformer';
 import { validateOrReject, ValidatorOptions, ValidationError } from '@nestjs/class-validator';
 import { findViolatedFields } from '../../utils/find-violated-fields';
-import { DEFAULT_BODY_VALIDATOR_CONFIG } from '../../common/constants/validator';
-import { CustomErrorFactory } from '../../common/types/types';
+import { CustomErrorFactory } from '../../common';
 import { RequestHandler } from 'express';
-import { ClassConstructor } from '../../common/interfaces';
+import { ClassConstructor } from '../../common';
 import { DefaultBodyError } from './errors/default-body.error';
+import { ConfigStore } from '../../config';
 
 export const validationBodyPipe =
     (
@@ -15,10 +15,11 @@ export const validationBodyPipe =
     ): RequestHandler =>
     async (req, res, next): Promise<void> => {
         const { body } = req;
+        const globalConfig = ConfigStore.getInstance().getConfig();
 
         const instance = plainToClass(DtoConstructor, body);
 
-        const config = validatorConfig || req.bodyValidationConfig || DEFAULT_BODY_VALIDATOR_CONFIG;
+        const config = validatorConfig || globalConfig.bodyValidationConfig;
 
         try {
             await validateOrReject(instance, config);
@@ -26,7 +27,7 @@ export const validationBodyPipe =
             req.body = instance;
         } catch (e) {
             const errors = findViolatedFields(e as ValidationError[]);
-            const errorFactory = customErrorFactory || req.customErrorFactory;
+            const errorFactory = customErrorFactory || globalConfig.customErrorFactory;
 
             return next(errorFactory ? errorFactory(errors) : new DefaultBodyError(errors));
         }

@@ -2,11 +2,11 @@ import { RequestHandler } from 'express';
 import { plainToClass } from '@nestjs/class-transformer';
 import { validateOrReject, ValidatorOptions } from '@nestjs/class-validator';
 import { ValidationError } from '@nestjs/class-validator';
-import { DEFAULT_QUERY_VALIDATOR_CONFIG } from '../../common/constants/validator';
 import { findViolatedFields } from '../../utils/find-violated-fields';
-import { CustomErrorFactory } from '../../common/types/types';
-import { ClassConstructor } from '../../common/interfaces';
+import { CustomErrorFactory } from '../../common';
+import { ClassConstructor } from '../../common';
 import { DefaultQueryError } from './errors/default-query.error';
+import { ConfigStore } from '../../config';
 
 export const validationQueryPipe =
     (
@@ -16,10 +16,11 @@ export const validationQueryPipe =
     ): RequestHandler =>
     async (req, res, next): Promise<void> => {
         const { query } = req;
+        const globalConfig = ConfigStore.getInstance().getConfig();
 
         const instance = plainToClass(QueryDtoConstructor, query);
 
-        const config = validatorConfig || req.queryValidationConfig || DEFAULT_QUERY_VALIDATOR_CONFIG;
+        const config = validatorConfig || globalConfig.queryValidationConfig;
 
         try {
             await validateOrReject(instance, config);
@@ -27,7 +28,7 @@ export const validationQueryPipe =
             req.query = instance;
         } catch (e) {
             const errors = findViolatedFields(e as ValidationError[]);
-            const errorFactory = customErrorFactory || req.customErrorFactory;
+            const errorFactory = customErrorFactory || globalConfig.customErrorFactory;
 
             return next(errorFactory ? errorFactory(errors) : new DefaultQueryError(errors));
         }

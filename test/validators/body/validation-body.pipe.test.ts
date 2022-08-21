@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { validationBodyPipe, validationConfigPipe } from '../../../src';
+import { validationBodyPipe, validness } from '../../../src';
 import { StatusCodes } from 'http-status-codes';
 import { BodyDto, MyCustomError } from './models';
 import { createRouteWithPipe } from '../../utils/server-utils';
@@ -126,12 +126,10 @@ describe('Validation Body Pipe', () => {
             name: '' // empty string violates the rules
         };
 
-        const app = createRouteWithPipe(
-            validationBodyPipe(BodyDto),
-            validationConfigPipe({
-                customErrorFactory: errorFactory
-            })
-        );
+        // call validness function to override default config
+        validness({ customErrorFactory: errorFactory });
+
+        const app = createRouteWithPipe(validationBodyPipe(BodyDto));
 
         const res = await request(app).get('/').send(dto);
 
@@ -161,12 +159,10 @@ describe('Validation Body Pipe', () => {
             name: '' // empty string violates the rules
         };
 
-        const app = createRouteWithPipe(
-            validationBodyPipe(BodyDto, errorFactoryOverridden),
-            validationConfigPipe({
-                customErrorFactory: errorFactory
-            })
-        );
+        // call validness function to override default config
+        validness({ customErrorFactory: errorFactory });
+
+        const app = createRouteWithPipe(validationBodyPipe(BodyDto, errorFactoryOverridden));
 
         const res = await request(app).get('/').send(dto);
 

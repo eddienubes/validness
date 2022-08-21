@@ -1,5 +1,5 @@
 import { StatusCodes } from 'http-status-codes';
-import { BaseError, ErrorField } from '../../../common/errors';
+import { BaseError, ErrorField } from '../../../common';
 
 export class DefaultBodyError extends BaseError {
     constructor(public readonly fields: ErrorField[]) {

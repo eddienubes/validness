@@ -1,4 +1,4 @@
-import { validationConfigPipe, validationQueryPipe } from '../../../src';
+import { validationQueryPipe, validness } from '../../../src';
 import request from 'supertest';
 import { QueryDto } from './models';
 import { errorFactory, errorFactoryOverridden } from '../../utils/error-utils';
@@ -47,12 +47,9 @@ describe('Validation Query Pipe', () => {
         dto.age = 'My age' as unknown as number;
         dto.name = 5 as unknown as string;
 
-        const app = createRouteWithPipe(
-            validationQueryPipe(QueryDto),
-            validationConfigPipe({
-                customErrorFactory: errorFactory
-            })
-        );
+        validness({ customErrorFactory: errorFactory });
+
+        const app = createRouteWithPipe(validationQueryPipe(QueryDto));
 
         const res = await request(app).get('/').query(dto);
 
@@ -75,12 +72,9 @@ describe('Validation Query Pipe', () => {
         dto.age = 'My age' as unknown as number;
         dto.name = 5 as unknown as string;
 
-        const app = createRouteWithPipe(
-            validationQueryPipe(QueryDto, errorFactoryOverridden),
-            validationConfigPipe({
-                customErrorFactory: errorFactory
-            })
-        );
+        validness({ customErrorFactory: errorFactory });
+
+        const app = createRouteWithPipe(validationQueryPipe(QueryDto, errorFactoryOverridden));
 
         const res = await request(app).get('/').query(dto);
 

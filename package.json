@@ -17,13 +17,16 @@
   },
   "peerDependencies": {
     "@nestjs/class-transformer": "^0.4.0",
-    "@nestjs/class-validator": "^0.13.3"
+    "@nestjs/class-validator": "^0.13.3",
+    "@types/multer": "^1.4.7",
+    "multer": "^1.4.5-lts.1"
   },
   "devDependencies": {
     "@nestjs/class-transformer": "^0.4.0",
     "@nestjs/class-validator": "^0.13.3",
     "@types/express": "^4.17.13",
     "@types/jest": "^27.0.3",
+    "@types/multer": "^1.4.7",
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^5.8.0",
     "@typescript-eslint/parser": "^5.8.0",
@@ -33,6 +36,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "express": "^4.17.2",
     "jest": "^27.4.5",
+    "multer": "^1.4.5-lts.1",
     "prettier": "^2.5.1",
     "supertest": "^6.1.6",
     "ts-jest": "^27.1.2",
