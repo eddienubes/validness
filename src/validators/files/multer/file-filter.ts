@@ -8,6 +8,8 @@ export const fileFilter = (fileValidationMap: FileValidationMap): MulterFileFilt
     return (req, file: Express.Multer.File, callback: FileFilterCallback) => {
         const metadata = fileValidationMap[file.fieldname];
 
+        console.log('file filter');
+
         if (!metadata) {
             return callback(null, true);
         }
@@ -43,6 +45,8 @@ export const fileFilter = (fileValidationMap: FileValidationMap): MulterFileFilt
                 )
             );
         }
+
+        return callback(null, true);
     };
 };
 

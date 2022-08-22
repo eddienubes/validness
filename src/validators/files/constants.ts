@@ -1,6 +1,7 @@
 import { FileType } from './interfaces/single-file-configuration.interface';
 
 export const FILE_VALIDATION_METADATA_KEY = 'validness-validation-file-metadata';
+export const FILE_VALIDATION_DECORATED_FIELDS_LIST_KEY = 'validness-validation-decorated-fields-list';
 
 // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
 export const MIME_TYPE_MAP: Record<FileType, string[]> = {

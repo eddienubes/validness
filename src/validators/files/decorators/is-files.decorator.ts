@@ -1,6 +1,6 @@
 import { MultipleFilesConfiguration } from '../interfaces/multiple-files-configuration.interface';
 import { FileMetadata } from '../interfaces/file-metadata.interface';
-import { FILE_VALIDATION_METADATA_KEY } from '../constants';
+import { FILE_VALIDATION_DECORATED_FIELDS_LIST_KEY, FILE_VALIDATION_METADATA_KEY } from '../constants';
 
 export const IsFiles = (config?: MultipleFilesConfiguration): PropertyDecorator => {
     return (target, propertyKey) => {
@@ -8,6 +8,10 @@ export const IsFiles = (config?: MultipleFilesConfiguration): PropertyDecorator 
             multiple: true,
             ...config
         };
+
+        // to keep record of decorated fields
+        const list = Reflect.getMetadata(FILE_VALIDATION_DECORATED_FIELDS_LIST_KEY, target) || [];
+        Reflect.defineMetadata(FILE_VALIDATION_DECORATED_FIELDS_LIST_KEY, [...list, propertyKey], target);
 
         Reflect.defineMetadata(FILE_VALIDATION_METADATA_KEY, metadata, target, propertyKey);
     };

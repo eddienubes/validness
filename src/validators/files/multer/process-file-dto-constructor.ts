@@ -2,15 +2,20 @@ import { ClassConstructor } from '../../../common';
 import { ProcessedFileDtoConstructor } from '../interfaces/processed-file-dto-constructor.interface';
 import { FileValidationMap } from '../types';
 import { Field } from 'multer';
-import { FILE_VALIDATION_METADATA_KEY } from '../constants';
+import { FILE_VALIDATION_DECORATED_FIELDS_LIST_KEY, FILE_VALIDATION_METADATA_KEY } from '../constants';
 import { FileMetadata } from '../interfaces/file-metadata.interface';
 
 export const processFileDtoConstructor = (DtoConstructor: ClassConstructor): ProcessedFileDtoConstructor => {
     const map: FileValidationMap = {};
     const multerFields: Field[] = [];
 
-    for (const key in DtoConstructor) {
-        const metadata = Reflect.getMetadata(FILE_VALIDATION_METADATA_KEY, DtoConstructor, key) as FileMetadata;
+    const decoratedFieldsList = Reflect.getMetadata(
+        FILE_VALIDATION_DECORATED_FIELDS_LIST_KEY,
+        DtoConstructor.prototype
+    ) as string[];
+
+    for (const key of decoratedFieldsList) {
+        const metadata = Reflect.getMetadata(FILE_VALIDATION_METADATA_KEY, DtoConstructor.prototype, key) as FileMetadata;
 
         if (!metadata) {
             continue;
