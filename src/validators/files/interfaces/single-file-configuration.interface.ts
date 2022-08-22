@@ -19,4 +19,9 @@ export interface SingleFileConfiguration {
      * I.e. type: 'audio' is the same thing as the mimetype: ['audio/wav', 'audio/mp3'] and so on..
      */
     type?: FileType;
+
+    /**
+     * Allows optional file attachment
+     */
+    optional?: boolean;
 }
