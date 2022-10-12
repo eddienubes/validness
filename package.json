@@ -17,7 +17,8 @@
   },
   "peerDependencies": {
     "@nestjs/class-transformer": "^0.4.0",
-    "@nestjs/class-validator": "^0.13.3"
+    "@nestjs/class-validator": "^0.13.3",
+    "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
     "@nestjs/class-transformer": "^0.4.0",
@@ -34,13 +35,13 @@
     "express": "^4.17.2",
     "jest": "^27.4.5",
     "prettier": "^2.5.1",
+    "reflect-metadata": "^0.1.13",
     "supertest": "^6.1.6",
     "ts-jest": "^27.1.2",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.4"
   },
   "dependencies": {
-    "http-status-codes": "^2.1.4",
-    "reflect-metadata": "^0.1.13"
+    "http-status-codes": "^2.1.4"
   }
 }

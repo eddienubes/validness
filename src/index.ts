@@ -1,5 +1,3 @@
-import 'reflect-metadata';
-
 export { validationBodyPipe, DefaultBodyError } from './validation-body-pipe';
 export { validationQueryPipe, DefaultQueryError } from './validation-query-pipe';
 export { validationConfigPipe, ValidationConfig } from './middlewares';
