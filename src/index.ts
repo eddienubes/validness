@@ -1,5 +1,3 @@
-import 'reflect-metadata';
-
 export { validationBodyPipe, DefaultBodyError, validationQueryPipe, DefaultQueryError } from './validators';
 export { validness, ValidationConfig } from './config';
 
