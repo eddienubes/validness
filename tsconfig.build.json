@@ -5,6 +5,7 @@
     "declarationMap": false
   },
   "exclude": [
-    "test"
+    "test",
+    "jest"
   ]
 }

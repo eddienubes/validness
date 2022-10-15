@@ -7,8 +7,8 @@ import { multerUploadMiddleware } from './multer/multer-upload.middleware';
 
 /**
  * File validation consists of 3 stages (3 middlewares)
- * 1. Setup core validator middleware
- * 2. Core validator applying middleware
+ * 1. Setup core upload middleware (mostly config of the underlying library)
+ * 2. Applying of validator middleware
  * 3. Core validator result modification middleware
  */
 const router = Router();
