@@ -7,7 +7,7 @@ describe('Config Store', () => {
 
         instance.setConfig({
             fileValidationConfig: {
-                coreValidationFileType: FileValidatorType.EXPRESS_VALIDATOR,
+                fileValidatorType: FileValidatorType.EXPRESS_VALIDATOR,
                 coreConfig: {
                     limits: {
                         fieldNameSize: 100
@@ -19,7 +19,7 @@ describe('Config Store', () => {
         expect(instance.getConfig()).toEqual({
             ...VALIDATION_CONFIG_DEFAULTS,
             fileValidationConfig: {
-                coreValidationFileType: FileValidatorType.EXPRESS_VALIDATOR,
+                fileValidatorType: FileValidatorType.EXPRESS_VALIDATOR,
                 coreConfig: {
                     limits: {
                         fieldNameSize: 100

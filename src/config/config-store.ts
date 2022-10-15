@@ -1,5 +1,6 @@
 import { ValidationConfig } from './validation-config.interface';
 import { VALIDATION_CONFIG_DEFAULTS } from './constants';
+import { isObject } from '../utils/is-object';
 
 export class ConfigStore {
     private config: ValidationConfig = VALIDATION_CONFIG_DEFAULTS;
@@ -41,7 +42,7 @@ export class ConfigStore {
             }
 
             // recursively handle nested objects
-            if (this.isObject(value)) {
+            if (isObject(value)) {
                 obj = {
                     ...obj,
                     [typedKey]: this.mapObjectWithOverridesAndDefaults(obj[typedKey], value, defaults[typedKey])
@@ -58,10 +59,6 @@ export class ConfigStore {
         }
 
         return obj;
-    }
-
-    private isObject(candidate: unknown): candidate is object {
-        return typeof candidate === 'object' && candidate !== null && !Array.isArray(candidate);
     }
 
     public static getInstance(): ConfigStore {

@@ -1,8 +1,13 @@
 import express from 'express';
 import { RequestHandler, Express, ErrorRequestHandler } from 'express';
 import bodyParser from 'body-parser';
+import { AnyObject } from '../../src';
+import Any = jasmine.Any;
+import { isObject } from '@nestjs/class-validator';
+import { parseReqBody } from '../../src/utils/parse-req-body';
 
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+    console.log(err);
     res.status(err.statusCode).json({
         ...err
     });
@@ -31,7 +36,8 @@ export const createRouteWithPipe = (pipe: RequestHandler, middleware?: RequestHa
     }
 
     app.get('/', pipe, (req, res) => {
-        res.json({ data: req.body });
+        const parsedBody = parseReqBody(req.body);
+        res.json({ data: parsedBody });
     });
     app.use(errorHandler);
 

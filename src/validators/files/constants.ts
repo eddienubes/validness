@@ -1,4 +1,7 @@
 import { FileType } from './interfaces/single-file-configuration.interface';
+import { FileValidatorType } from '../../common';
+import { getMulterFileValidationChain } from './multer/get-multer-file-validation-chain';
+import { FileValidationChainGetter } from './multer/types';
 
 export const FILE_VALIDATION_METADATA_KEY = 'validness-validation-file-metadata';
 export const FILE_VALIDATION_DECORATED_FIELDS_LIST_KEY = 'validness-validation-decorated-fields-list';
@@ -29,4 +32,10 @@ export const MIME_TYPE_MAP: Record<FileType, string[]> = {
         'image/webp'
     ],
     video: ['video/x-msvideo', 'video/mp4', 'video/mpeg', 'video/ogg', 'video/mp2t', 'video/webm', 'video/3gpp', 'video/3gpp2']
+};
+
+export const FILE_VALIDATOR_CHAIN_MAP: Record<FileValidatorType, FileValidationChainGetter> = {
+    [FileValidatorType.MULTER]: getMulterFileValidationChain,
+    [FileValidatorType.EXPRESS_VALIDATOR]: getMulterFileValidationChain,
+    [FileValidatorType.FORMIDABLE]: getMulterFileValidationChain
 };

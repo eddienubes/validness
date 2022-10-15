@@ -1,14 +1,12 @@
 import { FileFilterCallback } from 'multer';
-import { Express } from 'express';
 import { FileValidationMap, MulterFileFilter } from '../types';
 import { DefaultFileError } from '../errors/default-file.error';
 import { MIME_TYPE_MAP } from '../constants';
+import { MulterFile } from './types';
 
 export const fileFilter = (fileValidationMap: FileValidationMap): MulterFileFilter => {
-    return (req, file: Express.Multer.File, callback: FileFilterCallback) => {
+    return (req, file: MulterFile, callback: FileFilterCallback) => {
         const metadata = fileValidationMap[file.fieldname];
-
-        console.log('file filter');
 
         if (!metadata) {
             return callback(null, true);

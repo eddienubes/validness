@@ -7,7 +7,11 @@ export const VALIDATION_CONFIG_DEFAULTS: ValidationConfig = {
     customErrorFactory: undefined,
 
     fileValidationConfig: {
-        coreValidationFileType: FileValidatorType.MULTER,
-        coreConfig: undefined
+        fileValidatorType: FileValidatorType.MULTER,
+        coreConfig: undefined,
+
+        textFieldsValidationConfig: {
+            forbidNonWhitelisted: true
+        }
     }
 };
