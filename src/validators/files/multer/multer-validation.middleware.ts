@@ -3,8 +3,8 @@ import { ProcessedFileDtoConstructor } from '../interfaces/processed-file-dto-co
 import { ClassConstructor, ErrorField } from '../../../common';
 import { DefaultFileError } from '../errors/default-file.error';
 import { MulterFile } from './types';
-import { plainToClass } from '@nestjs/class-transformer';
-import { validate } from '@nestjs/class-validator';
+import { plainToClass } from 'class-transformer';
+import { validate } from 'class-validator';
 import { ConfigStore } from '../../../config';
 import { FileValidationConfig } from '../../../config/file-validation-config.interface';
 import { findViolatedFields } from '../../../utils';

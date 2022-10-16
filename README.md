@@ -8,11 +8,11 @@
 Library that consists of validators to check incoming Query and Body Dtos at runtime
 
 It has some important peer dependencies:
-- @nestjs/class-validator
-- @nestjs/class-transformer
+- class-validator
+- class-transformer
 - reflect-metadata
 
-Please import reflect-metadata in an entry file of your project in order for package to work
+Please import reflect-metadata in an entry file of your project in order for this package to work
 ```typescript
 import 'reflect-metadata'
 ```

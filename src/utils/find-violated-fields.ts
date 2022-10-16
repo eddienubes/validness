@@ -1,4 +1,4 @@
-import { ValidationError } from '@nestjs/class-validator';
+import { ValidationError } from 'class-validator';
 import { ErrorField } from '../common';
 
 export const findViolatedFields = (errorObjects: ValidationError[]): ErrorField[] => {

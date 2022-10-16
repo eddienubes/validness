@@ -1,6 +1,6 @@
 import { IsFile } from '../../../src/validators/files/decorators/is-file.decorator';
 import { ValidatedFile } from '../../../src/validators/files/interfaces/validated-file.interface';
-import { IsEmail, IsNumberString, IsPhoneNumber } from '@nestjs/class-validator';
+import { IsEmail, IsNumberString, IsPhoneNumber } from 'class-validator';
 import { IsFiles } from '../../../src/validators/files/decorators/is-files.decorator';
 
 export class SingleFileDto {
