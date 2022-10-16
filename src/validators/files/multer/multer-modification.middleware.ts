@@ -20,10 +20,19 @@ export const multerModificationMiddleware = (
             // See http://expressjs.com/en/resources/middleware/multer.html
             const files = req?.files?.[typedKey] as unknown as MulterFile[];
 
-            if (!files || !files?.length) {
-                throw new Error(
-                    `You have encountered with an unexpected validness packages error. If you see this message please create an issue or somehow notify the developer about it`
+            // if file is not optional but still not defined this is BAD, because such cases
+            // should be handled in the validation level of file filter
+            if ((!files || !files?.length) && !metadata.optional) {
+                return next(
+                    new Error(
+                        `You have encountered an unexpected validness packages error. If you see this message please create an issue or somehow notify the developer about it`
+                    )
                 );
+            }
+
+            // if file is optional and not defined there is nothing to modify, skip it.
+            if (!files?.length && metadata.optional) {
+                continue;
             }
 
             const mappedFiles = mapMulterFiles(files);

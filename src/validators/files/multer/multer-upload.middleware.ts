@@ -9,7 +9,6 @@ export const multerUploadMiddleware = (
     DtoConstructor: ClassConstructor,
     coreConfig?: Options
 ): RequestHandler => {
-    console.log('multerUploadMiddleware:', DtoConstructor.name, processedFileDtoConstructor.multerFields);
     const upload = multer({
         ...coreConfig,
         fileFilter: fileFilter(processedFileDtoConstructor.fileValidationMap)

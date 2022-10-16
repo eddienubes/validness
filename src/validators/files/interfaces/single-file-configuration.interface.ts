@@ -10,7 +10,7 @@ export interface SingleFileConfiguration {
     maxSizeBytes?: number;
 
     /**
-     * Mimetypes of a file, i.e. image/png more narrow/strict than type
+     * Mimetypes of a file, e.g. image/png. This option is more narrow/strict than type
      */
     mimetype?: string | string[];
 

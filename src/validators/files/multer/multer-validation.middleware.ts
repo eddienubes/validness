@@ -21,17 +21,7 @@ export const multerValidationMiddleware = (
     DtoConstructor: ClassConstructor,
     fileValidationConfig?: Partial<FileValidationConfig>
 ): RequestHandler => {
-    console.log(
-        'multerValidationMiddleware CLOSED with: ',
-        DtoConstructor.name,
-        processedFileDtoConstructor.multerFields
-    );
     return async (req, res, next) => {
-        console.log(
-            'multerValidationMiddleware CALLED with: ',
-            DtoConstructor.name,
-            processedFileDtoConstructor.multerFields
-        );
         const errors: ErrorField[] = [];
 
         // Extended file validation

@@ -7,23 +7,25 @@ import { MulterFile } from './types';
 export const fileFilter = (fileValidationMap: FileValidationMap): MulterFileFilter => {
     return (req, file: MulterFile, callback: FileFilterCallback) => {
         const metadata = fileValidationMap[file.fieldname];
+        const fileSize = file.size || req.headers['content-length'] || 0;
 
         if (!metadata) {
             return callback(null, true);
         }
 
         // Validation by size
-        if (metadata.maxSizeBytes && file.size > metadata.maxSizeBytes) {
+        if (metadata.maxSizeBytes && fileSize > metadata.maxSizeBytes) {
             return callback(
                 constructDefaultError(
                     file.fieldname,
-                    `The following field contains file of size ${file.size} bytes that exceeds the specified limit: ${metadata.maxSizeBytes} bytes`
+                    `The following field contains file of size ${fileSize} bytes that exceeds the specified limit: ${metadata.maxSizeBytes} bytes`
                 )
             );
         }
 
         // Validation by concrete mimetype
-        if (metadata.mimetype && metadata.mimetype !== file.mimetype) {
+        //  && metadata.mimetype !== file.mimetype
+        if (metadata.mimetype && !isValidMimeType(metadata.mimetype, file.mimetype)) {
             return callback(
                 constructDefaultError(
                     file.fieldname,
@@ -46,6 +48,14 @@ export const fileFilter = (fileValidationMap: FileValidationMap): MulterFileFilt
 
         return callback(null, true);
     };
+};
+
+const isValidMimeType = (required: string | string[], actual: string): boolean => {
+    if (Array.isArray(required)) {
+        return required.includes(actual);
+    }
+
+    return required === actual;
 };
 
 const constructDefaultError = (name: string, message: string): DefaultFileError =>

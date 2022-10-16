@@ -21,3 +21,58 @@ export class MultipleFilesDto {
     @IsEmail()
     email: string;
 }
+
+export class MultipleFilesMaxAmountDto {
+    @IsFiles({ maxAmount: 1 })
+    photos: ValidatedFile[];
+
+    @IsPhoneNumber()
+    phone: string;
+
+    @IsEmail()
+    email: string;
+}
+
+export class MultipleFilesMaxSizeDto {
+    @IsFiles({ maxSizeBytes: 10000 })
+    photos: ValidatedFile[];
+
+    @IsPhoneNumber()
+    phone: string;
+
+    @IsEmail()
+    email: string;
+}
+
+export class MultipleFilesTypeDto {
+    @IsFiles({ type: 'audio' })
+    photos: ValidatedFile[];
+
+    @IsPhoneNumber()
+    phone: string;
+
+    @IsEmail()
+    email: string;
+}
+
+export class MultipleFilesMimeTypeDto {
+    @IsFiles({ mimetype: 'audio/mpeg' })
+    photos: ValidatedFile[];
+
+    @IsPhoneNumber()
+    phone: string;
+
+    @IsEmail()
+    email: string;
+}
+
+export class MultipleFilesOptionalDto {
+    @IsFiles({ optional: true })
+    photos: ValidatedFile[];
+
+    @IsPhoneNumber()
+    phone: string;
+
+    @IsEmail()
+    email: string;
+}

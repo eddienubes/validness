@@ -2,9 +2,10 @@ import express from 'express';
 import { RequestHandler, Express, ErrorRequestHandler } from 'express';
 import bodyParser from 'body-parser';
 import { parseReqBody } from '../../src';
+import util from 'util';
 
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
-    console.log(err);
+    console.log(util.inspect(err, { depth: null }));
     res.status(err.statusCode).json({
         ...err
     });
