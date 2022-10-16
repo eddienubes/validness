@@ -1,6 +1,6 @@
 import { FileValidatorType } from '../common';
 import { Options as MulterOptions } from 'multer';
-import { ValidatorOptions } from '@nestjs/class-validator';
+import { ValidatorOptions } from 'class-validator';
 
 export interface FileValidationConfig {
     fileValidatorType: FileValidatorType;

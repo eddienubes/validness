@@ -1,5 +1,5 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested } from '@nestjs/class-validator';
-import { Transform, Type } from '@nestjs/class-transformer';
+import { IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
 import { BaseError, ErrorField } from '../../../src';
 import { StatusCodes } from 'http-status-codes';
 

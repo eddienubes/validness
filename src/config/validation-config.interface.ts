@@ -1,4 +1,4 @@
-import { ValidatorOptions } from '@nestjs/class-validator';
+import { ValidatorOptions } from 'class-validator';
 import { CustomErrorFactory } from '../common';
 import { FileValidatorType } from '../common';
 import { FileValidationConfig } from './file-validation-config.interface';

@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
-import { plainToClass } from '@nestjs/class-transformer';
-import { validateOrReject, ValidatorOptions } from '@nestjs/class-validator';
-import { ValidationError } from '@nestjs/class-validator';
+import { plainToClass } from 'class-transformer';
+import { validateOrReject, ValidatorOptions } from 'class-validator';
+import { ValidationError } from 'class-validator';
 import { findViolatedFields } from '../../utils';
 import { CustomErrorFactory } from '../../common';
 import { ClassConstructor } from '../../common';
