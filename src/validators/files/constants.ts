@@ -31,7 +31,16 @@ export const MIME_TYPE_MAP: Record<FileType, string[]> = {
         'image/tiff',
         'image/webp'
     ],
-    video: ['video/x-msvideo', 'video/mp4', 'video/mpeg', 'video/ogg', 'video/mp2t', 'video/webm', 'video/3gpp', 'video/3gpp2']
+    video: [
+        'video/x-msvideo',
+        'video/mp4',
+        'video/mpeg',
+        'video/ogg',
+        'video/mp2t',
+        'video/webm',
+        'video/3gpp',
+        'video/3gpp2'
+    ]
 };
 
 export const FILE_VALIDATOR_CHAIN_MAP: Record<FileValidatorType, FileValidationChainGetter> = {

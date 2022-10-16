@@ -2,26 +2,26 @@ import { createRouteWithPipe } from '../../utils/server-utils';
 import request from 'supertest';
 import { getTestFilePath } from '../../test-utils/files';
 import { validationFilePipe } from '../../../src';
-import { MultipleFilesDto, SingleFileDto } from './test-dtos';
+import { MultipleFilesDto, SingleFileDto } from './models';
 
 describe('Multer validation file pipe', () => {
     it('should not throw any errors with a SingleFileDto', async () => {
         const app = createRouteWithPipe(validationFilePipe(SingleFileDto));
-        const path = getTestFilePath('cat.png');
+        const path = getTestFilePath('cat1.png');
         const res = await request(app).get('/').field('number', '123').attach('file', path);
 
+        expect(res.statusCode).toEqual(200);
         expect(res.body.data).toEqual({
             file: {
                 buffer: 'Buffer',
                 encoding: '7bit',
                 mimeType: 'image/png',
-                originalName: 'cat.png',
+                originalName: 'cat1.png',
                 sizeBytes: 7333311
             },
             number: '123'
         });
     });
-
     it('should not throw any errors with a MultipleFilesDto', async () => {
         const app = createRouteWithPipe(validationFilePipe(MultipleFilesDto));
         const path1 = getTestFilePath('cat1.png');
@@ -33,6 +33,7 @@ describe('Multer validation file pipe', () => {
             .attach('photos', path1)
             .attach('photos', path2);
 
+        // expect(res.statusCode).toEqual(400);
         expect(res.body).toEqual({
             data: {
                 email: 'example@gmail.com',

@@ -15,7 +15,11 @@ export const processFileDtoConstructor = (DtoConstructor: ClassConstructor): Pro
     ) as string[];
 
     for (const key of decoratedFieldsList) {
-        const metadata = Reflect.getMetadata(FILE_VALIDATION_METADATA_KEY, DtoConstructor.prototype, key) as FileMetadata;
+        const metadata = Reflect.getMetadata(
+            FILE_VALIDATION_METADATA_KEY,
+            DtoConstructor.prototype,
+            key
+        ) as FileMetadata;
 
         if (!metadata) {
             continue;

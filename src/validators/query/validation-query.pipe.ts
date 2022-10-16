@@ -2,7 +2,7 @@ import { RequestHandler } from 'express';
 import { plainToClass } from '@nestjs/class-transformer';
 import { validateOrReject, ValidatorOptions } from '@nestjs/class-validator';
 import { ValidationError } from '@nestjs/class-validator';
-import { findViolatedFields } from '../../utils/find-violated-fields';
+import { findViolatedFields } from '../../utils';
 import { CustomErrorFactory } from '../../common';
 import { ClassConstructor } from '../../common';
 import { DefaultQueryError } from './errors/default-query.error';

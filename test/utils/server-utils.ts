@@ -1,10 +1,7 @@
 import express from 'express';
 import { RequestHandler, Express, ErrorRequestHandler } from 'express';
 import bodyParser from 'body-parser';
-import { AnyObject } from '../../src';
-import Any = jasmine.Any;
-import { isObject } from '@nestjs/class-validator';
-import { parseReqBody } from '../../src/utils/parse-req-body';
+import { parseReqBody } from '../../src';
 
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     console.log(err);

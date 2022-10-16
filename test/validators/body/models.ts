@@ -41,7 +41,11 @@ export class MyError extends BaseError {
 }
 
 export class MyOverriddenError extends BaseError {
-    constructor(private readonly newField: string, private readonly errors: ErrorField[], private readonly oldField: string) {
+    constructor(
+        private readonly newField: string,
+        private readonly errors: ErrorField[],
+        private readonly oldField: string
+    ) {
         super(StatusCodes.UNAUTHORIZED, 'MyOverriddenError');
     }
 }

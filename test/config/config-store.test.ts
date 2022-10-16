@@ -1,5 +1,5 @@
-import { ConfigStore, VALIDATION_CONFIG_DEFAULTS, ValidationConfig } from '../../src/config';
-import { FileValidatorType } from '../../src/common';
+import { ConfigStore, ValidationConfig } from '../../src';
+import { FileValidatorType } from '../../src';
 
 describe('Config Store', () => {
     it('should set config recursively in a proper way', function () {
@@ -17,14 +17,22 @@ describe('Config Store', () => {
         });
 
         expect(instance.getConfig()).toEqual({
-            ...VALIDATION_CONFIG_DEFAULTS,
+            bodyValidationConfig: {
+                forbidNonWhitelisted: true
+            },
             fileValidationConfig: {
-                fileValidatorType: FileValidatorType.EXPRESS_VALIDATOR,
                 coreConfig: {
                     limits: {
                         fieldNameSize: 100
                     }
+                },
+                fileValidatorType: 'EXPRESS_VALIDATOR',
+                textFieldsValidationConfig: {
+                    forbidNonWhitelisted: true
                 }
+            },
+            queryValidationConfig: {
+                forbidNonWhitelisted: true
             }
         } as ValidationConfig);
     });

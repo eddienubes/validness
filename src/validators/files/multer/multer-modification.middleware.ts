@@ -7,7 +7,9 @@ import { ValidatedFile } from '../interfaces/validated-file.interface';
  * Processes files and body to concatenate them into a single object
  * @param processedFileDtoConstructor
  */
-export const multerModificatorMiddleware = (processedFileDtoConstructor: ProcessedFileDtoConstructor): RequestHandler => {
+export const multerModificationMiddleware = (
+    processedFileDtoConstructor: ProcessedFileDtoConstructor
+): RequestHandler => {
     return async (req, res, next) => {
         for (const key in processedFileDtoConstructor.fileValidationMap) {
             const typedKey = key as keyof typeof req.files;

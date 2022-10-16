@@ -91,7 +91,10 @@ describe('Validation Body Pipe', () => {
         };
 
         const app = createRouteWithPipe(
-            validationBodyPipe(BodyDto, (errors) => new MyCustomError('my custom message', StatusCodes.CONFLICT, errors))
+            validationBodyPipe(
+                BodyDto,
+                (errors) => new MyCustomError('my custom message', StatusCodes.CONFLICT, errors)
+            )
         );
 
         const res = await request(app).get('/').send(dto);

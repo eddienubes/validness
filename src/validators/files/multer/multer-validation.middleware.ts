@@ -7,7 +7,7 @@ import { plainToClass } from '@nestjs/class-transformer';
 import { validate } from '@nestjs/class-validator';
 import { ConfigStore } from '../../../config';
 import { FileValidationConfig } from '../../../config/file-validation-config.interface';
-import { findViolatedFields } from '../../../utils/find-violated-fields';
+import { findViolatedFields } from '../../../utils';
 
 /**
  * Some validation logic preserved on upload stage by multer itself.
@@ -21,7 +21,17 @@ export const multerValidationMiddleware = (
     DtoConstructor: ClassConstructor,
     fileValidationConfig?: Partial<FileValidationConfig>
 ): RequestHandler => {
+    console.log(
+        'multerValidationMiddleware CLOSED with: ',
+        DtoConstructor.name,
+        processedFileDtoConstructor.multerFields
+    );
     return async (req, res, next) => {
+        console.log(
+            'multerValidationMiddleware CALLED with: ',
+            DtoConstructor.name,
+            processedFileDtoConstructor.multerFields
+        );
         const errors: ErrorField[] = [];
 
         // Extended file validation
@@ -47,7 +57,8 @@ export const multerValidationMiddleware = (
         const globalConfig = ConfigStore.getInstance().getConfig();
         const instance = plainToClass(DtoConstructor, req.body);
         const textFieldsValidationConfig =
-            fileValidationConfig?.textFieldsValidationConfig || globalConfig.fileValidationConfig.textFieldsValidationConfig;
+            fileValidationConfig?.textFieldsValidationConfig ||
+            globalConfig.fileValidationConfig.textFieldsValidationConfig;
 
         const textFieldsErrors = await validate(instance, textFieldsValidationConfig);
         const violatedFields = findViolatedFields(textFieldsErrors);
