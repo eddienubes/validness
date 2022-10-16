@@ -1,4 +1,4 @@
-import { FileType } from './interfaces/single-file-configuration.interface';
+import { FileType } from './interfaces/single-file-config.interface';
 import { FileValidatorType } from '../../common';
 import { getMulterFileValidationChain } from './multer/get-multer-file-validation-chain';
 import { FileValidationChainGetter } from './multer/types';

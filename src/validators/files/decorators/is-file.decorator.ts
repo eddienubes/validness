@@ -1,8 +1,8 @@
 import { FILE_VALIDATION_DECORATED_FIELDS_LIST_KEY, FILE_VALIDATION_METADATA_KEY } from '../constants';
-import { SingleFileConfiguration } from '../interfaces/single-file-configuration.interface';
+import { SingleFileConfig } from '../interfaces/single-file-config.interface';
 import { FileMetadata } from '../interfaces/file-metadata.interface';
 
-export const IsFile = (config?: SingleFileConfiguration): PropertyDecorator => {
+export const IsFile = (config?: SingleFileConfig): PropertyDecorator => {
     return (target, propertyKey) => {
         const metadata: FileMetadata = {
             multiple: false,
