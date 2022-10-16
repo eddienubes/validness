@@ -18,7 +18,16 @@ export const fileFilter = (fileValidationMap: FileValidationMap): MulterFileFilt
             return callback(
                 constructDefaultError(
                     file.fieldname,
-                    `The following field contains file of size ${fileSize} bytes that exceeds the specified limit: ${metadata.maxSizeBytes} bytes`
+                    `The following field contains a file of size ${fileSize} bytes that exceeds the specified maximum limit: ${metadata.maxSizeBytes} bytes`
+                )
+            );
+        }
+
+        if (metadata.minSizeBytes && fileSize < metadata.minSizeBytes) {
+            return callback(
+                constructDefaultError(
+                    file.fieldname,
+                    `The following field contains a file of size ${fileSize} bytes that is lower than the specified minimal limit: ${metadata.minSizeBytes} bytes`
                 )
             );
         }

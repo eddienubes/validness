@@ -9,6 +9,10 @@ import { isObject } from './is-object';
 export const parseReqBody = (body: AnyObject): AnyObject => {
     const newBody: AnyObject = {};
 
+    if (!isObject(body) || !Array.isArray(body)) {
+        return body;
+    }
+
     for (const key in body) {
         const value = body[key];
 

@@ -7,6 +7,8 @@ import {
     MultipleFilesMaxAmountDto,
     MultipleFilesMaxSizeDto,
     MultipleFilesMimeTypeDto,
+    MultipleFilesMinSizeDto,
+    MultipleFilesOptionalArrayTextDto,
     MultipleFilesOptionalDto,
     MultipleFilesTypeDto,
     SingleFileDto
@@ -31,6 +33,7 @@ describe('Multer validation file pipe', () => {
             number: '123'
         });
     });
+
     it('should not throw any errors with a MultipleFilesDto', async () => {
         const app = createRouteWithPipe(validationFilePipe(MultipleFilesDto));
         const path1 = getTestFilePath('cat1.png');
@@ -110,7 +113,34 @@ describe('Multer validation file pipe', () => {
                 {
                     field: 'photos',
                     violations: [
-                        'The following field contains file of size 7894180 bytes that exceeds the specified limit: 10000 bytes'
+                        'The following field contains a file of size 7894180 bytes that exceeds the specified maximum limit: 10000 bytes'
+                    ]
+                }
+            ],
+            name: 'DefaultFileError',
+            statusCode: 400
+        });
+    });
+
+    it('should throw an error when minSize limit is not respected', async () => {
+        const app = createRouteWithPipe(validationFilePipe(MultipleFilesMinSizeDto));
+
+        const path1 = getTestFilePath('cat1.png');
+        const path2 = getTestFilePath('cat2.png');
+        const res = await request(app)
+            .get('/')
+            .field('phone', '+15852826457')
+            .field('email', 'example@gmail.com')
+            .attach('photos', path1)
+            .attach('photos', path2);
+
+        expect(res.statusCode).toEqual(400);
+        expect(res.body).toEqual({
+            fields: [
+                {
+                    field: 'photos',
+                    violations: [
+                        'The following field contains a file of size 7894180 bytes that is lower than the specified minimal limit: 10000000 bytes'
                     ]
                 }
             ],
@@ -222,6 +252,24 @@ describe('Multer validation file pipe', () => {
             newField: 'New Field',
             oldField: 'Old field',
             statusCode: 401
+        });
+    });
+
+    it('should consider array text fields', async () => {
+        const app = createRouteWithPipe(validationFilePipe(MultipleFilesOptionalArrayTextDto));
+
+        const res = await request(app)
+            .get('/')
+            .field('phone', '+15852826457')
+            .field('numbers', '123')
+            .field('numbers', '123');
+
+        expect(res.statusCode).toEqual(200);
+        expect(res.body).toEqual({
+            data: {
+                numbers: ['123', '123'],
+                phone: '+15852826457'
+            }
         });
     });
 });

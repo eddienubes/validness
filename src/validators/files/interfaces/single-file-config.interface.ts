@@ -10,6 +10,11 @@ export interface SingleFileConfig {
     maxSizeBytes?: number;
 
     /**
+     * Minimum size of a file in bytes. If a field contains multiple files - applied to each one of them
+     */
+    minSizeBytes?: number;
+
+    /**
      * Mimetypes of a file, e.g. image/png. This option is more narrow/strict than type
      */
     mimetype?: string | string[];

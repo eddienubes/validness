@@ -3,7 +3,7 @@ import { ProcessedFileDtoConstructor } from '../interfaces/processed-file-dto-co
 import { ClassConstructor, ErrorField } from '../../../common';
 import { DefaultFileError } from '../errors/default-file.error';
 import { MulterFile } from './types';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
 import { ConfigStore } from '../../../config';
 import { FileValidationConfig } from '../../../config/file-validation-config.interface';
@@ -45,7 +45,7 @@ export const multerValidationMiddleware = (
 
         // Text fields validation, basically repeats body or query validation
         const globalConfig = ConfigStore.getInstance().getConfig();
-        const instance = plainToClass(DtoConstructor, req.body);
+        const instance = plainToInstance(DtoConstructor, req.body);
         const textFieldsValidationConfig =
             fileValidationConfig?.textFieldsValidationConfig ||
             globalConfig.fileValidationConfig.textFieldsValidationConfig;
