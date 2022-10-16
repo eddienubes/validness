@@ -44,6 +44,17 @@ export class MultipleFilesMaxSizeDto {
     email: string;
 }
 
+export class MultipleFilesMinSizeDto {
+    @IsFiles({ minSizeBytes: 10_000_000 })
+    photos: ValidatedFile[];
+
+    @IsPhoneNumber()
+    phone: string;
+
+    @IsEmail()
+    email: string;
+}
+
 export class MultipleFilesTypeDto {
     @IsFiles({ type: 'audio' })
     photos: ValidatedFile[];
@@ -75,4 +86,15 @@ export class MultipleFilesOptionalDto {
 
     @IsEmail()
     email: string;
+}
+
+export class MultipleFilesOptionalArrayTextDto {
+    @IsFiles({ optional: true })
+    photos: ValidatedFile[];
+
+    @IsPhoneNumber()
+    phone: string;
+
+    @IsNumberString(undefined, { each: true })
+    numbers: string[];
 }

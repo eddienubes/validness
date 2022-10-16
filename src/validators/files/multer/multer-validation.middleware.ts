@@ -8,6 +8,7 @@ import { validate } from 'class-validator';
 import { ConfigStore } from '../../../config';
 import { FileValidationConfig } from '../../../config/file-validation-config.interface';
 import { findViolatedFields } from '../../../utils';
+import { isValidTextFields } from '../helpers';
 
 /**
  * Some validation logic preserved on upload stage by multer itself.
@@ -45,19 +46,20 @@ export const multerValidationMiddleware = (
 
         // Text fields validation, basically repeats body or query validation
         const globalConfig = ConfigStore.getInstance().getConfig();
-        const instance = plainToInstance(DtoConstructor, req.body);
-        const textFieldsValidationConfig =
+        const validationConfig =
             fileValidationConfig?.textFieldsValidationConfig ||
             globalConfig.fileValidationConfig.textFieldsValidationConfig;
 
-        const textFieldsErrors = await validate(instance, textFieldsValidationConfig);
-        const violatedFields = findViolatedFields(textFieldsErrors);
+        const { violatedFields, instance } = await isValidTextFields(DtoConstructor, req.body, validationConfig);
 
         errors.push(...violatedFields);
 
         if (errors.length) {
             return next(new DefaultFileError(errors));
         }
+
+        // remap fields body to an instance of class-transformer
+        req.body = instance;
 
         next();
     };

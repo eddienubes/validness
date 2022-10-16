@@ -87,7 +87,7 @@ describe('Multer validation file pipe', () => {
             fields: [
                 {
                     field: 'photos',
-                    violations: ['The following file field [photos] has exceeded its maxCount']
+                    violations: ['The following file field [photos] has exceeded its maxCount or is not expected']
                 }
             ],
             name: 'DefaultFileError',
@@ -269,6 +269,52 @@ describe('Multer validation file pipe', () => {
             data: {
                 numbers: ['123', '123'],
                 phone: '+15852826457'
+            }
+        });
+    });
+
+    it('should throw an error when multiple files has been sent for a single file dto', async () => {
+        const app = createRouteWithPipe(validationFilePipe(SingleFileDto));
+
+        const path1 = getTestFilePath('cat1.png');
+        const path2 = getTestFilePath('cat2.png');
+        const res = await request(app)
+            .get('/')
+            .field('phone', '+15852826457')
+            .field('email', 'example@gmail.com')
+            .attach('file', path1)
+            .attach('file', path2);
+
+        expect(res.statusCode).toEqual(400);
+        expect(res.body).toEqual({
+            fields: [
+                {
+                    field: 'file',
+                    violations: ['The following file field [file] has exceeded its maxCount or is not expected']
+                }
+            ],
+            name: 'DefaultFileError',
+            statusCode: 400
+        });
+    });
+
+    it('should upload file with undefined mimetype', async () => {
+        const app = createRouteWithPipe(validationFilePipe(SingleFileDto));
+
+        const path1 = getTestFilePath('file-wrong-mime-type');
+        const res = await request(app).get('/').field('number', '123123').attach('file', path1);
+
+        expect(res.statusCode).toEqual(200);
+        expect(res.body).toEqual({
+            data: {
+                file: {
+                    buffer: 'Buffer',
+                    encoding: '7bit',
+                    mimeType: 'application/octet-stream',
+                    originalName: 'file-wrong-mime-type',
+                    sizeBytes: 17
+                },
+                number: '123123'
             }
         });
     });

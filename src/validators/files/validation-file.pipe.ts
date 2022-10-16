@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { ClassConstructor, CustomErrorFactory } from '../../common';
 import { FileValidationConfig } from '../../config/file-validation-config.interface';
 import { ConfigStore } from '../../config';
-import { processFileDtoConstructor } from './multer/process-file-dto-constructor';
+import { processFileDtoConstructor } from './process-file-dto-constructor';
 import { FILE_VALIDATOR_CHAIN_MAP } from './constants';
 
 /**

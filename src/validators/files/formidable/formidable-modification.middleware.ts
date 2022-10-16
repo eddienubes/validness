@@ -1,0 +1,48 @@
+import { RequestHandler } from 'express';
+import { ProcessedFileDtoConstructor } from '../interfaces/processed-file-dto-constructor.interface';
+import { File, Options } from 'formidable';
+import { ValidatedFile } from '../interfaces/validated-file.interface';
+import { FORMIDABLE_DEFAULT_MIMETYPE } from './constants';
+
+export const formidableModificationMiddleware =
+    (processedFileDtoConstructor: ProcessedFileDtoConstructor, coreConfig?: Options): RequestHandler =>
+    async (req, res, next) => {
+        const formidablePayload = req.formidablePayload;
+        if (!formidablePayload) {
+            return next(
+                new Error(
+                    `Formidable result was not defined for some reason, please notify developer of validness about this error. It's not supposed to happen`
+                )
+            );
+        }
+
+        for (const key in processedFileDtoConstructor.fileValidationMap) {
+            const files = formidablePayload.files[key];
+
+            if (Array.isArray(files)) {
+                req.body[key] = mapFormidableFiles(files, coreConfig);
+                continue;
+            }
+
+            // contains only 1 element if multiple: false
+            req.body[key] = mapFormidableFiles([files], coreConfig)[0];
+        }
+
+        req.body = {
+            ...req.body,
+            ...formidablePayload.fields
+        };
+
+        next();
+    };
+
+const mapFormidableFiles = (files: File[], coreConfig?: Options): ValidatedFile[] =>
+    files.map((file) => ({
+        originalName: file.originalFilename || undefined, // avoids nulls
+        mimeType: file.mimetype || FORMIDABLE_DEFAULT_MIMETYPE,
+        sizeBytes: file.size,
+
+        fileName: file.newFilename,
+        destination: coreConfig?.uploadDir,
+        path: file.filepath
+    }));

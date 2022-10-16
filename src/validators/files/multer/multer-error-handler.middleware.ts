@@ -30,7 +30,7 @@ const mapMulterErrorToErrorFields = (multerError: MulterError): ErrorField[] => 
 
     return [
         new ErrorField(multerError.field || 'unknown', [
-            `The following file field [${field}] has exceeded its maxCount`
+            `The following file field [${field}] has exceeded its maxCount or is not expected`
         ])
     ];
 };
