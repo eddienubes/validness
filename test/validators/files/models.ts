@@ -11,6 +11,19 @@ export class SingleFileDto {
     number: string;
 }
 
+export class SingleFileNoTextDto {
+    @IsFile()
+    file: ValidatedFile;
+}
+
+export class SingleFileWithTypeDto {
+    @IsFile({ type: 'image' })
+    file: ValidatedFile;
+
+    @IsNumberString()
+    number: string;
+}
+
 export class MultipleFilesDto {
     @IsFiles()
     photos: ValidatedFile[];

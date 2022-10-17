@@ -11,9 +11,21 @@ import {
     MultipleFilesOptionalArrayTextDto,
     MultipleFilesOptionalDto,
     MultipleFilesTypeDto,
-    SingleFileDto
+    SingleFileDto,
+    SingleFileNoTextDto,
+    SingleFileWithTypeDto
 } from './models';
 import { errorFactoryOverridden } from '../../utils/error-utils';
+import multer, { Options } from 'multer';
+
+const uploadOptions: Options = {
+    storage: multer.diskStorage({
+        destination: 'test/test-data/uploads',
+        filename(req, file, callback) {
+            callback(null, file.originalname);
+        }
+    })
+};
 
 describe('Multer validation file pipe', () => {
     it('should not throw any errors with a SingleFileDto', async () => {
@@ -274,7 +286,7 @@ describe('Multer validation file pipe', () => {
     });
 
     it('should throw an error when multiple files has been sent for a single file dto', async () => {
-        const app = createRouteWithPipe(validationFilePipe(SingleFileDto));
+        const app = createRouteWithPipe(validationFilePipe(SingleFileNoTextDto));
 
         const path1 = getTestFilePath('cat1.png');
         const path2 = getTestFilePath('cat2.png');
@@ -316,6 +328,79 @@ describe('Multer validation file pipe', () => {
                 },
                 number: '123123'
             }
+        });
+    });
+
+    it('should NOT upload if file parameters are invalid', async () => {
+        const app = createRouteWithPipe(
+            validationFilePipe(SingleFileWithTypeDto, {
+                coreConfig: uploadOptions
+            })
+        );
+
+        const path1 = getTestFilePath('file-wrong-mime-type');
+        const res = await request(app).get('/').field('number', '123123').attach('file', path1);
+
+        expect(res.statusCode).toEqual(400);
+        expect(res.body).toEqual({
+            fields: [
+                {
+                    field: 'file',
+                    violations: [
+                        'The following field contains file of the invalid mimetype application/octet-stream, but expected any of: [image/avif,image/bmp,image/gif,image/vnd.microsoft.icon,image/jpeg,image/png,image/svg+xml,image/tiff,image/webp]'
+                    ]
+                }
+            ],
+            name: 'DefaultFileError',
+            statusCode: 400
+        });
+    });
+
+    it('should include path and destination when uploading a file', async () => {
+        const app = createRouteWithPipe(
+            validationFilePipe(SingleFileDto, {
+                coreConfig: uploadOptions
+            })
+        );
+
+        const path1 = getTestFilePath('file-wrong-mime-type');
+        const res = await request(app).get('/').field('number', '123123').attach('file', path1);
+
+        expect(res.statusCode).toEqual(200);
+        expect(res.body.data).toEqual({
+            file: {
+                destination: 'test/test-data/uploads',
+                encoding: '7bit',
+                fileName: 'file-wrong-mime-type',
+                mimeType: 'application/octet-stream',
+                originalName: 'file-wrong-mime-type',
+                path: 'test/test-data/uploads/file-wrong-mime-type',
+                sizeBytes: 17
+            },
+            number: '123123'
+        });
+    });
+
+    it('should NOT upload files if text fields validation fails', async () => {
+        const app = createRouteWithPipe(
+            validationFilePipe(SingleFileDto, {
+                coreConfig: uploadOptions
+            })
+        );
+
+        const path1 = getTestFilePath('file-wrong-mime-type');
+        const res = await request(app).get('/').field('number', 'asd').attach('file', path1);
+
+        expect(res.statusCode).toEqual(400);
+        expect(res.body).toEqual({
+            fields: [
+                {
+                    field: 'number',
+                    violations: ['number must be a number string']
+                }
+            ],
+            name: 'DefaultFileError',
+            statusCode: 400
         });
     });
 });

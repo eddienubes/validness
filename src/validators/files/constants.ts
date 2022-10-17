@@ -2,7 +2,7 @@ import { FileType } from './interfaces/single-file-config.interface';
 import { FileValidatorType } from '../../common';
 import { getMulterFileValidationChain } from './multer/get-multer-file-validation-chain';
 import { FileValidationChainGetter } from './multer/types';
-import { getFormidableValidationChain } from "./formidable/get-formidable-validation-chain";
+import { getFormidableValidationChain } from './formidable/get-formidable-validation-chain';
 
 export const FILE_VALIDATION_METADATA_KEY = 'validness-validation-file-metadata';
 export const FILE_VALIDATION_DECORATED_FIELDS_LIST_KEY = 'validness-validation-decorated-fields-list';

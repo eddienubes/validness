@@ -3,7 +3,6 @@ import { validate, ValidatorOptions } from 'class-validator';
 import { findViolatedFields } from '../../utils';
 import { IsValidTextFields } from './interfaces/is-valid-text-fields.interface';
 import { AnyObject, ClassConstructor } from '../../common';
-import { DefaultFileError } from './errors/default-file.error';
 
 export const isValidTextFields = async (
     DtoConstructor: ClassConstructor,
@@ -28,11 +27,3 @@ export const isValidMimeType = (required: string | string[], actual: string): bo
 
     return required === actual;
 };
-
-export const constructDefaultError = (name: string, message: string): DefaultFileError =>
-    new DefaultFileError([
-        {
-            field: name,
-            violations: [message]
-        }
-    ]);
