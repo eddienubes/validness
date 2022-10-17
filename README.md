@@ -12,7 +12,8 @@
 
 ---
 
-🟢 Your favourite library for validating incoming data in [express.js](https://expressjs.com/)
+🟢 Your favourite library for validating incoming data in [express.js](https://expressjs.com/).
+
 With a creation of a single class and usage of decorators we achieve validation of the following content types (body
 parser required):
 
