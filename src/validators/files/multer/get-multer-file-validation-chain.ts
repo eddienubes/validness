@@ -6,6 +6,8 @@ import { ProcessedFileDtoConstructor } from '../interfaces/processed-file-dto-co
 import { ClassConstructor, CustomErrorFactory } from '../../../common';
 import { FileValidationConfig } from '../../../config/file-validation-config.interface';
 import { multerErrorHandlerMiddleware } from './multer-error-handler.middleware';
+import { ConfigStore } from '../../../config';
+import { Options } from 'multer';
 
 export const getMulterFileValidationChain = (
     DtoConstructor: ClassConstructor,
@@ -15,8 +17,15 @@ export const getMulterFileValidationChain = (
 ): Router => {
     const router = Router();
 
+    const configStore = ConfigStore.getInstance().getConfig();
+
+    const coreConfig = {
+        ...((configStore.fileValidationConfig.coreConfig as Options) || {}),
+        ...(fileValidationConfig?.coreConfig || {})
+    };
+
     router.use(
-        multerUploadMiddleware(DtoConstructor, processedFileDtoConstructor, fileValidationConfig),
+        multerUploadMiddleware(DtoConstructor, processedFileDtoConstructor, coreConfig),
         multerValidationMiddleware(processedFileDtoConstructor),
         multerModificationMiddleware(processedFileDtoConstructor),
         multerErrorHandlerMiddleware(customErrorFactory)

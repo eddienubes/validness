@@ -24,7 +24,8 @@ describe('Config Store', () => {
                 coreConfig: {
                     limits: {
                         fieldNameSize: 100
-                    }
+                    },
+                    multiples: true
                 },
                 fileValidatorType: 'FORMIDABLE',
                 textFieldsValidationConfig: {

@@ -5,9 +5,10 @@ import { ConfigStore } from '../../../config';
 import { FileValidationConfig } from '../../../config/file-validation-config.interface';
 import { isValidMimeType, isValidTextFields } from '../helpers';
 import { FileMetadata } from '../interfaces/file-metadata.interface';
-import { File } from 'formidable';
+import { File, Files } from 'formidable';
 import { MIME_TYPE_MAP } from '../constants';
 import { DefaultFileError } from '../errors/default-file.error';
+import * as fs from 'node:fs/promises';
 
 export const formidableValidationMiddleware =
     (
@@ -25,7 +26,9 @@ export const formidableValidationMiddleware =
             );
         }
 
+        // We ignore internal errors and do validation by ourselves
         const { error: formidableError, fields, files } = formidablePayload;
+
         if (formidableError) {
             return next(formidableError);
         }
@@ -47,17 +50,14 @@ export const formidableValidationMiddleware =
 
             const fileField = files[key];
 
-            if (Array.isArray(fileField)) {
-                const errorField = validateFileField(fileField, metadata, key);
-                !errorField || errors.push(errorField);
-                continue;
-            }
-
-            const errorField = validateFileField([fileField], metadata, key);
+            // can be array and can be undefined
+            const wrappedFileField = wrapFormidableFileField(fileField);
+            const errorField = validateFileField(wrappedFileField, metadata, key);
             !errorField || errors.push(errorField);
         }
 
         if (errors.length) {
+            await removeFormidableUploadedFiles(files);
             next(new DefaultFileError(errors));
         }
 
@@ -77,7 +77,7 @@ export const formidableValidationMiddleware =
  * @param metadata
  * @param fieldName
  */
-const validateFileField = (files: File[] | undefined, metadata: FileMetadata, fieldName: string): ErrorField | null => {
+const validateFileField = (files: File[] | null, metadata: FileMetadata, fieldName: string): ErrorField | null => {
     // Reused and cleared for every file
     const violations: string[] = [];
 
@@ -88,12 +88,18 @@ const validateFileField = (files: File[] | undefined, metadata: FileMetadata, fi
 
     // if field is not defined, but required
     if (!files && !metadata.optional) {
-        return new ErrorField(fieldName, [`File field [${fieldName}] is required, but was not defined`]);
+        return new ErrorField(fieldName, [`The following file field: [${fieldName}] is empty, but required`]);
     }
 
     if (files && metadata.maxAmount && files.length > metadata.maxAmount) {
         return new ErrorField(fieldName, [
             `The following file field [${fieldName}] has exceeded its maxCount or is not expected`
+        ]);
+    }
+
+    if (files && !metadata.multiple && files.length > 1) {
+        return new ErrorField(fieldName, [
+            `The following file field [${fieldName}] has exceeded its maxCount (1) or is not expected`
         ]);
     }
 
@@ -134,4 +140,33 @@ const validateFileField = (files: File[] | undefined, metadata: FileMetadata, fi
     }
 
     return null;
+};
+
+export const removeFormidableUploadedFiles = async (files: Files): Promise<void> => {
+    const promises: Promise<void>[] = [];
+
+    for (const key in files) {
+        const file = files[key];
+
+        const wrappedFile = wrapFormidableFileField(file);
+
+        if (!wrappedFile) return;
+
+        wrappedFile.map((file) => {
+            if (file.filepath) {
+                promises.push(fs.unlink(file.filepath));
+            }
+        });
+    }
+
+    await Promise.all(promises);
+};
+
+// wrapped represents a single field that might contain multiple files
+export const wrapFormidableFileField = (file: File | File[] | undefined): File[] | null => {
+    if (Array.isArray(file)) {
+        return file;
+    }
+
+    return !!file ? [file] : null;
 };

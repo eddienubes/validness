@@ -7,6 +7,7 @@ import { ConfigStore } from '../../../config';
 import { Options } from 'formidable';
 import { formidableValidationMiddleware } from './formidable-validation.middleware';
 import { formidableModificationMiddleware } from './formidable-modification.middleware';
+import { formidableErrorHandler } from './formidable-error-handler.middleware';
 
 export const getFormidableValidationChain = (
     DtoConstructor: ClassConstructor,
@@ -15,14 +16,18 @@ export const getFormidableValidationChain = (
     customErrorFactory?: CustomErrorFactory
 ): Router => {
     const router = Router();
-
     const configStore = ConfigStore.getInstance().getConfig();
-    const coreConfig = fileValidationConfig?.coreConfig || configStore.fileValidationConfig.coreConfig;
+
+    const coreConfig: Options = {
+        ...((configStore.fileValidationConfig.coreConfig as Options) || {}),
+        ...(fileValidationConfig?.coreConfig || {})
+    };
 
     router.use(
-        formidableUploadMiddleware(coreConfig as Options),
+        formidableUploadMiddleware(coreConfig),
         formidableValidationMiddleware(processedFileDtoConstructor, DtoConstructor, fileValidationConfig),
-        formidableModificationMiddleware(processedFileDtoConstructor, coreConfig as Options)
+        formidableModificationMiddleware(processedFileDtoConstructor, coreConfig),
+        formidableErrorHandler(customErrorFactory)
     );
 
     return router;

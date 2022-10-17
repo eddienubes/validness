@@ -3,9 +3,10 @@ import { ProcessedFileDtoConstructor } from '../interfaces/processed-file-dto-co
 import { File, Options } from 'formidable';
 import { ValidatedFile } from '../interfaces/validated-file.interface';
 import { FORMIDABLE_DEFAULT_MIMETYPE } from './constants';
+import { wrapFormidableFileField } from './formidable-validation.middleware';
 
 export const formidableModificationMiddleware =
-    (processedFileDtoConstructor: ProcessedFileDtoConstructor, coreConfig?: Options): RequestHandler =>
+    (processedFileDtoConstructor: ProcessedFileDtoConstructor, coreConfig: Options): RequestHandler =>
     async (req, res, next) => {
         const formidablePayload = req.formidablePayload;
         if (!formidablePayload) {
@@ -17,15 +18,24 @@ export const formidableModificationMiddleware =
         }
 
         for (const key in processedFileDtoConstructor.fileValidationMap) {
-            const files = formidablePayload.files[key];
+            const fileField = formidablePayload.files[key];
+            const metadata = processedFileDtoConstructor.fileValidationMap[key];
 
-            if (Array.isArray(files)) {
-                req.body[key] = mapFormidableFiles(files, coreConfig);
+            const wrappedFile = wrapFormidableFileField(fileField);
+
+            if (!wrappedFile) {
+                continue;
+            }
+
+            const mappedFiles = mapFormidableFiles(wrappedFile, coreConfig);
+
+            if (metadata.multiple) {
+                req.body[key] = mappedFiles;
                 continue;
             }
 
             // contains only 1 element if multiple: false
-            req.body[key] = mapFormidableFiles([files], coreConfig)[0];
+            req.body[key] = mappedFiles[0];
         }
 
         req.body = {
@@ -36,7 +46,7 @@ export const formidableModificationMiddleware =
         next();
     };
 
-const mapFormidableFiles = (files: File[], coreConfig?: Options): ValidatedFile[] =>
+const mapFormidableFiles = (files: File[], coreConfig: Options): ValidatedFile[] =>
     files.map((file) => ({
         originalName: file.originalFilename || undefined, // avoids nulls
         mimeType: file.mimetype || FORMIDABLE_DEFAULT_MIMETYPE,

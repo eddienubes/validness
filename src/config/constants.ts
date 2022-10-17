@@ -8,7 +8,9 @@ export const VALIDATION_CONFIG_DEFAULTS: ValidationConfig = {
 
     fileValidationConfig: {
         fileValidatorType: FileValidatorType.MULTER,
-        coreConfig: undefined,
+        coreConfig: {
+            multiples: true
+        },
 
         textFieldsValidationConfig: {
             forbidNonWhitelisted: true

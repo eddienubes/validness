@@ -35,6 +35,17 @@ export class MultipleFilesDto {
     email: string;
 }
 
+export class MultipleFieldsWithWeirdSignDto {
+    @IsFiles()
+    'photos[]': ValidatedFile[];
+
+    @IsPhoneNumber()
+    phone: string;
+
+    @IsEmail()
+    email: string;
+}
+
 export class MultipleFilesMaxAmountDto {
     @IsFiles({ maxAmount: 1 })
     photos: ValidatedFile[];

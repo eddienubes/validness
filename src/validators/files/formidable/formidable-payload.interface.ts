@@ -1,8 +1,7 @@
-import { AnyObject } from '../../../common';
-import { Fields, Files } from 'formidable';
+import { errors, Fields, Files } from 'formidable';
 
 export interface FormidablePayload {
-    error?: AnyObject;
+    error?: typeof errors.FormidableError;
     fields: Fields;
     files: Files;
 }

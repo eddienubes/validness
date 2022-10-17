@@ -8,8 +8,8 @@
   "main": "build/index",
   "types": "build/index",
   "scripts": {
-    "lint:check": "eslint --max-warnings=5 .",
-    "lint:fix": "eslint --max-warnings=5 --fix .",
+    "lint:check": "eslint --max-warnings=7 .",
+    "lint:fix": "eslint --max-warnings=7 --fix .",
     "valid": "yarn run build:dev && yarn run lint:fix",
     "test:all": "yarn run jest --config \"./jest.config.ts\"",
     "build:prod": "rm -rf ./build && tsc -p tsconfig.build.json",

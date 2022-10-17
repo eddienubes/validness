@@ -3,6 +3,7 @@ import request from 'supertest';
 import { getTestFilePath } from '../../test-utils/files';
 import { validationFilePipe } from '../../../src';
 import {
+    MultipleFieldsWithWeirdSignDto,
     MultipleFilesDto,
     MultipleFilesMaxAmountDto,
     MultipleFilesMaxSizeDto,
@@ -401,6 +402,44 @@ describe('Multer validation file pipe', () => {
             ],
             name: 'DefaultFileError',
             statusCode: 400
+        });
+    });
+
+    it('should send multer files properly with [] sign in name', async () => {
+        const app = createRouteWithPipe(validationFilePipe(MultipleFieldsWithWeirdSignDto));
+
+        const path1 = getTestFilePath('cat1.png');
+        const path2 = getTestFilePath('cat2.png');
+
+        const res = await request(app)
+            .get('/')
+            .field('phone', '+15852826457')
+            .field('email', 'example@gmail.com')
+            .attach('photos[]', path1)
+            .attach('photos[]', path2);
+
+        expect(res.statusCode).toEqual(200);
+        expect(res.body).toEqual({
+            data: {
+                email: 'example@gmail.com',
+                phone: '+15852826457',
+                'photos[]': [
+                    {
+                        buffer: 'Buffer',
+                        encoding: '7bit',
+                        mimeType: 'image/png',
+                        originalName: 'cat1.png',
+                        sizeBytes: 7333311
+                    },
+                    {
+                        buffer: 'Buffer',
+                        encoding: '7bit',
+                        mimeType: 'image/png',
+                        originalName: 'cat2.png',
+                        sizeBytes: 560274
+                    }
+                ]
+            }
         });
     });
 });
