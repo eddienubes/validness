@@ -14,8 +14,8 @@ import { FILE_VALIDATOR_CHAIN_MAP } from './constants';
  */
 export const validationFilePipe = (
     DtoConstructor: ClassConstructor,
-    fileValidationConfig?: Partial<FileValidationConfig>,
-    customErrorFactory?: CustomErrorFactory
+    customErrorFactory?: CustomErrorFactory,
+    fileValidationConfig?: Partial<FileValidationConfig>
 ): Router => {
     const configStore = ConfigStore.getInstance().getConfig();
     const processedFileDtoConstructor = processFileDtoConstructor(DtoConstructor);
