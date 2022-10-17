@@ -1,7 +1,7 @@
 <div style="width: 100%;">
-    <img style="display: inline" src="misc/water.png" width="30" alt="Water png" />
+    <a href="#" style="display: inline"><img src="misc/water.png" width="30" alt="Water png" /></a>
     <h1 style="display: inline; font-size: 2.4rem; text-align: center">Validness</h1>
-    <img style="display: inline" src="misc/water-pipe.png" width="30" alt="Water png" />
+    <img src="misc/water-pipe.png" width="30" alt="Water png" />
 </div>
 
 <p align="center">
