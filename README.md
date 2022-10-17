@@ -5,7 +5,7 @@
 </p>
 <p align="center">
     <a href="https/app.travis-ci.com/github/eddienubes/validness" target="_blank"><img src="https://app.travis-ci.com/eddienubes/validness.svg?branch=master" alt="TravisCI" /></a>
-    <img src="jest/badges/coverage.svg" alt="coverage" />
+    <img src="./jest/badges/coverage.svg" alt="coverage" />
     <a href="https://badge.fury.io/js/validness"><img src="https://badge.fury.io/js/validness.svg" alt="npm version" height="18"></a>
     <a href="https://img.shields.io/npm/dw/validness"><img src="https://img.shields.io/npm/dw/validness" alt="npm version" height="18"></a>
 </p>
