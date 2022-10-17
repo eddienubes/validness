@@ -1,7 +1,7 @@
+# Validness 💦
 <p align="center">
     <img src="misc/water.png" alt="water" width="30">
-    <span style="font-size: 2.4rem">Validness</span>
-    <img src="misc/water-pipe.png" alt="water" width="30">
+    <img src="misc/water2.png" alt="water2" width="30">
 </p>
 <p align="center">
     <a href="https/app.travis-ci.com/github/eddienubes/validness" target="_blank"><img src="https://app.travis-ci.com/eddienubes/validness.svg?branch=master" alt="TravisCI" /></a>
