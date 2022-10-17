@@ -1,9 +1,8 @@
-<div style="width: 100%;">
-    <a href="#" style="display: inline"><img src="misc/water.png" width="30" alt="Water png" /></a>
-    <h1 style="display: inline; font-size: 2.4rem; text-align: center">Validness</h1>
-    <img src="misc/water-pipe.png" width="30" alt="Water png" />
-</div>
-
+<p align="center">
+    <img src="misc/water.png" alt="water" width="30">
+    <span style="font-size: 2.4rem">Validness</span>
+    <img src="misc/water-pipe.png" alt="water" width="30">
+</p>
 <p align="center">
     <a href="https/app.travis-ci.com/github/eddienubes/validness" target="_blank"><img src="https://app.travis-ci.com/eddienubes/validness.svg?branch=master" alt="TravisCI" /></a>
     <img src="jest/badges/coverage.svg" alt="coverage" />
