@@ -1,11 +1,11 @@
 # Validness 💦
 <p align="center">
-    <img src="misc/water.png" alt="water" width="30">
-    <img src="misc/water2.png" alt="water2" width="30">
+    <img src="https://github.com/eddienubes/validness/blob/master/misc/water.png?raw=true" alt="water" width="30">
+    <img src="https://github.com/eddienubes/validness/blob/master/misc/water2.png?raw=true" alt="water2" width="30">
 </p>
 <p align="center">
     <a href="https/app.travis-ci.com/github/eddienubes/validness" target="_blank"><img src="https://app.travis-ci.com/eddienubes/validness.svg?branch=master" alt="TravisCI" /></a>
-    <img src="./jest/badges/coverage.svg" alt="coverage" />
+    <img src="https://github.com/eddienubes/validness/blob/master/jest/badges/coverage.svg?raw=true" alt="coverage" />
     <a href="https://badge.fury.io/js/validness"><img src="https://badge.fury.io/js/validness.svg" alt="npm version" height="18"></a>
     <a href="https://img.shields.io/npm/dw/validness"><img src="https://img.shields.io/npm/dw/validness" alt="npm version" height="18"></a>
 </p>

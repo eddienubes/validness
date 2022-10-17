@@ -1,6 +1,7 @@
 {
   "name": "validness",
-  "version": "0.0.48",
+  "version": "0.1.0",
+  "homepage": "https://github.com/eddienubes/validness",
   "keywords": [
     "express",
     "dto",
