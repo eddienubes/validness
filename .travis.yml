@@ -5,5 +5,8 @@ before_script:
     - yarn run lint:check
     - yarn run build:dev
 script: yarn run test:all
+after_script:
+    - yarn run test:cov
+    - yarn run test:cov:badge
 
 

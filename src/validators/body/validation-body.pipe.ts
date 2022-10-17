@@ -1,6 +1,6 @@
 import { plainToClass } from 'class-transformer';
 import { validateOrReject, ValidatorOptions, ValidationError } from 'class-validator';
-import { findViolatedFields } from '../../utils/find-violated-fields';
+import { findViolatedFields } from '../../utils';
 import { CustomErrorFactory } from '../../common';
 import { RequestHandler } from 'express';
 import { ClassConstructor } from '../../common';

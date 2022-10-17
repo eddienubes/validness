@@ -9,7 +9,14 @@
  * size: 7333311
  */
 export interface ValidatedFile {
+    /**
+     * Mime type of the file, e.g. image/png
+     */
     mimeType: string;
+
+    /**
+     * Size in bytes
+     */
     sizeBytes: number;
 
     /**
