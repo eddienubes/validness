@@ -11,9 +11,33 @@ export class SingleFileDto {
     number: string;
 }
 
+export class SingleFileNoTextDto {
+    @IsFile()
+    file: ValidatedFile;
+}
+
+export class SingleFileWithTypeDto {
+    @IsFile({ type: 'image' })
+    file: ValidatedFile;
+
+    @IsNumberString()
+    number: string;
+}
+
 export class MultipleFilesDto {
     @IsFiles()
     photos: ValidatedFile[];
+
+    @IsPhoneNumber()
+    phone: string;
+
+    @IsEmail()
+    email: string;
+}
+
+export class MultipleFieldsWithWeirdSignDto {
+    @IsFiles()
+    'photos[]': ValidatedFile[];
 
     @IsPhoneNumber()
     phone: string;
@@ -35,6 +59,17 @@ export class MultipleFilesMaxAmountDto {
 
 export class MultipleFilesMaxSizeDto {
     @IsFiles({ maxSizeBytes: 10000 })
+    photos: ValidatedFile[];
+
+    @IsPhoneNumber()
+    phone: string;
+
+    @IsEmail()
+    email: string;
+}
+
+export class MultipleFilesMinSizeDto {
+    @IsFiles({ minSizeBytes: 10_000_000 })
     photos: ValidatedFile[];
 
     @IsPhoneNumber()
@@ -75,4 +110,15 @@ export class MultipleFilesOptionalDto {
 
     @IsEmail()
     email: string;
+}
+
+export class MultipleFilesOptionalArrayTextDto {
+    @IsFiles({ optional: true })
+    photos: ValidatedFile[];
+
+    @IsPhoneNumber()
+    phone: string;
+
+    @IsNumberString(undefined, { each: true })
+    numbers: string[];
 }

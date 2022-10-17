@@ -1,9 +1,6 @@
 import { createRouteWithPipe } from '../../utils/server-utils';
-import request from 'supertest';
-import { getTestFilePath } from '../../test-utils/files';
-import { validationFilePipe } from '../../../src';
+import { FileValidatorType, validationFilePipe } from '../../../src';
 import {
-    MultipleFieldsWithWeirdSignDto,
     MultipleFilesDto,
     MultipleFilesMaxAmountDto,
     MultipleFilesMaxSizeDto,
@@ -16,75 +13,131 @@ import {
     SingleFileNoTextDto,
     SingleFileWithTypeDto
 } from './models';
+import { getFormidableUploadFolderPath, getTestFilePath } from '../../test-utils/files';
+import request from 'supertest';
+import { FileValidationConfig } from '../../../src/config/file-validation-config.interface';
 import { errorFactoryOverridden } from '../../utils/error-utils';
-import multer, { Options } from 'multer';
 
-const uploadOptions: Options = {
-    storage: multer.diskStorage({
-        destination: 'test/test-data/uploads',
-        filename(req, file, callback) {
-            callback(null, file.originalname);
+const options: Partial<FileValidationConfig> = {
+    fileValidatorType: FileValidatorType.FORMIDABLE,
+    coreConfig: {
+        uploadDir: getFormidableUploadFolderPath(),
+        keepExtensions: true,
+        filename: (name, ext) => {
+            return name + ext;
         }
-    })
+    }
 };
 
-describe('Multer validation file pipe', () => {
-    it('should not throw any errors with a SingleFileDto', async () => {
-        const app = createRouteWithPipe(validationFilePipe(SingleFileDto));
+describe('Formidable validation pipe', () => {
+    it('should NOT throw any errors with a SingleFileDto formidable', async () => {
+        const app = createRouteWithPipe(validationFilePipe(SingleFileDto, options));
+
         const path = getTestFilePath('cat1.png');
         const res = await request(app).get('/').field('number', '123').attach('file', path);
 
         expect(res.statusCode).toEqual(200);
         expect(res.body.data).toEqual({
             file: {
-                buffer: 'Buffer',
-                encoding: '7bit',
+                destination: expect.any(String),
+                fileName: 'cat1.png',
                 mimeType: 'image/png',
                 originalName: 'cat1.png',
+                path: expect.any(String),
                 sizeBytes: 7333311
             },
             number: '123'
         });
     });
 
-    it('should not throw any errors with a MultipleFilesDto', async () => {
-        const app = createRouteWithPipe(validationFilePipe(MultipleFilesDto));
+    it('should NOT throw any errors with a MultipleFilesDto formidable', async () => {
+        const app = createRouteWithPipe(validationFilePipe(MultipleFilesDto, options));
+
         const path1 = getTestFilePath('cat1.png');
         const path2 = getTestFilePath('cat2.png');
         const res = await request(app)
             .get('/')
+            .field('email', 'asda@example.com')
             .field('phone', '+15852826457')
-            .field('email', 'example@gmail.com')
             .attach('photos', path1)
             .attach('photos', path2);
 
         expect(res.statusCode).toEqual(200);
-        expect(res.body).toEqual({
-            data: {
-                email: 'example@gmail.com',
-                phone: '+15852826457',
-                photos: [
-                    {
-                        buffer: 'Buffer',
-                        encoding: '7bit',
-                        mimeType: 'image/png',
-                        originalName: 'cat1.png',
-                        sizeBytes: 7333311
-                    },
-                    {
-                        buffer: 'Buffer',
-                        encoding: '7bit',
-                        mimeType: 'image/png',
-                        originalName: 'cat2.png',
-                        sizeBytes: 560274
-                    }
-                ]
-            }
+        expect(res.body.data).toEqual({
+            email: 'asda@example.com',
+            phone: '+15852826457',
+            photos: [
+                {
+                    destination: expect.any(String),
+                    fileName: 'cat1.png',
+                    mimeType: 'image/png',
+                    originalName: 'cat1.png',
+                    path: expect.any(String),
+                    sizeBytes: 7333311
+                },
+                {
+                    destination: expect.any(String),
+                    fileName: 'cat2.png',
+                    mimeType: 'image/png',
+                    originalName: 'cat2.png',
+                    path: expect.any(String),
+                    sizeBytes: 560274
+                }
+            ]
         });
     });
 
-    it('should throw an error when macCount limit is exceeded', async () => {
-        const app = createRouteWithPipe(validationFilePipe(MultipleFilesMaxAmountDto));
+    it('should send formidable files properly with [] sign in name formidable', async () => {
+        const app = createRouteWithPipe(validationFilePipe(MultipleFilesDto, options));
+
+        const path1 = getTestFilePath('cat1.png');
+        const path2 = getTestFilePath('cat2.png');
+
+        const res = await request(app)
+            .get('/')
+            .field('phone', '+15852826457')
+            .field('email', 'example@gmail.com')
+            .attach('photos[]', path1)
+            .attach('photos[]', path2);
+
+        expect(res.statusCode).toEqual(400);
+        expect(res.body).toEqual({
+            fields: [
+                {
+                    field: 'photos',
+                    violations: ['The following file field: [photos] is empty, but required']
+                }
+            ],
+            name: 'DefaultFileError',
+            statusCode: 400
+        });
+    });
+
+    it('should rethrow formidable core error formidable', async () => {
+        const app = createRouteWithPipe(
+            validationFilePipe(MultipleFilesDto, {
+                ...options,
+                coreConfig: { ...options.coreConfig, maxFileSize: 1 }
+            })
+        );
+
+        const path1 = getTestFilePath('cat1.png');
+
+        const res = await request(app)
+            .get('/')
+            .field('phone', '+15852826457')
+            .field('email', 'example@gmail.com')
+            .attach('photos', path1);
+
+        expect(res.statusCode).toEqual(500);
+        expect(res.body).toEqual({
+            code: 1009,
+            httpCode: 413
+        });
+    });
+
+    it('should throw an error when macCount limit is exceeded formidable', async () => {
+        const app = createRouteWithPipe(validationFilePipe(MultipleFilesMaxAmountDto, options));
 
         const path1 = getTestFilePath('cat1.png');
         const path2 = getTestFilePath('cat2.png');
@@ -108,8 +161,8 @@ describe('Multer validation file pipe', () => {
         });
     });
 
-    it('should throw an error when maxSize limit is exceeded', async () => {
-        const app = createRouteWithPipe(validationFilePipe(MultipleFilesMaxSizeDto));
+    it('should throw an error when maxSize limit is exceeded formidable', async () => {
+        const app = createRouteWithPipe(validationFilePipe(MultipleFilesMaxSizeDto, options));
 
         const path1 = getTestFilePath('cat1.png');
         const path2 = getTestFilePath('cat2.png');
@@ -126,7 +179,8 @@ describe('Multer validation file pipe', () => {
                 {
                     field: 'photos',
                     violations: [
-                        'The following field contains a file of size 7894180 bytes that exceeds the specified maximum limit: 10000 bytes'
+                        'The following field contains a file of size 7333311 bytes that exceeds the specified maximum limit: 10000 bytes',
+                        'The following field contains a file of size 560274 bytes that exceeds the specified maximum limit: 10000 bytes'
                     ]
                 }
             ],
@@ -135,8 +189,8 @@ describe('Multer validation file pipe', () => {
         });
     });
 
-    it('should throw an error when minSize limit is not respected', async () => {
-        const app = createRouteWithPipe(validationFilePipe(MultipleFilesMinSizeDto));
+    it('should throw an error when minSize limit is not respected formidable', async () => {
+        const app = createRouteWithPipe(validationFilePipe(MultipleFilesMinSizeDto, options));
 
         const path1 = getTestFilePath('cat1.png');
         const path2 = getTestFilePath('cat2.png');
@@ -153,7 +207,8 @@ describe('Multer validation file pipe', () => {
                 {
                     field: 'photos',
                     violations: [
-                        'The following field contains a file of size 7894180 bytes that is lower than the specified minimal limit: 10000000 bytes'
+                        'The following field contains a file of size 7333311 bytes that is lower than the specified minimal limit: 10000000 bytes',
+                        'The following field contains a file of size 560274 bytes that is lower than the specified minimal limit: 10000000 bytes'
                     ]
                 }
             ],
@@ -162,8 +217,8 @@ describe('Multer validation file pipe', () => {
         });
     });
 
-    it('should throw an error when file type is invalid', async () => {
-        const app = createRouteWithPipe(validationFilePipe(MultipleFilesTypeDto));
+    it('should throw an error when file type is invalid formidable', async () => {
+        const app = createRouteWithPipe(validationFilePipe(MultipleFilesTypeDto, options));
 
         const path1 = getTestFilePath('cat1.png');
         const path2 = getTestFilePath('cat2.png');
@@ -180,6 +235,7 @@ describe('Multer validation file pipe', () => {
                 {
                     field: 'photos',
                     violations: [
+                        'The following field contains file of the invalid mimetype image/png, but expected any of: [audio/aac,audio/midi,audio/x-midi,audio/mpeg,audio/ogg,audio/opus,audio/wav,audio/webm,audio/3gpp,audio/3gpp2]',
                         'The following field contains file of the invalid mimetype image/png, but expected any of: [audio/aac,audio/midi,audio/x-midi,audio/mpeg,audio/ogg,audio/opus,audio/wav,audio/webm,audio/3gpp,audio/3gpp2]'
                     ]
                 }
@@ -189,8 +245,8 @@ describe('Multer validation file pipe', () => {
         });
     });
 
-    it('should throw an error when file mimeType is invalid', async () => {
-        const app = createRouteWithPipe(validationFilePipe(MultipleFilesMimeTypeDto));
+    it('should throw an error when file mimeType is invalid formidable', async () => {
+        const app = createRouteWithPipe(validationFilePipe(MultipleFilesMimeTypeDto, options));
 
         const path1 = getTestFilePath('cat1.png');
         const path2 = getTestFilePath('cat2.png');
@@ -207,6 +263,7 @@ describe('Multer validation file pipe', () => {
                 {
                     field: 'photos',
                     violations: [
+                        'The following field contains file of the invalid mimetype image/png, but expected: audio/mpeg',
                         'The following field contains file of the invalid mimetype image/png, but expected: audio/mpeg'
                     ]
                 }
@@ -216,8 +273,8 @@ describe('Multer validation file pipe', () => {
         });
     });
 
-    it('should throw an error when file is required but not passed', async () => {
-        const app = createRouteWithPipe(validationFilePipe(MultipleFilesDto));
+    it('should throw an error when file is required but not passed formidable', async () => {
+        const app = createRouteWithPipe(validationFilePipe(MultipleFilesDto, options));
 
         const res = await request(app).get('/').field('phone', '+15852826457').field('email', 'example@gmail.com');
 
@@ -234,8 +291,8 @@ describe('Multer validation file pipe', () => {
         });
     });
 
-    it('should NOT throw an error when file is option and not passed', async () => {
-        const app = createRouteWithPipe(validationFilePipe(MultipleFilesOptionalDto));
+    it('should NOT throw an error when file is optional and not passed formidable', async () => {
+        const app = createRouteWithPipe(validationFilePipe(MultipleFilesOptionalDto, options));
 
         const res = await request(app).get('/').field('phone', '+15852826457').field('email', 'example@gmail.com');
 
@@ -248,8 +305,8 @@ describe('Multer validation file pipe', () => {
         });
     });
 
-    it('should respect custom error handler', async () => {
-        const app = createRouteWithPipe(validationFilePipe(MultipleFilesDto, undefined, errorFactoryOverridden));
+    it('should respect custom error handler formidable', async () => {
+        const app = createRouteWithPipe(validationFilePipe(MultipleFilesDto, options, errorFactoryOverridden));
 
         const res = await request(app).get('/').field('phone', '+15852826457').field('email', 'example@gmail.com');
 
@@ -268,7 +325,7 @@ describe('Multer validation file pipe', () => {
         });
     });
 
-    it('should consider array text fields', async () => {
+    it('should consider array text fields formidable', async () => {
         const app = createRouteWithPipe(validationFilePipe(MultipleFilesOptionalArrayTextDto));
 
         const res = await request(app)
@@ -286,8 +343,8 @@ describe('Multer validation file pipe', () => {
         });
     });
 
-    it('should throw an error when multiple files has been sent for a single file dto', async () => {
-        const app = createRouteWithPipe(validationFilePipe(SingleFileNoTextDto));
+    it('should throw an error when multiple files has been sent for a single file dto formidable', async () => {
+        const app = createRouteWithPipe(validationFilePipe(SingleFileNoTextDto, options));
 
         const path1 = getTestFilePath('cat1.png');
         const path2 = getTestFilePath('cat2.png');
@@ -303,7 +360,7 @@ describe('Multer validation file pipe', () => {
             fields: [
                 {
                     field: 'file',
-                    violations: ['The following file field [file] has exceeded its maxCount or is not expected']
+                    violations: ['The following file field [file] has exceeded its maxCount (1) or is not expected']
                 }
             ],
             name: 'DefaultFileError',
@@ -311,33 +368,28 @@ describe('Multer validation file pipe', () => {
         });
     });
 
-    it('should upload file with undefined mimetype', async () => {
-        const app = createRouteWithPipe(validationFilePipe(SingleFileDto));
+    it('should upload file with undefined mimetype formidable', async () => {
+        const app = createRouteWithPipe(validationFilePipe(SingleFileDto, options));
 
         const path1 = getTestFilePath('file-wrong-mime-type');
         const res = await request(app).get('/').field('number', '123123').attach('file', path1);
 
         expect(res.statusCode).toEqual(200);
-        expect(res.body).toEqual({
-            data: {
-                file: {
-                    buffer: 'Buffer',
-                    encoding: '7bit',
-                    mimeType: 'application/octet-stream',
-                    originalName: 'file-wrong-mime-type',
-                    sizeBytes: 17
-                },
-                number: '123123'
-            }
+        expect(res.body.data).toEqual({
+            file: {
+                destination: expect.any(String),
+                fileName: 'file-wrong-mime-type',
+                mimeType: 'application/octet-stream',
+                originalName: 'file-wrong-mime-type',
+                path: expect.any(String),
+                sizeBytes: 17
+            },
+            number: '123123'
         });
     });
 
-    it('should NOT upload if file parameters are invalid', async () => {
-        const app = createRouteWithPipe(
-            validationFilePipe(SingleFileWithTypeDto, {
-                coreConfig: uploadOptions
-            })
-        );
+    it('should NOT upload if file parameters are invalid formidable', async () => {
+        const app = createRouteWithPipe(validationFilePipe(SingleFileWithTypeDto, options));
 
         const path1 = getTestFilePath('file-wrong-mime-type');
         const res = await request(app).get('/').field('number', '123123').attach('file', path1);
@@ -357,12 +409,8 @@ describe('Multer validation file pipe', () => {
         });
     });
 
-    it('should include path and destination when uploading a file', async () => {
-        const app = createRouteWithPipe(
-            validationFilePipe(SingleFileDto, {
-                coreConfig: uploadOptions
-            })
-        );
+    it('should include path and destination when uploading a file formidable', async () => {
+        const app = createRouteWithPipe(validationFilePipe(SingleFileDto, options));
 
         const path1 = getTestFilePath('file-wrong-mime-type');
         const res = await request(app).get('/').field('number', '123123').attach('file', path1);
@@ -370,24 +418,19 @@ describe('Multer validation file pipe', () => {
         expect(res.statusCode).toEqual(200);
         expect(res.body.data).toEqual({
             file: {
-                destination: 'test/test-data/uploads',
-                encoding: '7bit',
+                destination: expect.any(String),
                 fileName: 'file-wrong-mime-type',
                 mimeType: 'application/octet-stream',
                 originalName: 'file-wrong-mime-type',
-                path: 'test/test-data/uploads/file-wrong-mime-type',
+                path: expect.any(String),
                 sizeBytes: 17
             },
             number: '123123'
         });
     });
 
-    it('should NOT upload files if text fields validation fails', async () => {
-        const app = createRouteWithPipe(
-            validationFilePipe(SingleFileDto, {
-                coreConfig: uploadOptions
-            })
-        );
+    it('should NOT upload files if text fields validation fails formidable', async () => {
+        const app = createRouteWithPipe(validationFilePipe(SingleFileDto, options));
 
         const path1 = getTestFilePath('file-wrong-mime-type');
         const res = await request(app).get('/').field('number', 'asd').attach('file', path1);
@@ -402,44 +445,6 @@ describe('Multer validation file pipe', () => {
             ],
             name: 'DefaultFileError',
             statusCode: 400
-        });
-    });
-
-    it('should send multer files properly with [] sign in name', async () => {
-        const app = createRouteWithPipe(validationFilePipe(MultipleFieldsWithWeirdSignDto));
-
-        const path1 = getTestFilePath('cat1.png');
-        const path2 = getTestFilePath('cat2.png');
-
-        const res = await request(app)
-            .get('/')
-            .field('phone', '+15852826457')
-            .field('email', 'example@gmail.com')
-            .attach('photos[]', path1)
-            .attach('photos[]', path2);
-
-        expect(res.statusCode).toEqual(200);
-        expect(res.body).toEqual({
-            data: {
-                email: 'example@gmail.com',
-                phone: '+15852826457',
-                'photos[]': [
-                    {
-                        buffer: 'Buffer',
-                        encoding: '7bit',
-                        mimeType: 'image/png',
-                        originalName: 'cat1.png',
-                        sizeBytes: 7333311
-                    },
-                    {
-                        buffer: 'Buffer',
-                        encoding: '7bit',
-                        mimeType: 'image/png',
-                        originalName: 'cat2.png',
-                        sizeBytes: 560274
-                    }
-                ]
-            }
         });
     });
 });

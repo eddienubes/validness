@@ -6,22 +6,9 @@ import util from 'util';
 
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     console.log(util.inspect(err, { depth: null }));
-    res.status(err.statusCode).json({
+    res.setHeader('content-type', 'application/json');
+    res.status(err.statusCode || 500).json({
         ...err
-    });
-};
-
-export const serverUtils = async <T>(pipe: RequestHandler<unknown, unknown, T>): Promise<T> => {
-    const app = express();
-
-    return new Promise((resolve, reject) => {
-        app.get('/', pipe, (req) => {
-            resolve(req.body);
-
-            if (!req.body) {
-                reject('Body is undefined');
-            }
-        });
     });
 };
 

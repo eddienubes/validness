@@ -7,7 +7,7 @@ describe('Config Store', () => {
 
         instance.setConfig({
             fileValidationConfig: {
-                fileValidatorType: FileValidatorType.EXPRESS_VALIDATOR,
+                fileValidatorType: FileValidatorType.FORMIDABLE,
                 coreConfig: {
                     limits: {
                         fieldNameSize: 100
@@ -24,9 +24,10 @@ describe('Config Store', () => {
                 coreConfig: {
                     limits: {
                         fieldNameSize: 100
-                    }
+                    },
+                    multiples: true
                 },
-                fileValidatorType: 'EXPRESS_VALIDATOR',
+                fileValidatorType: 'FORMIDABLE',
                 textFieldsValidationConfig: {
                     forbidNonWhitelisted: true
                 }

@@ -1,5 +1,4 @@
 export enum FileValidatorType {
     MULTER = 'MULTER',
-    EXPRESS_VALIDATOR = 'EXPRESS_VALIDATOR',
     FORMIDABLE = 'FORMIDABLE'
 }

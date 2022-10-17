@@ -6,11 +6,15 @@ import { isObject } from './is-object';
  * Use this function to override buffer field with a "Buffer" string for sake of a test
  * @param body
  */
-export const parseReqBody = (body: AnyObject): AnyObject => {
+export const parseReqBody = (body: any): AnyObject => {
     const newBody: AnyObject = {};
 
+    if (!isObject(body) && !Array.isArray(body)) {
+        return body;
+    }
+
     for (const key in body) {
-        const value = body[key];
+        const value = (body as AnyObject)[key];
 
         if (value instanceof Buffer) {
             newBody[key] = 'Buffer';

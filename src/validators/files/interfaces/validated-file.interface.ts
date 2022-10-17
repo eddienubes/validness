@@ -9,25 +9,36 @@
  * size: 7333311
  */
 export interface ValidatedFile {
-    originalName: string;
-    encoding: string;
     mimeType: string;
     sizeBytes: number;
 
     /**
-     * Defined only when memory storage is used
+     * When used with formidable, this field is really unreliable.
+     * Sometimes it's undefined, sometimes it's null
+     */
+    originalName?: string;
+    /**
+     * Defined only when multer is used
+     */
+    encoding?: string;
+    /**
+     * Defined only when memory storage of multer is used
      */
     buffer?: Buffer;
     /**
-     * Defined when custom storage instance used
+     * Defined when custom storage of multer is used.
+     * Defined when formidable is used.
      */
     fileName?: string;
     /**
-     * Folder that contains uploaded files
+     * Folder that contains uploaded files.
+     * Not defined when memory storage of multer is used
      */
     destination?: string;
     /**
-     * Path to the file
+     * Path to the file.
+     * Not defined when memory storage of multer is used.
+     * This path is relative when multer is used, but should absolute with formidable
      */
     path?: string;
 }

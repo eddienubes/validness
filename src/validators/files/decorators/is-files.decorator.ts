@@ -1,8 +1,8 @@
-import { MultipleFilesConfiguration } from '../interfaces/multiple-files-configuration.interface';
+import { MultipleFilesConfig } from '../interfaces/multiple-files-config.interface';
 import { FileMetadata } from '../interfaces/file-metadata.interface';
 import { FILE_VALIDATION_DECORATED_FIELDS_LIST_KEY, FILE_VALIDATION_METADATA_KEY } from '../constants';
 
-export const IsFiles = (config?: MultipleFilesConfiguration): PropertyDecorator => {
+export const IsFiles = (config?: MultipleFilesConfig): PropertyDecorator => {
     return (target, propertyKey) => {
         const metadata: FileMetadata = {
             multiple: true,
