@@ -1,23 +1,23 @@
 import type { Config } from '@jest/types';
+import { compilerOptions } from './tsconfig.json';
+import { pathsToModuleNameMapper } from 'ts-jest';
+
+console.log(pathsToModuleNameMapper(compilerOptions.paths));
 
 const config: Config.InitialOptions = {
     verbose: true,
     preset: 'ts-jest',
     testEnvironment: 'node',
-    setupFilesAfterEnv: ['./jest/jest-setup.ts'],
+    setupFilesAfterEnv: ['<rootDir>/jest/jest-setup.ts'],
     roots: ['<rootDir>/test'],
     globals: {
         'ts-jest': {
             tsconfig: 'tsconfig.json'
         }
     },
-    moduleNameMapper: {
-        '^@src/(.*)$': '<rootDir>/src/$1',
-        '^@test/(.*)$': '<rootDir>/test/$1',
-        '^@src': '<rootDir>/src',
-        '^@test': '<rootDir>/test'
-    },
-    coverageDirectory: './jest/coverage',
+    modulePaths: [compilerOptions.baseUrl],
+    moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths),
+    coverageDirectory: '<rootDir>/jest/coverage',
     coverageReporters: ['json-summary', 'text', 'lcov']
 };
 
