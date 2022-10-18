@@ -1,5 +1,4 @@
-import { ConfigStore, ValidationConfig } from '../../src';
-import { FileValidatorType } from '../../src';
+import { ConfigStore, ValidationConfig, FileValidatorType } from '@src';
 
 describe('Config Store', () => {
     it('should set config recursively in a proper way', function () {

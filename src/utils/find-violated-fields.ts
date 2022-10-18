@@ -1,5 +1,5 @@
 import { ValidationError } from 'class-validator';
-import { ErrorField } from '../common';
+import { ErrorField } from '@src';
 
 export const findViolatedFields = (errorObjects: ValidationError[]): ErrorField[] => {
     const errors: ErrorField[] = [];

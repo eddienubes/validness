@@ -1,7 +1,7 @@
 import { Express, Router } from 'express';
-import { ClassConstructor, CustomErrorFactory } from '../../../common';
+import { ClassConstructor, CustomErrorFactory } from '@src';
 import { ProcessedFileDtoConstructor } from '../interfaces/processed-file-dto-constructor.interface';
-import { FileValidationConfig } from '../../../config/file-validation-config.interface';
+import { FileValidationConfig } from '@src/config/file-validation-config.interface';
 
 /**
  * Alias for a multer file type in the express multer namespace

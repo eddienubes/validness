@@ -1,6 +1,5 @@
 import { RequestHandler } from 'express';
-import formidable from 'formidable';
-import { Options } from 'formidable';
+import formidable, { Options } from 'formidable';
 
 export const formidableUploadMiddleware =
     (coreConfig: Options): RequestHandler =>

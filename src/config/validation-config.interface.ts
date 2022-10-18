@@ -1,6 +1,5 @@
 import { ValidatorOptions } from 'class-validator';
-import { CustomErrorFactory } from '../common';
-import { FileValidatorType } from '../common';
+import { CustomErrorFactory, FileValidatorType } from '@src';
 import { FileValidationConfig } from './file-validation-config.interface';
 
 export interface ValidationConfig {

@@ -1,7 +1,7 @@
-import { createRouteWithPipe } from '../../utils/server-utils';
+import { createRouteWithPipe } from '@test/utils/server-utils';
 import request from 'supertest';
-import { getTestFilePath } from '../../test-utils/files';
-import { validationFilePipe } from '../../../src';
+import { getTestFilePath } from '@test/test-utils/files';
+import { validationFilePipe } from '@src';
 import {
     MultipleFieldsWithWeirdSignDto,
     MultipleFilesDto,

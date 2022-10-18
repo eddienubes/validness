@@ -1,5 +1,5 @@
 import { FileType } from './interfaces/single-file-config.interface';
-import { FileValidatorType } from '../../common';
+import { FileValidatorType } from '@src';
 import { getMulterFileValidationChain } from './multer/get-multer-file-validation-chain';
 import { FileValidationChainGetter } from './multer/types';
 import { getFormidableValidationChain } from './formidable/get-formidable-validation-chain';

@@ -1,5 +1,4 @@
-import { ValidationConfig } from './validation-config.interface';
-import { FileValidatorType } from '../common';
+import { ValidationConfig, FileValidatorType } from '@src';
 
 export const VALIDATION_CONFIG_DEFAULTS: ValidationConfig = {
     bodyValidationConfig: { forbidNonWhitelisted: true },

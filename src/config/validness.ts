@@ -1,5 +1,4 @@
-import { ValidationConfig } from './validation-config.interface';
-import { ConfigStore } from './config-store';
+import { ValidationConfig, ConfigStore } from '@src';
 
 /**
  * Configures global validation config

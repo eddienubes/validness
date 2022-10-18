@@ -1,7 +1,6 @@
 import { RequestHandler } from 'express';
 import { ProcessedFileDtoConstructor } from '../interfaces/processed-file-dto-constructor.interface';
-import { ErrorField } from '../../../common';
-import { DefaultFileError } from '../errors/default-file.error';
+import { ErrorField, DefaultFileError } from '@src';
 import { MulterFile } from './types';
 
 /**

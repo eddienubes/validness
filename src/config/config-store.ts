@@ -1,6 +1,6 @@
 import { ValidationConfig } from './validation-config.interface';
 import { VALIDATION_CONFIG_DEFAULTS } from './constants';
-import { isObject } from '../utils';
+import { isObject } from '@src';
 
 export class ConfigStore {
     private config: ValidationConfig = VALIDATION_CONFIG_DEFAULTS;

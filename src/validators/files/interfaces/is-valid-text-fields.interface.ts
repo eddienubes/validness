@@ -1,4 +1,4 @@
-import { AnyObject, ErrorField } from '../../../common';
+import { AnyObject, ErrorField } from '@src';
 
 export interface IsValidTextFields {
     instance: AnyObject;

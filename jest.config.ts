@@ -11,6 +11,12 @@ const config: Config.InitialOptions = {
             tsconfig: 'tsconfig.json'
         }
     },
+    moduleNameMapper: {
+        '^@src/(.*)$': '<rootDir>/src/$1',
+        '^@test/(.*)$': '<rootDir>/test/$1',
+        '^@src': '<rootDir>/src',
+        '^@test': '<rootDir>/test'
+    },
     coverageDirectory: './jest/coverage',
     coverageReporters: ['json-summary', 'text', 'lcov']
 };

@@ -1,5 +1,4 @@
-import { AnyObject } from '../common';
-import { isObject } from './is-object';
+import { AnyObject, isObject } from '@src';
 
 /**
  * Unfortunately, jest is not able to parse buffers resulting with an infinite loop.

@@ -2,7 +2,7 @@ import multer, { Options } from 'multer';
 import { fileFilter } from './file-filter';
 import { ProcessedFileDtoConstructor } from '../interfaces/processed-file-dto-constructor.interface';
 import { RequestHandler } from 'express';
-import { ClassConstructor } from '../../../common';
+import { ClassConstructor } from '@src';
 
 export const multerUploadMiddleware = (
     DtoConstructor: ClassConstructor,

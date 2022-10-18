@@ -3,10 +3,8 @@ import { FileValidationMap, MulterFileFilter } from '../types';
 import { MIME_TYPE_MAP } from '../constants';
 import { MulterFile } from './types';
 import { isValidMimeType, isValidTextFields } from '../helpers';
-import { ConfigStore } from '../../../config';
-import { FileValidationConfig } from '../../../config/file-validation-config.interface';
-import { ClassConstructor, ErrorField } from '../../../common';
-import { DefaultFileError } from '../errors/default-file.error';
+import { ConfigStore, ClassConstructor, ErrorField, DefaultFileError } from '@src';
+import { FileValidationConfig } from '@src/config/file-validation-config.interface';
 
 export const fileFilter = (
     DtoConstructor: ClassConstructor,

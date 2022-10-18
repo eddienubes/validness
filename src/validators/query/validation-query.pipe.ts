@@ -1,12 +1,7 @@
 import { RequestHandler } from 'express';
 import { plainToClass } from 'class-transformer';
-import { validateOrReject, ValidatorOptions } from 'class-validator';
-import { ValidationError } from 'class-validator';
-import { findViolatedFields } from '../../utils';
-import { CustomErrorFactory } from '../../common';
-import { ClassConstructor } from '../../common';
-import { DefaultQueryError } from './errors/default-query.error';
-import { ConfigStore } from '../../config';
+import { validateOrReject, ValidatorOptions, ValidationError } from 'class-validator';
+import { findViolatedFields, CustomErrorFactory, ClassConstructor, DefaultQueryError, ConfigStore } from '@src';
 
 export const validationQueryPipe =
     (

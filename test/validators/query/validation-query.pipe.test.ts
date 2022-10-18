@@ -1,8 +1,8 @@
-import { validationQueryPipe, validness } from '../../../src';
+import { validationQueryPipe, validness } from '@src';
 import request from 'supertest';
 import { QueryDto } from './models';
-import { errorFactory, errorFactoryOverridden } from '../../utils/error-utils';
-import { createRouteWithPipe } from '../../utils/server-utils';
+import { errorFactory, errorFactoryOverridden } from '@test/utils/error-utils';
+import { createRouteWithPipe } from '@test/utils/server-utils';
 
 describe('Validation Query Pipe', () => {
     it('should validate correct query', async () => {
