@@ -249,7 +249,9 @@ describe('Multer validation file pipe', () => {
     });
 
     it('should respect custom error handler', async () => {
-        const app = createRouteWithPipe(validationFilePipe(MultipleFilesDto, errorFactoryOverridden));
+        const app = createRouteWithPipe(
+            validationFilePipe(MultipleFilesDto, { customErrorFactory: errorFactoryOverridden })
+        );
 
         const res = await request(app).get('/').field('phone', '+15852826457').field('email', 'example@gmail.com');
 
@@ -334,7 +336,7 @@ describe('Multer validation file pipe', () => {
 
     it('should NOT upload if file parameters are invalid', async () => {
         const app = createRouteWithPipe(
-            validationFilePipe(SingleFileWithTypeDto, undefined, {
+            validationFilePipe(SingleFileWithTypeDto, {
                 coreConfig: uploadOptions
             })
         );
@@ -359,7 +361,7 @@ describe('Multer validation file pipe', () => {
 
     it('should include path and destination when uploading a file', async () => {
         const app = createRouteWithPipe(
-            validationFilePipe(SingleFileDto, undefined, {
+            validationFilePipe(SingleFileDto, {
                 coreConfig: uploadOptions
             })
         );
@@ -384,7 +386,7 @@ describe('Multer validation file pipe', () => {
 
     it('should NOT upload files if text fields validation fails', async () => {
         const app = createRouteWithPipe(
-            validationFilePipe(SingleFileDto, undefined, {
+            validationFilePipe(SingleFileDto, {
                 coreConfig: uploadOptions
             })
         );

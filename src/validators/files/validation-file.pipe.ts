@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { ClassConstructor, CustomErrorFactory, ConfigStore } from '@src';
-import { FileValidationConfig } from '@src/config/file-validation-config.interface';
+import { ClassConstructor, ConfigStore } from '@src';
 import { processFileDtoConstructor } from './process-file-dto-constructor';
 import { FILE_VALIDATOR_CHAIN_MAP } from './constants';
+import { ValidationFileConfig } from '@src/validators/files/types';
 
 /**
  * File validation consists of 4 stages (4 middlewares)
@@ -11,17 +11,13 @@ import { FILE_VALIDATOR_CHAIN_MAP } from './constants';
  * 3. Core validator result modification
  * 4. Error handler - maps native underlying library error to a validness error
  */
-export const validationFilePipe = (
-    DtoConstructor: ClassConstructor,
-    customErrorFactory?: CustomErrorFactory,
-    fileValidationConfig?: Partial<FileValidationConfig>
-): Router => {
+export const validationFilePipe = (DtoConstructor: ClassConstructor, config?: ValidationFileConfig): Router => {
     const configStore = ConfigStore.getInstance().getConfig();
     const processedFileDtoConstructor = processFileDtoConstructor(DtoConstructor);
 
-    const validatorType = fileValidationConfig?.fileValidatorType || configStore.fileValidationConfig.fileValidatorType;
+    const validatorType = config?.fileValidatorType || configStore.fileValidationConfig.fileValidatorType;
 
     const chainGetter = FILE_VALIDATOR_CHAIN_MAP[validatorType];
 
-    return chainGetter(DtoConstructor, processedFileDtoConstructor, fileValidationConfig, customErrorFactory);
+    return chainGetter(DtoConstructor, processedFileDtoConstructor, config, config?.customErrorFactory);
 };
