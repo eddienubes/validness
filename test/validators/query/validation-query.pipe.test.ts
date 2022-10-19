@@ -74,7 +74,7 @@ describe('Validation Query Pipe', () => {
 
         validness({ customErrorFactory: errorFactory });
 
-        const app = createRouteWithPipe(validationQueryPipe(QueryDto, errorFactoryOverridden));
+        const app = createRouteWithPipe(validationQueryPipe(QueryDto, { customErrorFactory: errorFactoryOverridden }));
 
         const res = await request(app).get('/').query(dto);
 
