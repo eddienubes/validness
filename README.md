@@ -1,4 +1,5 @@
 # Validness 💦
+
 <p align="center">
     <img src="https://github.com/eddienubes/validness/blob/master/misc/water.png?raw=true" alt="water" width="30">
     <img src="https://github.com/eddienubes/validness/blob/master/misc/water2.png?raw=true" alt="water2" width="30">
@@ -268,19 +269,12 @@ Let's take a look at the **validationFilePipe** and **validationBodyPipe** signa
 
 ```typescript
 // ...
-export const validationFilePipe = (
-    DtoConstructor: ClassConstructor,
-    fileValidationConfig?: Partial<FileValidationConfig>,
-    customErrorFactory?: CustomErrorFactory
-) => {
-}
+export const validationFilePipe =
+    (DtoConstructor: ClassConstructor, config?: ValidationFileConfig): Router => {
+    }
 // ...
 export const validationBodyPipe =
-    (
-        DtoConstructor: ClassConstructor,
-        customErrorFactory?: CustomErrorFactory,
-        validatorConfig?: ValidatorOptions
-    ): RequestHandler => {
+    (DtoConstructor: ClassConstructor, config?: ValidationBodyConfig): RequestHandler => {
     }
 // ...
 ```
@@ -305,16 +299,23 @@ validness({
 ## 🚀 API
 
 ### ValidationConfig
+
 Defaults can be found [HERE](https://github.com/eddienubes/validness/blob/master/src/config/constants.ts)
 
-In think an overall documentation for each property is not required, because they're well commented directly in the library itself.
+In think an overall documentation for each property is not required, because they're well commented directly in the
+library itself.
 
 If you feel a lack of examples - open an issue, I will add as many as you want. Thanks.
 
 ---
+
 ## ❤️ Contributing
-If you wish to contribute in evolving of this package, please submit your issues or even open pull requests. You're always welcome. 🥰
+
+If you wish to contribute in evolving of this package, please submit your issues or even open pull requests. You're
+always welcome. 🥰
 
 ---
-## License 
+
+## License
+
 MIT (c) Sole Cold
