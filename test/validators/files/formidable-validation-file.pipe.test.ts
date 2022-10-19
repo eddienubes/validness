@@ -1,5 +1,5 @@
-import { createRouteWithPipe } from '../../utils/server-utils';
-import { FileValidatorType, validationFilePipe } from '../../../src';
+import { createRouteWithPipe } from '@test/utils/server-utils';
+import { FileValidatorType, validationFilePipe } from '@src';
 import {
     MultipleFilesDto,
     MultipleFilesMaxAmountDto,
@@ -13,10 +13,10 @@ import {
     SingleFileNoTextDto,
     SingleFileWithTypeDto
 } from './models';
-import { getFormidableUploadFolderPath, getTestFilePath } from '../../test-utils/files';
+import { getFormidableUploadFolderPath, getTestFilePath } from '@test/test-utils/files';
 import request from 'supertest';
-import { FileValidationConfig } from '../../../src/config/file-validation-config.interface';
-import { errorFactoryOverridden } from '../../utils/error-utils';
+import { FileValidationConfig } from '@src/config/file-validation-config.interface';
+import { errorFactoryOverridden } from '@test/utils/error-utils';
 
 const options: Partial<FileValidationConfig> = {
     fileValidatorType: FileValidatorType.FORMIDABLE,

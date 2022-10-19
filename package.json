@@ -50,8 +50,8 @@
     "test:all": "npx jest",
     "test:cov": "npx jest --coverage",
     "test:cov:badge": "npx coverage-badges --source jest/coverage/coverage-summary.json --output jest/badges/coverage.svg",
-    "build:prod": "rm -rf ./build && tsc -p tsconfig.build.json",
-    "build:dev": "rm -rf ./build && tsc -p tsconfig.json"
+    "build:prod": "rm -rf ./build && tsc -p tsconfig.build.json && npx tsc-alias -p tsconfig.build.json",
+    "build:dev": "rm -rf ./build && tsc -p tsconfig.json && npx tsc-alias -p tsconfig.json"
   },
   "peerDependencies": {
     "@types/formidable": "^2.0.5",
@@ -76,6 +76,8 @@
     "coverage-badges-cli": "^1.0.11",
     "eslint": "^8.5.0",
     "eslint-config-prettier": "^8.3.0",
+    "eslint-import-resolver-typescript": "^3.5.1",
+    "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.0.0",
     "express": "^4.17.2",
     "formidable": "^2.0.1",
@@ -86,6 +88,7 @@
     "supertest": "^6.1.6",
     "ts-jest": "^27.1.2",
     "ts-node": "^10.4.0",
+    "tsc-alias": "^1.7.0",
     "typescript": "^4.5.4"
   },
   "dependencies": {

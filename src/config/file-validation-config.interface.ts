@@ -1,4 +1,4 @@
-import { FileValidatorType } from '../common';
+import { FileValidatorType } from '@src';
 import { Options as MulterOptions } from 'multer';
 import { ValidatorOptions } from 'class-validator';
 import { Options as FormidableOptions } from 'formidable';

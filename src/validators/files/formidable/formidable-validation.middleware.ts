@@ -1,13 +1,11 @@
 import { RequestHandler } from 'express';
 import { ProcessedFileDtoConstructor } from '../interfaces/processed-file-dto-constructor.interface';
-import { ClassConstructor, ErrorField } from '../../../common';
-import { ConfigStore } from '../../../config';
-import { FileValidationConfig } from '../../../config/file-validation-config.interface';
+import { ClassConstructor, ErrorField, ConfigStore, DefaultFileError } from '@src';
+import { FileValidationConfig } from '@src/config/file-validation-config.interface';
 import { isValidMimeType, isValidTextFields } from '../helpers';
 import { FileMetadata } from '../interfaces/file-metadata.interface';
 import { File, Files } from 'formidable';
 import { MIME_TYPE_MAP } from '../constants';
-import { DefaultFileError } from '../errors/default-file.error';
 import * as fs from 'node:fs/promises';
 
 export const formidableValidationMiddleware =

@@ -1,9 +1,8 @@
 import { Router } from 'express';
-import { ClassConstructor, CustomErrorFactory } from '../../../common';
+import { ClassConstructor, CustomErrorFactory, ConfigStore } from '@src';
 import { ProcessedFileDtoConstructor } from '../interfaces/processed-file-dto-constructor.interface';
-import { FileValidationConfig } from '../../../config/file-validation-config.interface';
+import { FileValidationConfig } from '@src/config/file-validation-config.interface';
 import { formidableUploadMiddleware } from './formidable-upload.middleware';
-import { ConfigStore } from '../../../config';
 import { Options } from 'formidable';
 import { formidableValidationMiddleware } from './formidable-validation.middleware';
 import { formidableModificationMiddleware } from './formidable-modification.middleware';

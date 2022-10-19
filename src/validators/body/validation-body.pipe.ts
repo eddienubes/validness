@@ -1,11 +1,7 @@
 import { plainToClass } from 'class-transformer';
 import { validateOrReject, ValidatorOptions, ValidationError } from 'class-validator';
-import { findViolatedFields } from '../../utils';
-import { CustomErrorFactory } from '../../common';
+import { findViolatedFields, CustomErrorFactory, ClassConstructor, DefaultBodyError, ConfigStore } from '@src';
 import { RequestHandler } from 'express';
-import { ClassConstructor } from '../../common';
-import { DefaultBodyError } from './errors/default-body.error';
-import { ConfigStore } from '../../config';
 
 export const validationBodyPipe =
     (

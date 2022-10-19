@@ -1,7 +1,5 @@
 import { ErrorRequestHandler } from 'express';
-import { DefaultFileError } from '../errors/default-file.error';
-import { CustomErrorFactory } from '../../../common';
-import { ConfigStore } from '../../../config';
+import { DefaultFileError, CustomErrorFactory, ConfigStore } from '@src';
 import { errors } from 'formidable';
 
 export const formidableErrorHandler =

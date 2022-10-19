@@ -1,9 +1,9 @@
 import request from 'supertest';
-import { validationBodyPipe, validness } from '../../../src';
+import { validationBodyPipe, validness } from '@src';
 import { StatusCodes } from 'http-status-codes';
 import { BodyDto, MyCustomError } from './models';
-import { createRouteWithPipe } from '../../utils/server-utils';
-import { errorFactory, errorFactoryOverridden } from '../../utils/error-utils';
+import { createRouteWithPipe } from '@test/utils/server-utils';
+import { errorFactory, errorFactoryOverridden } from '@test/utils/error-utils';
 
 describe('Validation Body Pipe', () => {
     it('should validate and return correct result', async () => {

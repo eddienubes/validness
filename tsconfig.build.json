@@ -6,6 +6,7 @@
   },
   "exclude": [
     "test",
-    "jest"
+    "jest",
+    "jest.config.ts"
   ]
 }

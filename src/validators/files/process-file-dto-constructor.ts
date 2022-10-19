@@ -1,4 +1,4 @@
-import { ClassConstructor } from '../../common';
+import { ClassConstructor } from '@src';
 import { ProcessedFileDtoConstructor } from './interfaces/processed-file-dto-constructor.interface';
 import { FileValidationMap } from './types';
 import { Field } from 'multer';

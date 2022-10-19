@@ -3,10 +3,9 @@ import { multerUploadMiddleware } from './multer-upload.middleware';
 import { multerValidationMiddleware } from './multer-validation.middleware';
 import { multerModificationMiddleware } from './multer-modification.middleware';
 import { ProcessedFileDtoConstructor } from '../interfaces/processed-file-dto-constructor.interface';
-import { ClassConstructor, CustomErrorFactory } from '../../../common';
-import { FileValidationConfig } from '../../../config/file-validation-config.interface';
+import { ClassConstructor, CustomErrorFactory, ConfigStore } from '@src';
+import { FileValidationConfig } from '@src/config/file-validation-config.interface';
 import { multerErrorHandlerMiddleware } from './multer-error-handler.middleware';
-import { ConfigStore } from '../../../config';
 import { Options } from 'multer';
 
 export const getMulterFileValidationChain = (
