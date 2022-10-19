@@ -17,10 +17,10 @@ import {
     SingleFileWithTypeDto
 } from './models';
 import { errorFactoryOverridden } from '../../utils/error-utils';
-import multer, { Options } from 'multer';
+import { Options, diskStorage } from 'multer';
 
 const uploadOptions: Options = {
-    storage: multer.diskStorage({
+    storage: diskStorage({
         destination: 'test/test-data/uploads',
         filename(req, file, callback) {
             callback(null, file.originalname);

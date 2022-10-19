@@ -2,8 +2,6 @@ import type { Config } from '@jest/types';
 import { compilerOptions } from './tsconfig.json';
 import { pathsToModuleNameMapper } from 'ts-jest';
 
-console.log(pathsToModuleNameMapper(compilerOptions.paths));
-
 const config: Config.InitialOptions = {
     verbose: true,
     preset: 'ts-jest',
