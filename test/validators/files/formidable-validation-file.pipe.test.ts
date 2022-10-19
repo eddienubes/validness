@@ -31,7 +31,7 @@ const options: Partial<FileValidationConfig> = {
 
 describe('Formidable validation pipe', () => {
     it('should NOT throw any errors with a SingleFileDto formidable', async () => {
-        const app = createRouteWithPipe(validationFilePipe(SingleFileDto, undefined, options));
+        const app = createRouteWithPipe(validationFilePipe(SingleFileDto, options));
 
         const path = getTestFilePath('cat1.png');
         const res = await request(app).get('/').field('number', '123').attach('file', path);
@@ -51,7 +51,7 @@ describe('Formidable validation pipe', () => {
     });
 
     it('should NOT throw any errors with a MultipleFilesDto formidable', async () => {
-        const app = createRouteWithPipe(validationFilePipe(MultipleFilesDto, undefined, options));
+        const app = createRouteWithPipe(validationFilePipe(MultipleFilesDto, options));
 
         const path1 = getTestFilePath('cat1.png');
         const path2 = getTestFilePath('cat2.png');
@@ -88,7 +88,7 @@ describe('Formidable validation pipe', () => {
     });
 
     it('should send formidable files properly with [] sign in name formidable', async () => {
-        const app = createRouteWithPipe(validationFilePipe(MultipleFilesDto, undefined, options));
+        const app = createRouteWithPipe(validationFilePipe(MultipleFilesDto, options));
 
         const path1 = getTestFilePath('cat1.png');
         const path2 = getTestFilePath('cat2.png');
@@ -115,7 +115,7 @@ describe('Formidable validation pipe', () => {
 
     it('should rethrow formidable core error formidable', async () => {
         const app = createRouteWithPipe(
-            validationFilePipe(MultipleFilesDto, undefined, {
+            validationFilePipe(MultipleFilesDto, {
                 ...options,
                 coreConfig: { ...options.coreConfig, maxFileSize: 1 }
             })
@@ -137,7 +137,7 @@ describe('Formidable validation pipe', () => {
     });
 
     it('should throw an error when macCount limit is exceeded formidable', async () => {
-        const app = createRouteWithPipe(validationFilePipe(MultipleFilesMaxAmountDto, undefined, options));
+        const app = createRouteWithPipe(validationFilePipe(MultipleFilesMaxAmountDto, options));
 
         const path1 = getTestFilePath('cat1.png');
         const path2 = getTestFilePath('cat2.png');
@@ -162,7 +162,7 @@ describe('Formidable validation pipe', () => {
     });
 
     it('should throw an error when maxSize limit is exceeded formidable', async () => {
-        const app = createRouteWithPipe(validationFilePipe(MultipleFilesMaxSizeDto, undefined, options));
+        const app = createRouteWithPipe(validationFilePipe(MultipleFilesMaxSizeDto, options));
 
         const path1 = getTestFilePath('cat1.png');
         const path2 = getTestFilePath('cat2.png');
@@ -190,7 +190,7 @@ describe('Formidable validation pipe', () => {
     });
 
     it('should throw an error when minSize limit is not respected formidable', async () => {
-        const app = createRouteWithPipe(validationFilePipe(MultipleFilesMinSizeDto, undefined, options));
+        const app = createRouteWithPipe(validationFilePipe(MultipleFilesMinSizeDto, options));
 
         const path1 = getTestFilePath('cat1.png');
         const path2 = getTestFilePath('cat2.png');
@@ -218,7 +218,7 @@ describe('Formidable validation pipe', () => {
     });
 
     it('should throw an error when file type is invalid formidable', async () => {
-        const app = createRouteWithPipe(validationFilePipe(MultipleFilesTypeDto, undefined, options));
+        const app = createRouteWithPipe(validationFilePipe(MultipleFilesTypeDto, options));
 
         const path1 = getTestFilePath('cat1.png');
         const path2 = getTestFilePath('cat2.png');
@@ -246,7 +246,7 @@ describe('Formidable validation pipe', () => {
     });
 
     it('should throw an error when file mimeType is invalid formidable', async () => {
-        const app = createRouteWithPipe(validationFilePipe(MultipleFilesMimeTypeDto, undefined, options));
+        const app = createRouteWithPipe(validationFilePipe(MultipleFilesMimeTypeDto, options));
 
         const path1 = getTestFilePath('cat1.png');
         const path2 = getTestFilePath('cat2.png');
@@ -274,7 +274,7 @@ describe('Formidable validation pipe', () => {
     });
 
     it('should throw an error when file is required but not passed formidable', async () => {
-        const app = createRouteWithPipe(validationFilePipe(MultipleFilesDto, undefined, options));
+        const app = createRouteWithPipe(validationFilePipe(MultipleFilesDto, options));
 
         const res = await request(app).get('/').field('phone', '+15852826457').field('email', 'example@gmail.com');
 
@@ -292,7 +292,7 @@ describe('Formidable validation pipe', () => {
     });
 
     it('should NOT throw an error when file is optional and not passed formidable', async () => {
-        const app = createRouteWithPipe(validationFilePipe(MultipleFilesOptionalDto, undefined, options));
+        const app = createRouteWithPipe(validationFilePipe(MultipleFilesOptionalDto, options));
 
         const res = await request(app).get('/').field('phone', '+15852826457').field('email', 'example@gmail.com');
 
@@ -306,7 +306,9 @@ describe('Formidable validation pipe', () => {
     });
 
     it('should respect custom error handler formidable', async () => {
-        const app = createRouteWithPipe(validationFilePipe(MultipleFilesDto, errorFactoryOverridden, options));
+        const app = createRouteWithPipe(
+            validationFilePipe(MultipleFilesDto, { customErrorFactory: errorFactoryOverridden, ...options })
+        );
 
         const res = await request(app).get('/').field('phone', '+15852826457').field('email', 'example@gmail.com');
 
@@ -344,7 +346,7 @@ describe('Formidable validation pipe', () => {
     });
 
     it('should throw an error when multiple files has been sent for a single file dto formidable', async () => {
-        const app = createRouteWithPipe(validationFilePipe(SingleFileNoTextDto, undefined, options));
+        const app = createRouteWithPipe(validationFilePipe(SingleFileNoTextDto, options));
 
         const path1 = getTestFilePath('cat1.png');
         const path2 = getTestFilePath('cat2.png');
@@ -369,7 +371,7 @@ describe('Formidable validation pipe', () => {
     });
 
     it('should upload file with undefined mimetype formidable', async () => {
-        const app = createRouteWithPipe(validationFilePipe(SingleFileDto, undefined, options));
+        const app = createRouteWithPipe(validationFilePipe(SingleFileDto, options));
 
         const path1 = getTestFilePath('file-wrong-mime-type');
         const res = await request(app).get('/').field('number', '123123').attach('file', path1);
@@ -389,7 +391,7 @@ describe('Formidable validation pipe', () => {
     });
 
     it('should NOT upload if file parameters are invalid formidable', async () => {
-        const app = createRouteWithPipe(validationFilePipe(SingleFileWithTypeDto, undefined, options));
+        const app = createRouteWithPipe(validationFilePipe(SingleFileWithTypeDto, options));
 
         const path1 = getTestFilePath('file-wrong-mime-type');
         const res = await request(app).get('/').field('number', '123123').attach('file', path1);
@@ -410,7 +412,7 @@ describe('Formidable validation pipe', () => {
     });
 
     it('should include path and destination when uploading a file formidable', async () => {
-        const app = createRouteWithPipe(validationFilePipe(SingleFileDto, undefined, options));
+        const app = createRouteWithPipe(validationFilePipe(SingleFileDto, options));
 
         const path1 = getTestFilePath('file-wrong-mime-type');
         const res = await request(app).get('/').field('number', '123123').attach('file', path1);
@@ -430,7 +432,7 @@ describe('Formidable validation pipe', () => {
     });
 
     it('should NOT upload files if text fields validation fails formidable', async () => {
-        const app = createRouteWithPipe(validationFilePipe(SingleFileDto, undefined, options));
+        const app = createRouteWithPipe(validationFilePipe(SingleFileDto, options));
 
         const path1 = getTestFilePath('file-wrong-mime-type');
         const res = await request(app).get('/').field('number', 'asd').attach('file', path1);
