@@ -302,7 +302,7 @@ validness({
 
 Defaults can be found [HERE](https://github.com/eddienubes/validness/blob/master/src/config/constants.ts)
 
-In think an overall documentation for each property is not required, because they're well commented directly in the
+I think an overall documentation for each property is not required, because they're well commented directly in the
 library itself.
 
 If you feel a lack of examples - open an issue, I will add as many as you want. Thanks.
