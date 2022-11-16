@@ -9,6 +9,7 @@ import { validationQueryPipe } from './query/validation-query.pipe';
 // Files (form-data)
 import { validationFilePipe } from './files/validation-file.pipe';
 import { DefaultFileError } from './files/errors/default-file.error';
+import { ValidatedFile } from './files/interfaces/validated-file.interface';
 
 export {
     DefaultBodyError,
@@ -16,5 +17,6 @@ export {
     DefaultQueryError,
     validationQueryPipe,
     DefaultFileError,
-    validationFilePipe
+    validationFilePipe,
+    ValidatedFile
 };
