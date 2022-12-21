@@ -1,6 +1,8 @@
 import { ErrorRequestHandler } from 'express';
-import { MulterError } from 'multer';
 import { DefaultFileError, CustomErrorFactory, ErrorField, ConfigStore } from '@src';
+import { getMulterPackage } from '@src/validators/files/multer/get-multer-package';
+
+const multer = getMulterPackage();
 
 export const multerErrorHandlerMiddleware =
     (customErrorFactory?: CustomErrorFactory): ErrorRequestHandler =>
@@ -9,7 +11,7 @@ export const multerErrorHandlerMiddleware =
 
         const errorFactory = customErrorFactory || globalConfig.customErrorFactory;
 
-        if (err instanceof MulterError) {
+        if (err instanceof multer.MulterError) {
             const errorFields = mapMulterErrorToErrorFields(err);
             const error = errorFactory ? errorFactory(errorFields) : new DefaultFileError(errorFields);
 

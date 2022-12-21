@@ -6,7 +6,7 @@ import { ProcessedFileDtoConstructor } from '../interfaces/processed-file-dto-co
 import { ClassConstructor, CustomErrorFactory, ConfigStore } from '@src';
 import { FileValidationConfig } from '@src/config/file-validation-config.interface';
 import { multerErrorHandlerMiddleware } from './multer-error-handler.middleware';
-import { Options } from 'multer';
+import type { Options } from 'multer';
 
 export const getMulterFileValidationChain = (
     DtoConstructor: ClassConstructor,

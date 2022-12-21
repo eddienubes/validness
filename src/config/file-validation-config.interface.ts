@@ -1,7 +1,7 @@
 import { FileValidatorType } from '@src';
-import { Options as MulterOptions } from 'multer';
 import { ValidatorOptions } from 'class-validator';
-import { Options as FormidableOptions } from 'formidable';
+import type { Options as FormidableOptions } from 'formidable';
+import type { Options as MulterOptions } from 'multer';
 
 export interface FileValidationConfig {
     /**

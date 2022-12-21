@@ -1,4 +1,4 @@
-import { FileFilterCallback } from 'multer';
+import type { FileFilterCallback } from 'multer';
 import { FileValidationMap, MulterFileFilter } from '../types';
 import { MIME_TYPE_MAP } from '../constants';
 import { MulterFile } from './types';
