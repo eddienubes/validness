@@ -33,7 +33,7 @@ export const getMulterFileValidationChain: FileValidationChainGetter = (
     const customErrorFactory = fileValidationConfig?.customErrorFactory || configStore.customErrorFactory;
 
     router.use(
-        contentTypeValidationMiddleware(contentTypes, DefaultFileError),
+        contentTypeValidationMiddleware(contentTypes, DefaultFileError, customErrorFactory),
         multerUploadMiddleware(DtoConstructor, processedFileDtoConstructor, coreConfig),
         multerValidationMiddleware(processedFileDtoConstructor),
         multerModificationMiddleware(processedFileDtoConstructor),

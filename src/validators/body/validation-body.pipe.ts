@@ -26,25 +26,28 @@ export const validationBodyPipe = (
 
     const errorFactory = bodyValidationConfig?.customErrorFactory || configStore.customErrorFactory;
 
-    router.use(contentTypeValidationMiddleware(contentTypes, DefaultBodyError), async (req, res, next) => {
-        const { body } = req;
+    router.use(
+        contentTypeValidationMiddleware(contentTypes, DefaultBodyError, errorFactory),
+        async (req, res, next) => {
+            const { body } = req;
 
-        const instance = plainToInstance(DtoConstructor, body);
+            const instance = plainToInstance(DtoConstructor, body);
 
-        const validatorConfig = bodyValidationConfig || configStore.bodyValidationConfig;
+            const validatorConfig = bodyValidationConfig || configStore.bodyValidationConfig;
 
-        try {
-            await validateOrReject(instance, validatorConfig);
+            try {
+                await validateOrReject(instance, validatorConfig);
 
-            req.body = instance;
-        } catch (e) {
-            const errors = findViolatedFields(e as ValidationError[]);
+                req.body = instance;
+            } catch (e) {
+                const errors = findViolatedFields(e as ValidationError[]);
 
-            return next(errorFactory ? errorFactory(errors) : new DefaultBodyError(errors));
+                return next(errorFactory ? errorFactory(errors) : new DefaultBodyError(errors));
+            }
+
+            return next();
         }
-
-        return next();
-    });
+    );
 
     return router;
 };

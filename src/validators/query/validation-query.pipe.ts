@@ -21,7 +21,7 @@ export const validationQueryPipe = (
     const errorFactory = queryValidationConfig?.customErrorFactory || configStore.customErrorFactory;
 
     router.use(
-        contentTypeValidationMiddleware(contentTypes, DefaultQueryError),
+        contentTypeValidationMiddleware(contentTypes, DefaultQueryError, errorFactory),
         async (req, res, next): Promise<void> => {
             const { query } = req;
             const globalConfig = ConfigStore.getInstance().getConfig();
