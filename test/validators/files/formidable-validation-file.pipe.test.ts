@@ -347,7 +347,6 @@ describe('Formidable validation pipe', () => {
             .field('numbers', '123')
             .field('numbers', '123');
 
-        console.log(res.body);
         expect(res.statusCode).toEqual(200);
         expect(res.body).toEqual({
             data: {

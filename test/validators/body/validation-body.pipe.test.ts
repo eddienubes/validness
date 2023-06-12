@@ -189,4 +189,21 @@ describe('Validation Body Pipe', () => {
             statusCode: 401
         });
     });
+
+    it('should reject requests with invalid content-type', async () => {
+        const app = createRouteWithPipe(validationBodyPipe(BodyDto));
+        const res = await request(app).get('/').send('').set('Content-Type', 'audio/wav');
+
+        expect(res.statusCode).toEqual(400);
+        expect(res.body).toEqual({
+            fields: [
+                {
+                    field: 'Content-Type header',
+                    violations: ['Content-Type audio/wav is not allowed. Use [application/json]']
+                }
+            ],
+            name: 'DefaultBodyError',
+            statusCode: 400
+        });
+    });
 });
