@@ -1,4 +1,4 @@
-import { FileValidatorType } from '@src';
+import { CustomErrorFactory, FileValidatorType } from '@src';
 import { Options as MulterOptions } from 'multer';
 import { ValidatorOptions } from 'class-validator';
 import { Options as FormidableOptions } from 'formidable';
@@ -10,8 +10,8 @@ export interface FileValidationConfig {
     fileValidatorType: FileValidatorType;
 
     /**
-     * If you wish to modify an underlying library options.
-     * CAUTION: Not recommended, unless you change a storage driver.
+     * If you wish to modify the underlying library options.
+     * CAUTION: Not recommended unless you change a storage driver.
      * Validation should be persisted on the validness side.
      */
     coreConfig?: MulterOptions | FormidableOptions;
@@ -20,4 +20,12 @@ export interface FileValidationConfig {
      * Used for text fields of form data file validation
      */
     textFieldsValidationConfig?: ValidatorOptions;
+
+    customErrorFactory?: CustomErrorFactory;
+
+    /**
+     * Allowed content-types.
+     * @default [''multipart/form-data'] only
+     */
+    contentTypes: string[];
 }

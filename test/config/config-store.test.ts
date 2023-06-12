@@ -11,15 +11,18 @@ describe('Config Store', () => {
                     limits: {
                         fieldNameSize: 100
                     }
-                }
+                },
+                contentTypes: []
             }
         });
 
         expect(instance.getConfig()).toEqual({
             bodyValidationConfig: {
+                contentTypes: ['application/json'],
                 forbidNonWhitelisted: true
             },
             fileValidationConfig: {
+                contentTypes: [],
                 coreConfig: {
                     limits: {
                         fieldNameSize: 100
@@ -32,6 +35,7 @@ describe('Config Store', () => {
                 }
             },
             queryValidationConfig: {
+                contentTypes: [],
                 forbidNonWhitelisted: true
             }
         } as ValidationConfig);

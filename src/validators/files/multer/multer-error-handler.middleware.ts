@@ -3,12 +3,8 @@ import { MulterError } from 'multer';
 import { DefaultFileError, CustomErrorFactory, ErrorField, ConfigStore } from '@src';
 
 export const multerErrorHandlerMiddleware =
-    (customErrorFactory?: CustomErrorFactory): ErrorRequestHandler =>
+    (errorFactory?: CustomErrorFactory): ErrorRequestHandler =>
     async (err, req, res, next) => {
-        const globalConfig = ConfigStore.getInstance().getConfig();
-
-        const errorFactory = customErrorFactory || globalConfig.customErrorFactory;
-
         if (err instanceof MulterError) {
             const errorFields = mapMulterErrorToErrorFields(err);
             const error = errorFactory ? errorFactory(errorFields) : new DefaultFileError(errorFields);

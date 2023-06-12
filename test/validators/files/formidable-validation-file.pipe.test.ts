@@ -153,7 +153,9 @@ describe('Formidable validation pipe', () => {
             fields: [
                 {
                     field: 'photos',
-                    violations: ['The following file field [photos] has exceeded its maxCount or is not expected']
+                    violations: [
+                        'The following file field [photos] has exceeded its maxCount or is not expected'
+                    ]
                 }
             ],
             name: 'DefaultFileError',
@@ -276,7 +278,10 @@ describe('Formidable validation pipe', () => {
     it('should throw an error when file is required but not passed formidable', async () => {
         const app = createRouteWithPipe(validationFilePipe(MultipleFilesDto, options));
 
-        const res = await request(app).get('/').field('phone', '+15852826457').field('email', 'example@gmail.com');
+        const res = await request(app)
+            .get('/')
+            .field('phone', '+15852826457')
+            .field('email', 'example@gmail.com');
 
         expect(res.statusCode).toEqual(400);
         expect(res.body).toEqual({
@@ -294,7 +299,10 @@ describe('Formidable validation pipe', () => {
     it('should NOT throw an error when file is optional and not passed formidable', async () => {
         const app = createRouteWithPipe(validationFilePipe(MultipleFilesOptionalDto, options));
 
-        const res = await request(app).get('/').field('phone', '+15852826457').field('email', 'example@gmail.com');
+        const res = await request(app)
+            .get('/')
+            .field('phone', '+15852826457')
+            .field('email', 'example@gmail.com');
 
         expect(res.statusCode).toEqual(200);
         expect(res.body).toEqual({
@@ -310,7 +318,10 @@ describe('Formidable validation pipe', () => {
             validationFilePipe(MultipleFilesDto, { customErrorFactory: errorFactoryOverridden, ...options })
         );
 
-        const res = await request(app).get('/').field('phone', '+15852826457').field('email', 'example@gmail.com');
+        const res = await request(app)
+            .get('/')
+            .field('phone', '+15852826457')
+            .field('email', 'example@gmail.com');
 
         expect(res.statusCode).toEqual(401);
         expect(res.body).toEqual({
@@ -336,6 +347,7 @@ describe('Formidable validation pipe', () => {
             .field('numbers', '123')
             .field('numbers', '123');
 
+        console.log(res.body);
         expect(res.statusCode).toEqual(200);
         expect(res.body).toEqual({
             data: {
@@ -362,7 +374,9 @@ describe('Formidable validation pipe', () => {
             fields: [
                 {
                     field: 'file',
-                    violations: ['The following file field [file] has exceeded its maxCount (1) or is not expected']
+                    violations: [
+                        'The following file field [file] has exceeded its maxCount (1) or is not expected'
+                    ]
                 }
             ],
             name: 'DefaultFileError',

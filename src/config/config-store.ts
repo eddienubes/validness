@@ -1,14 +1,14 @@
-import { ValidationConfig, VALIDATION_CONFIG_DEFAULTS, isObject } from '@src';
+import { ValidationConfig, VALIDATION_CONFIG_DEFAULTS, isObject, DeepPartial } from '@src';
 
 export class ConfigStore {
     private config: ValidationConfig = VALIDATION_CONFIG_DEFAULTS;
 
     private static instance: ConfigStore;
 
-    public setConfig(overrides: Partial<ValidationConfig>): void {
+    public setConfig(overrides: DeepPartial<ValidationConfig>): void {
         this.config = this.mapObjectWithOverridesAndDefaults<ValidationConfig>(
             this.config,
-            overrides,
+            overrides as ValidationConfig,
             VALIDATION_CONFIG_DEFAULTS
         );
     }
@@ -18,7 +18,7 @@ export class ConfigStore {
     }
 
     /**
-     * Modifies original object with overrides and defaults for those keys that are not set (undefined)
+     * Modifies an original object with overrides and defaults for those keys that are not set (undefined)
      * @param obj original object
      * @param overrides object with overridden fields
      * @param defaults defaults
@@ -30,7 +30,7 @@ export class ConfigStore {
             // get overridden values
             let value = overrides[typedKey];
 
-            // in case in modifiable object field is not defined we just assign it
+            // in case in modifiable object field is not defined, we just assign it
             if (!obj[typedKey]) {
                 obj = {
                     ...obj,
@@ -43,12 +43,16 @@ export class ConfigStore {
             if (isObject(value)) {
                 obj = {
                     ...obj,
-                    [typedKey]: this.mapObjectWithOverridesAndDefaults(obj[typedKey], value, defaults[typedKey])
+                    [typedKey]: this.mapObjectWithOverridesAndDefaults(
+                        obj[typedKey],
+                        value,
+                        defaults[typedKey]
+                    )
                 };
                 continue;
             }
 
-            // if it's undefined grab by key from defaults
+            // if it's an undefined grab by key from defaults
             if (!value) {
                 value = defaults[typedKey];
             }

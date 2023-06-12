@@ -1,24 +1,37 @@
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { validateOrReject, ValidationError } from 'class-validator';
 import { findViolatedFields, ClassConstructor, DefaultBodyError, ConfigStore } from '@src';
-import { RequestHandler } from 'express';
-import { ValidationBodyConfig } from '@src/validators/body/types';
+import { Router } from 'express';
+import { BodyValidationConfig } from '@src/validators/body/types';
+import { contentTypeValidationMiddleware } from '@src/validators/content-type-validation.middleware';
 
 /**
- * Validates body of an incoming request.
+ * Validates the body of an incoming request.
  * Body parser is required beforehand.
  * @param DtoConstructor
- * @param config
+ * @param bodyValidationConfig
  */
-export const validationBodyPipe =
-    (DtoConstructor: ClassConstructor, config?: ValidationBodyConfig): RequestHandler =>
-    async (req, res, next): Promise<void> => {
+export const validationBodyPipe = (
+    DtoConstructor: ClassConstructor,
+    bodyValidationConfig?: Partial<BodyValidationConfig>
+): Router => {
+    const router = Router();
+    const configStore = ConfigStore.getInstance().getConfig();
+
+    // granular -> global -> default
+    const contentTypes =
+        bodyValidationConfig?.contentTypes ||
+        configStore.contentTypes ||
+        configStore.bodyValidationConfig.contentTypes;
+
+    const errorFactory = bodyValidationConfig?.customErrorFactory || configStore.customErrorFactory;
+
+    router.use(contentTypeValidationMiddleware(contentTypes, DefaultBodyError), async (req, res, next) => {
         const { body } = req;
-        const globalConfig = ConfigStore.getInstance().getConfig();
 
-        const instance = plainToClass(DtoConstructor, body);
+        const instance = plainToInstance(DtoConstructor, body);
 
-        const validatorConfig = config || globalConfig.bodyValidationConfig;
+        const validatorConfig = bodyValidationConfig || configStore.bodyValidationConfig;
 
         try {
             await validateOrReject(instance, validatorConfig);
@@ -26,10 +39,12 @@ export const validationBodyPipe =
             req.body = instance;
         } catch (e) {
             const errors = findViolatedFields(e as ValidationError[]);
-            const errorFactory = config?.customErrorFactory || globalConfig.customErrorFactory;
 
             return next(errorFactory ? errorFactory(errors) : new DefaultBodyError(errors));
         }
 
         return next();
-    };
+    });
+
+    return router;
+};

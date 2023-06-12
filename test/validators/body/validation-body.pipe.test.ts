@@ -92,7 +92,8 @@ describe('Validation Body Pipe', () => {
 
         const app = createRouteWithPipe(
             validationBodyPipe(BodyDto, {
-                customErrorFactory: (errors) => new MyCustomError('my custom message', StatusCodes.CONFLICT, errors)
+                customErrorFactory: (errors) =>
+                    new MyCustomError('my custom message', StatusCodes.CONFLICT, errors)
             })
         );
 
@@ -164,7 +165,9 @@ describe('Validation Body Pipe', () => {
         // call validness function to override default config
         validness({ customErrorFactory: errorFactory });
 
-        const app = createRouteWithPipe(validationBodyPipe(BodyDto, { customErrorFactory: errorFactoryOverridden }));
+        const app = createRouteWithPipe(
+            validationBodyPipe(BodyDto, { customErrorFactory: errorFactoryOverridden })
+        );
 
         const res = await request(app).get('/').send(dto);
 

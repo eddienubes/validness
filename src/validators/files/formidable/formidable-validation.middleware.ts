@@ -39,7 +39,11 @@ export const formidableValidationMiddleware =
             fileValidationConfig?.textFieldsValidationConfig ||
             globalConfig.fileValidationConfig.textFieldsValidationConfig;
 
-        const { violatedFields, instance } = await isValidTextFields(DtoConstructor, fields, validationConfig);
+        const { violatedFields, instance } = await isValidTextFields(
+            DtoConstructor,
+            fields,
+            validationConfig
+        );
         errors.push(...violatedFields);
 
         // File validation
@@ -75,7 +79,11 @@ export const formidableValidationMiddleware =
  * @param metadata
  * @param fieldName
  */
-const validateFileField = (files: File[] | null, metadata: FileMetadata, fieldName: string): ErrorField | null => {
+const validateFileField = (
+    files: File[] | null,
+    metadata: FileMetadata,
+    fieldName: string
+): ErrorField | null => {
     // Reused and cleared for every file
     const violations: string[] = [];
 
