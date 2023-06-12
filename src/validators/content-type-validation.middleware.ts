@@ -15,23 +15,31 @@ export const contentTypeValidationMiddleware = (
         }
 
         if (!contentType) {
-            throw new ErrorConstructor([
-                {
-                    field: 'Content-Type header',
-                    violations: ['Content-Type header should be present']
-                }
-            ]);
+            next(
+                new ErrorConstructor([
+                    {
+                        field: 'Content-Type header',
+                        violations: ['Content-Type header should be present']
+                    }
+                ])
+            );
+            return;
         }
 
         if (!allowedContentTypes.some((ct) => contentType.includes(ct))) {
-            throw new ErrorConstructor([
-                {
-                    field: 'Content-Type header',
-                    violations: [
-                        `Content-Type ${contentType} is not allowed. Use [${allowedContentTypes.join(', ')}]`
-                    ]
-                }
-            ]);
+            next(
+                new ErrorConstructor([
+                    {
+                        field: 'Content-Type header',
+                        violations: [
+                            `Content-Type ${contentType} is not allowed. Use [${allowedContentTypes.join(
+                                ', '
+                            )}]`
+                        ]
+                    }
+                ])
+            );
+            return;
         }
 
         next();
