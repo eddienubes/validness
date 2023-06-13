@@ -1,4 +1,4 @@
-import { CustomErrorFactory, FileValidatorType } from '@src';
+import { FileValidatorType } from '@src';
 import { Options as MulterOptions } from 'multer';
 import { ValidatorOptions } from 'class-validator';
 import { Options as FormidableOptions } from 'formidable';

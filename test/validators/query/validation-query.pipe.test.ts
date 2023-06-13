@@ -3,7 +3,6 @@ import request from 'supertest';
 import { QueryDto } from './models';
 import { errorFactory, errorFactoryOverridden } from '@test/utils/error-utils';
 import { createRouteWithPipe } from '@test/utils/server-utils';
-import { MultipleFieldsWithWeirdSignDto } from '@test/validators/files/models';
 
 describe('Validation Query Pipe', () => {
     afterEach(() => {
