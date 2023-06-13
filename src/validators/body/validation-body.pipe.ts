@@ -1,9 +1,10 @@
 import { plainToInstance } from 'class-transformer';
 import { validateOrReject, ValidationError } from 'class-validator';
-import { findViolatedFields, ClassConstructor, DefaultBodyError, ConfigStore } from '@src';
+import { ClassConstructor, ConfigStore, DefaultBodyError, findViolatedFields } from '@src';
 import { Router } from 'express';
 import { BodyValidationConfig } from '@src/validators/body/types';
 import { contentTypeValidationMiddleware } from '@src/validators/content-type-validation.middleware';
+import { ValidationConfigType } from '@src/config/validation-config-type.enum';
 
 /**
  * Validates the body of an incoming request.
@@ -16,24 +17,25 @@ export const validationBodyPipe = (
     bodyValidationConfig?: Partial<BodyValidationConfig>
 ): Router => {
     const router = Router();
-    const configStore = ConfigStore.getInstance().getConfig();
-
-    // granular -> global -> default
-    const contentTypes =
-        bodyValidationConfig?.contentTypes ||
-        configStore.contentTypes ||
-        configStore.bodyValidationConfig.contentTypes;
-
-    const errorFactory = bodyValidationConfig?.customErrorFactory || configStore.customErrorFactory;
 
     router.use(
-        contentTypeValidationMiddleware(contentTypes, DefaultBodyError, errorFactory),
+        contentTypeValidationMiddleware(
+            DefaultBodyError,
+            ValidationConfigType.BODY_VALIDATOR,
+            bodyValidationConfig
+        ),
         async (req, res, next) => {
             const { body } = req;
+            const configStore = ConfigStore.getInstance();
+            const globalConfig = configStore.getConfig();
 
             const instance = plainToInstance(DtoConstructor, body);
 
-            const validatorConfig = bodyValidationConfig || configStore.bodyValidationConfig;
+            const validatorConfig = bodyValidationConfig || globalConfig.bodyValidationConfig;
+            const errorFactory =
+                bodyValidationConfig?.customErrorFactory ||
+                globalConfig.customErrorFactory ||
+                globalConfig.bodyValidationConfig.customErrorFactory;
 
             try {
                 await validateOrReject(instance, validatorConfig);

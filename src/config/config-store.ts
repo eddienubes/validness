@@ -1,4 +1,8 @@
-import { ValidationConfig, VALIDATION_CONFIG_DEFAULTS, isObject, DeepPartial } from '@src';
+import { DeepPartial, isObject, VALIDATION_CONFIG_DEFAULTS, ValidationConfig } from '@src';
+import { ValidationConfigType } from '@src/config/validation-config-type.enum';
+import { FileValidationConfig } from '@src/config/file-validation-config.interface';
+import { QueryValidationConfig } from '@src/validators/query/types';
+import { BodyValidationConfig } from '@src/validators/body/types';
 
 export class ConfigStore {
     private config: ValidationConfig = VALIDATION_CONFIG_DEFAULTS;
@@ -15,6 +19,25 @@ export class ConfigStore {
 
     public getConfig(): ValidationConfig {
         return { ...this.config };
+    }
+
+    public resetToDefaults() {
+        this.config = VALIDATION_CONFIG_DEFAULTS;
+    }
+
+    public getByValidatorType(
+        type: ValidationConfigType
+    ): FileValidationConfig | QueryValidationConfig | BodyValidationConfig {
+        switch (type) {
+            case ValidationConfigType.FILE_VALIDATOR:
+                return this.config.fileValidationConfig;
+            case ValidationConfigType.BODY_VALIDATOR:
+                return this.config.bodyValidationConfig;
+            case ValidationConfigType.QUERY_VALIDATOR:
+                return this.config.queryValidationConfig;
+            default:
+                throw new Error(`Unknown validator type: ${type}`);
+        }
     }
 
     /**

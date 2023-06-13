@@ -18,6 +18,7 @@ export const validationFilePipe = (
     const configStore = ConfigStore.getInstance().getConfig();
     const processedFileDtoConstructor = processFileDtoConstructor(DtoConstructor);
 
+    // TODO: Global store set by user is unavailable here. Validness() hasn't been called yet
     const validatorType = config?.fileValidatorType || configStore.fileValidationConfig.fileValidatorType;
 
     const chainGetter = FILE_VALIDATOR_CHAIN_MAP[validatorType];

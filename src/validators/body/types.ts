@@ -1,11 +1,4 @@
 import { ValidatorOptions } from 'class-validator';
-import { CustomErrorFactory } from '@src';
+import { ValidatorConfigurable } from '@src/config/validator-configurable.interface';
 
-export type BodyValidationConfig = {
-    customErrorFactory?: CustomErrorFactory;
-    /**
-     * Allowed content-types.
-     * @default ['application/json'] only
-     */
-    contentTypes: string[];
-} & ValidatorOptions;
+export type BodyValidationConfig = ValidatorConfigurable & ValidatorOptions;

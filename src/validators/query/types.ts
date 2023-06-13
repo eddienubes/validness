@@ -1,11 +1,4 @@
 import { ValidatorOptions } from 'class-validator';
-import { CustomErrorFactory } from '@src';
+import { ValidatorConfigurable } from '@src/config/validator-configurable.interface';
 
-export type QueryValidationConfig = {
-    customErrorFactory?: CustomErrorFactory;
-    /**
-     * Allowed content-types.
-     * @default ['application/json', 'multipart/form-data'] only
-     */
-    contentTypes: string[];
-} & ValidatorOptions;
+export type QueryValidationConfig = ValidatorConfigurable & ValidatorOptions;

@@ -7,7 +7,10 @@ export const formidableErrorHandler =
     async (err, req, res, next) => {
         const globalConfig = ConfigStore.getInstance().getConfig();
 
-        const errorFactory = customErrorFactory || globalConfig.customErrorFactory;
+        const errorFactory =
+            customErrorFactory ||
+            globalConfig.customErrorFactory ||
+            globalConfig.fileValidationConfig.customErrorFactory;
 
         // formidable core error differs too much so pass it as is
         if (err instanceof errors.FormidableError) {

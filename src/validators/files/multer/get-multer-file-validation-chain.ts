@@ -3,7 +3,7 @@ import { multerUploadMiddleware } from './multer-upload.middleware';
 import { multerValidationMiddleware } from './multer-validation.middleware';
 import { multerModificationMiddleware } from './multer-modification.middleware';
 import { ProcessedFileDtoConstructor } from '../interfaces/processed-file-dto-constructor.interface';
-import { ClassConstructor, ConfigStore, DefaultFileError } from '@src';
+import { ClassConstructor, ConfigStore, DefaultFileError, ValidationConfigType } from '@src';
 import { FileValidationConfig } from '@src/config/file-validation-config.interface';
 import { multerErrorHandlerMiddleware } from './multer-error-handler.middleware';
 import { Options } from 'multer';
@@ -19,25 +19,22 @@ export const getMulterFileValidationChain: FileValidationChainGetter = (
 
     const configStore = ConfigStore.getInstance().getConfig();
 
+    // Global config is undefined here. Validness() call doesn't make sense
     const coreConfig = {
         ...((configStore.fileValidationConfig.coreConfig as Options) || {}),
         ...(fileValidationConfig?.coreConfig || {})
     };
 
-    // granular -> global -> default
-    const contentTypes =
-        fileValidationConfig?.contentTypes ||
-        configStore.contentTypes ||
-        configStore.fileValidationConfig.contentTypes;
-
-    const customErrorFactory = fileValidationConfig?.customErrorFactory || configStore.customErrorFactory;
-
     router.use(
-        contentTypeValidationMiddleware(contentTypes, DefaultFileError, customErrorFactory),
+        contentTypeValidationMiddleware(
+            DefaultFileError,
+            ValidationConfigType.FILE_VALIDATOR,
+            fileValidationConfig
+        ),
         multerUploadMiddleware(DtoConstructor, processedFileDtoConstructor, coreConfig),
         multerValidationMiddleware(processedFileDtoConstructor),
         multerModificationMiddleware(processedFileDtoConstructor),
-        multerErrorHandlerMiddleware(customErrorFactory)
+        multerErrorHandlerMiddleware(fileValidationConfig?.customErrorFactory)
     );
 
     return router;

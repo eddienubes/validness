@@ -1,0 +1,5 @@
+export enum ValidationConfigType {
+    FILE_VALIDATOR = 'FILE_VALIDATOR',
+    BODY_VALIDATOR = 'BODY_VALIDATOR',
+    QUERY_VALIDATOR = 'QUERY_VALIDATOR'
+}

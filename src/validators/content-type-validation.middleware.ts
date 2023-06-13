@@ -1,13 +1,28 @@
 import { RequestHandler } from 'express';
 import { ValidationErrorsCollectable } from '@src/common/interfaces/validation-errors-collectable.interface';
-import { ClassConstructor, CustomErrorFactory } from '@src';
+import { ClassConstructor, ConfigStore } from '@src';
+import { ValidationConfigType } from '@src/config/validation-config-type.enum';
+import { ValidatorConfigurable } from '@src/config/validator-configurable.interface';
 
 export const contentTypeValidationMiddleware = (
-    allowedContentTypes: string[],
     ErrorConstructor: ClassConstructor<ValidationErrorsCollectable>,
-    errorFactory?: CustomErrorFactory
+    type: ValidationConfigType,
+    localConfig?: Partial<ValidatorConfigurable>
 ): RequestHandler => {
     return (req, res, next) => {
+        const configStore = ConfigStore.getInstance();
+        const globalConfig = configStore.getConfig();
+        const validatorConfig = configStore.getByValidatorType(type);
+
+        // local -> global -> default
+        const allowedContentTypes =
+            localConfig?.contentTypes || globalConfig.contentTypes || validatorConfig.contentTypes;
+
+        const errorFactory =
+            localConfig?.customErrorFactory ||
+            globalConfig.customErrorFactory ||
+            validatorConfig.customErrorFactory;
+
         const contentType = req.headers['content-type'];
 
         if (!allowedContentTypes.length) {

@@ -1,5 +1,5 @@
 import { createRouteWithPipe } from '@test/utils/server-utils';
-import { FileValidatorType, validationFilePipe } from '@src';
+import { ConfigStore, FileValidatorType, validationBodyPipe, validationFilePipe } from '@src';
 import {
     MultipleFilesDto,
     MultipleFilesMaxAmountDto,
@@ -17,6 +17,7 @@ import { getFormidableUploadFolderPath, getTestFilePath } from '@test/test-utils
 import request from 'supertest';
 import { FileValidationConfig } from '@src/config/file-validation-config.interface';
 import { errorFactoryOverridden } from '@test/utils/error-utils';
+import { BodyDto } from '@test/validators/body/models';
 
 const options: Partial<FileValidationConfig> = {
     fileValidatorType: FileValidatorType.FORMIDABLE,
@@ -30,6 +31,10 @@ const options: Partial<FileValidationConfig> = {
 };
 
 describe('Formidable validation pipe', () => {
+    afterEach(() => {
+        ConfigStore.getInstance().resetToDefaults();
+    });
+
     it('should NOT throw any errors with a SingleFileDto formidable', async () => {
         const app = createRouteWithPipe(validationFilePipe(SingleFileDto, options));
 
@@ -456,6 +461,24 @@ describe('Formidable validation pipe', () => {
                 {
                     field: 'number',
                     violations: ['number must be a number string']
+                }
+            ],
+            name: 'DefaultFileError',
+            statusCode: 400
+        });
+    });
+
+    it('should reject calls with invalid content-type', async () => {
+        const app = createRouteWithPipe(validationFilePipe(SingleFileDto, options));
+
+        const res = await request(app).get('/').send('').set('Content-Type', 'audio/wav');
+
+        expect(res.statusCode).toEqual(400);
+        expect(res.body).toEqual({
+            fields: [
+                {
+                    field: 'Content-Type header',
+                    violations: ['Content-Type audio/wav is not allowed. Use [multipart/form-data]']
                 }
             ],
             name: 'DefaultFileError',

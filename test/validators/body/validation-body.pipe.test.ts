@@ -1,11 +1,15 @@
 import request from 'supertest';
-import { validationBodyPipe, validness } from '@src';
+import { ConfigStore, validationBodyPipe, validness } from '@src';
 import { StatusCodes } from 'http-status-codes';
 import { BodyDto, MyCustomError } from './models';
 import { createRouteWithPipe } from '@test/utils/server-utils';
 import { errorFactory, errorFactoryOverridden } from '@test/utils/error-utils';
 
 describe('Validation Body Pipe', () => {
+    afterEach(() => {
+        ConfigStore.getInstance().resetToDefaults();
+    });
+
     it('should validate and return correct result', async () => {
         const dto = new BodyDto();
         dto.age = 5;

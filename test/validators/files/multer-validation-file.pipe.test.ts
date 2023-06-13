@@ -1,7 +1,7 @@
 import { createRouteWithPipe } from '@test/utils/server-utils';
 import request from 'supertest';
 import { getTestFilePath } from '@test/test-utils/files';
-import { validationFilePipe } from '@src';
+import { ConfigStore, validationFilePipe } from '@src';
 import {
     MultipleFieldsWithWeirdSignDto,
     MultipleFilesDto,
@@ -29,6 +29,10 @@ const uploadOptions: Options = {
 };
 
 describe('Multer validation file pipe', () => {
+    afterEach(() => {
+        ConfigStore.getInstance().resetToDefaults();
+    });
+
     it('should not throw any errors with a SingleFileDto', async () => {
         const app = createRouteWithPipe(validationFilePipe(SingleFileDto));
         const path = getTestFilePath('cat1.png');
@@ -455,6 +459,24 @@ describe('Multer validation file pipe', () => {
                     }
                 ]
             }
+        });
+    });
+
+    it('should reject calls with invalid content-type', async () => {
+        const app = createRouteWithPipe(validationFilePipe(MultipleFieldsWithWeirdSignDto));
+
+        const res = await request(app).get('/').send('').set('Content-Type', 'audio/wav');
+
+        expect(res.statusCode).toEqual(400);
+        expect(res.body).toEqual({
+            fields: [
+                {
+                    field: 'Content-Type header',
+                    violations: ['Content-Type audio/wav is not allowed. Use [multipart/form-data]']
+                }
+            ],
+            name: 'DefaultFileError',
+            statusCode: 400
         });
     });
 });
