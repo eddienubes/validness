@@ -24,7 +24,11 @@ export const fileFilter = (
         const validationConfig =
             fileValidationConfig?.textFieldsValidationConfig ||
             globalConfig.fileValidationConfig.textFieldsValidationConfig;
-        const { violatedFields, instance } = await isValidTextFields(DtoConstructor, req.body, validationConfig);
+        const { violatedFields, instance } = await isValidTextFields(
+            DtoConstructor,
+            req.body,
+            validationConfig
+        );
         errors.push(...violatedFields);
 
         // Validation by size

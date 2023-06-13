@@ -1,29 +1,54 @@
-import { RequestHandler } from 'express';
-import { plainToClass } from 'class-transformer';
+import { Router } from 'express';
+import { plainToInstance } from 'class-transformer';
 import { validateOrReject, ValidationError } from 'class-validator';
-import { findViolatedFields, ClassConstructor, DefaultQueryError, ConfigStore } from '@src';
-import { ValidationQueryConfig } from '@src/validators/query/types';
+import {
+    ClassConstructor,
+    ConfigStore,
+    DefaultQueryError,
+    findViolatedFields,
+    ValidationConfigType
+} from '@src';
+import { QueryValidationConfig } from '@src/validators/query/types';
+import { contentTypeValidationMiddleware } from '@src/validators/content-type-validation.middleware';
 
-export const validationQueryPipe =
-    (QueryDtoConstructor: ClassConstructor, config?: ValidationQueryConfig): RequestHandler =>
-    async (req, res, next): Promise<void> => {
-        const { query } = req;
-        const globalConfig = ConfigStore.getInstance().getConfig();
+export const validationQueryPipe = (
+    QueryDtoConstructor: ClassConstructor,
+    queryValidationConfig?: Partial<QueryValidationConfig>
+): Router => {
+    const router = Router();
 
-        const instance = plainToClass(QueryDtoConstructor, query);
+    router.use(
+        contentTypeValidationMiddleware(
+            DefaultQueryError,
+            ValidationConfigType.QUERY_VALIDATOR,
+            queryValidationConfig
+        ),
+        async (req, res, next): Promise<void> => {
+            const { query } = req;
+            const globalConfig = ConfigStore.getInstance().getConfig();
 
-        const validatorConfig = config || globalConfig.queryValidationConfig;
+            const errorFactory =
+                queryValidationConfig?.customErrorFactory ||
+                globalConfig.customErrorFactory ||
+                globalConfig.queryValidationConfig.customErrorFactory;
 
-        try {
-            await validateOrReject(instance, validatorConfig);
+            const instance = plainToInstance(QueryDtoConstructor, query);
 
-            req.query = instance;
-        } catch (e) {
-            const errors = findViolatedFields(e as ValidationError[]);
-            const errorFactory = config?.customErrorFactory || globalConfig.customErrorFactory;
+            const validatorConfig = queryValidationConfig || globalConfig.queryValidationConfig;
 
-            return next(errorFactory ? errorFactory(errors) : new DefaultQueryError(errors));
+            try {
+                await validateOrReject(instance, validatorConfig);
+
+                req.query = instance;
+            } catch (e) {
+                const errors = findViolatedFields(e as ValidationError[]);
+
+                return next(errorFactory ? errorFactory(errors) : new DefaultQueryError(errors));
+            }
+
+            return next();
         }
+    );
 
-        return next();
-    };
+    return router;
+};

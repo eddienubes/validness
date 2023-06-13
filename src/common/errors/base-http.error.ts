@@ -1,4 +1,4 @@
-export class BaseError extends Error {
+export class BaseHttpError extends Error {
     private statusCode: number;
 
     constructor(statusCode: number, message: string) {

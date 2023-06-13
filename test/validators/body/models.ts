@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
-import { BaseError, ErrorField } from '@src';
+import { BaseHttpError, ErrorField } from '@src';
 import { StatusCodes } from 'http-status-codes';
 
 export class Picture {
@@ -34,13 +34,13 @@ export class MyCustomError extends Error {
     }
 }
 
-export class MyError extends BaseError {
+export class MyError extends BaseHttpError {
     constructor(private readonly field: string, private readonly errors: ErrorField[]) {
         super(StatusCodes.FORBIDDEN, 'MyError');
     }
 }
 
-export class MyOverriddenError extends BaseError {
+export class MyOverriddenError extends BaseHttpError {
     constructor(
         private readonly newField: string,
         private readonly errors: ErrorField[],

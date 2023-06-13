@@ -1,4 +1,4 @@
 import { ValidatorOptions } from 'class-validator';
-import { CustomErrorFactory } from '@src';
+import { ValidatorConfigurable } from '@src/config/validator-configurable.interface';
 
-export type ValidationBodyConfig = ValidatorOptions & { customErrorFactory?: CustomErrorFactory };
+export type BodyValidationConfig = ValidatorConfigurable & ValidatorOptions;

@@ -11,7 +11,10 @@ export const processFileDtoConstructor = (DtoConstructor: ClassConstructor): Pro
 
     // might not be defined when there are no fields marked with IsFile/IsFiles decorators
     const decoratedFieldsList =
-        (Reflect.getMetadata(FILE_VALIDATION_DECORATED_FIELDS_LIST_KEY, DtoConstructor.prototype) as string[]) || [];
+        (Reflect.getMetadata(
+            FILE_VALIDATION_DECORATED_FIELDS_LIST_KEY,
+            DtoConstructor.prototype
+        ) as string[]) || [];
 
     for (const key of decoratedFieldsList) {
         const metadata = Reflect.getMetadata(

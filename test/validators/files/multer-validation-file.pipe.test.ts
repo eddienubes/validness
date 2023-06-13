@@ -1,7 +1,7 @@
 import { createRouteWithPipe } from '@test/utils/server-utils';
 import request from 'supertest';
 import { getTestFilePath } from '@test/test-utils/files';
-import { validationFilePipe } from '@src';
+import { ConfigStore, validationFilePipe } from '@src';
 import {
     MultipleFieldsWithWeirdSignDto,
     MultipleFilesDto,
@@ -29,6 +29,10 @@ const uploadOptions: Options = {
 };
 
 describe('Multer validation file pipe', () => {
+    afterEach(() => {
+        ConfigStore.getInstance().resetToDefaults();
+    });
+
     it('should not throw any errors with a SingleFileDto', async () => {
         const app = createRouteWithPipe(validationFilePipe(SingleFileDto));
         const path = getTestFilePath('cat1.png');
@@ -100,7 +104,9 @@ describe('Multer validation file pipe', () => {
             fields: [
                 {
                     field: 'photos',
-                    violations: ['The following file field [photos] has exceeded its maxCount or is not expected']
+                    violations: [
+                        'The following file field [photos] has exceeded its maxCount or is not expected'
+                    ]
                 }
             ],
             name: 'DefaultFileError',
@@ -219,7 +225,10 @@ describe('Multer validation file pipe', () => {
     it('should throw an error when file is required but not passed', async () => {
         const app = createRouteWithPipe(validationFilePipe(MultipleFilesDto));
 
-        const res = await request(app).get('/').field('phone', '+15852826457').field('email', 'example@gmail.com');
+        const res = await request(app)
+            .get('/')
+            .field('phone', '+15852826457')
+            .field('email', 'example@gmail.com');
 
         expect(res.statusCode).toEqual(400);
         expect(res.body).toEqual({
@@ -237,7 +246,10 @@ describe('Multer validation file pipe', () => {
     it('should NOT throw an error when file is option and not passed', async () => {
         const app = createRouteWithPipe(validationFilePipe(MultipleFilesOptionalDto));
 
-        const res = await request(app).get('/').field('phone', '+15852826457').field('email', 'example@gmail.com');
+        const res = await request(app)
+            .get('/')
+            .field('phone', '+15852826457')
+            .field('email', 'example@gmail.com');
 
         expect(res.statusCode).toEqual(200);
         expect(res.body).toEqual({
@@ -253,7 +265,10 @@ describe('Multer validation file pipe', () => {
             validationFilePipe(MultipleFilesDto, { customErrorFactory: errorFactoryOverridden })
         );
 
-        const res = await request(app).get('/').field('phone', '+15852826457').field('email', 'example@gmail.com');
+        const res = await request(app)
+            .get('/')
+            .field('phone', '+15852826457')
+            .field('email', 'example@gmail.com');
 
         expect(res.statusCode).toEqual(401);
         expect(res.body).toEqual({
@@ -305,7 +320,9 @@ describe('Multer validation file pipe', () => {
             fields: [
                 {
                     field: 'file',
-                    violations: ['The following file field [file] has exceeded its maxCount or is not expected']
+                    violations: [
+                        'The following file field [file] has exceeded its maxCount or is not expected'
+                    ]
                 }
             ],
             name: 'DefaultFileError',
@@ -442,6 +459,24 @@ describe('Multer validation file pipe', () => {
                     }
                 ]
             }
+        });
+    });
+
+    it('should reject calls with invalid content-type', async () => {
+        const app = createRouteWithPipe(validationFilePipe(MultipleFieldsWithWeirdSignDto));
+
+        const res = await request(app).get('/').send('').set('Content-Type', 'audio/wav');
+
+        expect(res.statusCode).toEqual(400);
+        expect(res.body).toEqual({
+            fields: [
+                {
+                    field: 'Content-Type header',
+                    violations: ['Content-Type audio/wav is not allowed. Use [multipart/form-data]']
+                }
+            ],
+            name: 'DefaultFileError',
+            statusCode: 400
         });
     });
 });

@@ -1,10 +1,14 @@
-import { validationQueryPipe, validness } from '@src';
+import { ConfigStore, validationFilePipe, validationQueryPipe, validness } from '@src';
 import request from 'supertest';
 import { QueryDto } from './models';
 import { errorFactory, errorFactoryOverridden } from '@test/utils/error-utils';
 import { createRouteWithPipe } from '@test/utils/server-utils';
 
 describe('Validation Query Pipe', () => {
+    afterEach(() => {
+        ConfigStore.getInstance().resetToDefaults();
+    });
+
     it('should validate correct query', async () => {
         const dto = new QueryDto();
         dto.name = 'asda';
@@ -13,7 +17,6 @@ describe('Validation Query Pipe', () => {
         const app = createRouteWithPipe(validationQueryPipe(QueryDto));
 
         const res = await request(app).get('/').query(dto);
-
         expect(res.statusCode).toEqual(200);
         expect(res.badRequest).toBeFalsy();
     });
@@ -74,7 +77,9 @@ describe('Validation Query Pipe', () => {
 
         validness({ customErrorFactory: errorFactory });
 
-        const app = createRouteWithPipe(validationQueryPipe(QueryDto, { customErrorFactory: errorFactoryOverridden }));
+        const app = createRouteWithPipe(
+            validationQueryPipe(QueryDto, { customErrorFactory: errorFactoryOverridden })
+        );
 
         const res = await request(app).get('/').query(dto);
 
@@ -84,6 +89,31 @@ describe('Validation Query Pipe', () => {
                 {
                     field: 'age',
                     violations: ['age must be a number string']
+                }
+            ],
+            name: 'MyOverriddenError',
+            newField: 'New Field',
+            oldField: 'Old field',
+            statusCode: 401
+        });
+    });
+
+    it('should reject calls with invalid content-type', async () => {
+        const app = createRouteWithPipe(
+            validationQueryPipe(QueryDto, {
+                customErrorFactory: errorFactoryOverridden,
+                contentTypes: ['application/json']
+            })
+        );
+
+        const res = await request(app).get('/').send('').set('Content-Type', 'audio/wav');
+
+        expect(res.statusCode).toEqual(401);
+        expect(res.body).toEqual({
+            errors: [
+                {
+                    field: 'Content-Type header',
+                    violations: ['Content-Type audio/wav is not allowed. Use [application/json]']
                 }
             ],
             name: 'MyOverriddenError',

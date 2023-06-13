@@ -1,11 +1,15 @@
 import request from 'supertest';
-import { validationBodyPipe, validness } from '@src';
+import { ConfigStore, validationBodyPipe, validness } from '@src';
 import { StatusCodes } from 'http-status-codes';
 import { BodyDto, MyCustomError } from './models';
 import { createRouteWithPipe } from '@test/utils/server-utils';
 import { errorFactory, errorFactoryOverridden } from '@test/utils/error-utils';
 
 describe('Validation Body Pipe', () => {
+    afterEach(() => {
+        ConfigStore.getInstance().resetToDefaults();
+    });
+
     it('should validate and return correct result', async () => {
         const dto = new BodyDto();
         dto.age = 5;
@@ -92,7 +96,8 @@ describe('Validation Body Pipe', () => {
 
         const app = createRouteWithPipe(
             validationBodyPipe(BodyDto, {
-                customErrorFactory: (errors) => new MyCustomError('my custom message', StatusCodes.CONFLICT, errors)
+                customErrorFactory: (errors) =>
+                    new MyCustomError('my custom message', StatusCodes.CONFLICT, errors)
             })
         );
 
@@ -164,7 +169,9 @@ describe('Validation Body Pipe', () => {
         // call validness function to override default config
         validness({ customErrorFactory: errorFactory });
 
-        const app = createRouteWithPipe(validationBodyPipe(BodyDto, { customErrorFactory: errorFactoryOverridden }));
+        const app = createRouteWithPipe(
+            validationBodyPipe(BodyDto, { customErrorFactory: errorFactoryOverridden })
+        );
 
         const res = await request(app).get('/').send(dto);
 
@@ -184,6 +191,23 @@ describe('Validation Body Pipe', () => {
             newField: 'New Field',
             oldField: 'Old field',
             statusCode: 401
+        });
+    });
+
+    it('should reject requests with invalid content-type', async () => {
+        const app = createRouteWithPipe(validationBodyPipe(BodyDto));
+        const res = await request(app).get('/').send('').set('Content-Type', 'audio/wav');
+
+        expect(res.statusCode).toEqual(400);
+        expect(res.body).toEqual({
+            fields: [
+                {
+                    field: 'Content-Type header',
+                    violations: ['Content-Type audio/wav is not allowed. Use [application/json]']
+                }
+            ],
+            name: 'DefaultBodyError',
+            statusCode: 400
         });
     });
 });

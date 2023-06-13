@@ -1,14 +1,18 @@
-import { ValidationConfig, VALIDATION_CONFIG_DEFAULTS, isObject } from '@src';
+import { DeepPartial, isObject, VALIDATION_CONFIG_DEFAULTS, ValidationConfig } from '@src';
+import { ValidationConfigType } from '@src/config/validation-config-type.enum';
+import { FileValidationConfig } from '@src/config/file-validation-config.interface';
+import { QueryValidationConfig } from '@src/validators/query/types';
+import { BodyValidationConfig } from '@src/validators/body/types';
 
 export class ConfigStore {
     private config: ValidationConfig = VALIDATION_CONFIG_DEFAULTS;
 
     private static instance: ConfigStore;
 
-    public setConfig(overrides: Partial<ValidationConfig>): void {
+    public setConfig(overrides: DeepPartial<ValidationConfig>): void {
         this.config = this.mapObjectWithOverridesAndDefaults<ValidationConfig>(
             this.config,
-            overrides,
+            overrides as ValidationConfig,
             VALIDATION_CONFIG_DEFAULTS
         );
     }
@@ -17,8 +21,27 @@ export class ConfigStore {
         return { ...this.config };
     }
 
+    public resetToDefaults() {
+        this.config = VALIDATION_CONFIG_DEFAULTS;
+    }
+
+    public getByValidatorType(
+        type: ValidationConfigType
+    ): FileValidationConfig | QueryValidationConfig | BodyValidationConfig {
+        switch (type) {
+            case ValidationConfigType.FILE_VALIDATOR:
+                return this.config.fileValidationConfig;
+            case ValidationConfigType.BODY_VALIDATOR:
+                return this.config.bodyValidationConfig;
+            case ValidationConfigType.QUERY_VALIDATOR:
+                return this.config.queryValidationConfig;
+            default:
+                throw new Error(`Unknown validator type: ${type}`);
+        }
+    }
+
     /**
-     * Modifies original object with overrides and defaults for those keys that are not set (undefined)
+     * Modifies an original object with overrides and defaults for those keys that are not set (undefined)
      * @param obj original object
      * @param overrides object with overridden fields
      * @param defaults defaults
@@ -30,7 +53,7 @@ export class ConfigStore {
             // get overridden values
             let value = overrides[typedKey];
 
-            // in case in modifiable object field is not defined we just assign it
+            // in case in modifiable object field is not defined, we just assign it
             if (!obj[typedKey]) {
                 obj = {
                     ...obj,
@@ -43,12 +66,16 @@ export class ConfigStore {
             if (isObject(value)) {
                 obj = {
                     ...obj,
-                    [typedKey]: this.mapObjectWithOverridesAndDefaults(obj[typedKey], value, defaults[typedKey])
+                    [typedKey]: this.mapObjectWithOverridesAndDefaults(
+                        obj[typedKey],
+                        value,
+                        defaults[typedKey]
+                    )
                 };
                 continue;
             }
 
-            // if it's undefined grab by key from defaults
+            // if it's an undefined grab by key from defaults
             if (!value) {
                 value = defaults[typedKey];
             }

@@ -5,9 +5,13 @@ import { DefaultFileError, CustomErrorFactory, ErrorField, ConfigStore } from '@
 export const multerErrorHandlerMiddleware =
     (customErrorFactory?: CustomErrorFactory): ErrorRequestHandler =>
     async (err, req, res, next) => {
-        const globalConfig = ConfigStore.getInstance().getConfig();
+        const configStore = ConfigStore.getInstance();
+        const globalConfig = configStore.getConfig();
 
-        const errorFactory = customErrorFactory || globalConfig.customErrorFactory;
+        const errorFactory =
+            customErrorFactory ||
+            globalConfig.customErrorFactory ||
+            globalConfig.fileValidationConfig.customErrorFactory;
 
         if (err instanceof MulterError) {
             const errorFields = mapMulterErrorToErrorFields(err);
