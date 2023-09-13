@@ -6,30 +6,14 @@ import { isValidMimeType, isValidTextFields } from '../helpers';
 import { ConfigStore, ClassConstructor, ErrorField, DefaultFileError } from '@src';
 import { FileValidationConfig } from '@src/config/file-validation-config.interface';
 
-export const fileFilter = (
-    DtoConstructor: ClassConstructor,
-    fileValidationMap: FileValidationMap,
-    fileValidationConfig?: Partial<FileValidationConfig>
-): MulterFileFilter => {
+export const fileFilter = (fileValidationMap: FileValidationMap): MulterFileFilter => {
     return async (req, file: MulterFile, callback: FileFilterCallback) => {
-        const globalConfig = ConfigStore.getInstance().getConfig();
         const metadata = fileValidationMap[file.fieldname];
         const fileSize = file.size || req.headers['content-length'] || 0;
         // Array of errored fields. Mix of text field violations and file violations.
         const errors: ErrorField[] = [];
         // Array of strings containing violations
         const fileViolations: string[] = [];
-
-        // Text fields validation, basically repeats body or query validation
-        const validationConfig =
-            fileValidationConfig?.textFieldsValidationConfig ||
-            globalConfig.fileValidationConfig.textFieldsValidationConfig;
-        const { violatedFields, instance } = await isValidTextFields(
-            DtoConstructor,
-            req.body,
-            validationConfig
-        );
-        errors.push(...violatedFields);
 
         // Validation by size
         if (metadata.maxSizeBytes && fileSize > metadata.maxSizeBytes) {
@@ -70,8 +54,6 @@ export const fileFilter = (
             return callback(new DefaultFileError(errors));
         }
 
-        // If everything is good, assign transformed instance to body and pass ctx to the next middleware
-        req.body = instance;
         return callback(null, true);
     };
 };

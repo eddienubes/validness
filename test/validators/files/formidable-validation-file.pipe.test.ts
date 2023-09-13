@@ -1,6 +1,7 @@
 import { createRouteWithPipe } from '@test/utils/server-utils';
-import { ConfigStore, FileValidatorType, validationBodyPipe, validationFilePipe } from '@src';
+import { ConfigStore, FileValidatorType, validationFilePipe } from '@src';
 import {
+    IsFilesDecoratorWithTransformDto,
     MultipleFilesDto,
     MultipleFilesMaxAmountDto,
     MultipleFilesMaxSizeDto,
@@ -17,7 +18,6 @@ import { getFormidableUploadFolderPath, getTestFilePath } from '@test/test-utils
 import request from 'supertest';
 import { FileValidationConfig } from '@src/config/file-validation-config.interface';
 import { errorFactoryOverridden } from '@test/utils/error-utils';
-import { BodyDto } from '@test/validators/body/models';
 
 const options: Partial<FileValidationConfig> = {
     fileValidatorType: FileValidatorType.FORMIDABLE,
@@ -483,6 +483,51 @@ describe('Formidable validation pipe', () => {
             ],
             name: 'DefaultFileError',
             statusCode: 400
+        });
+    });
+
+    it('should call transform decorator only once when file pipe applied', async () => {
+        const app = createRouteWithPipe(validationFilePipe(IsFilesDecoratorWithTransformDto, options));
+
+        const path1 = getTestFilePath('cat1.png');
+        const path2 = getTestFilePath('cat2.png');
+
+        const res = await request(app)
+            .get('/')
+            .field('count', '0')
+            .attach('files', path1)
+            .attach('files', path2)
+            .attach('files', path2);
+
+        expect(res.statusCode).toEqual(200);
+        expect(res.body.data).toEqual({
+            count: 1,
+            files: [
+                {
+                    destination: expect.stringContaining('uploads'),
+                    fileName: 'cat1.png',
+                    mimeType: 'image/png',
+                    originalName: 'cat1.png',
+                    path: expect.stringContaining('uploads'),
+                    sizeBytes: 7333311
+                },
+                {
+                    destination: expect.stringContaining('uploads'),
+                    fileName: 'cat2.png',
+                    mimeType: 'image/png',
+                    originalName: 'cat2.png',
+                    path: expect.stringContaining('uploads'),
+                    sizeBytes: 560274
+                },
+                {
+                    destination: expect.stringContaining('uploads'),
+                    fileName: 'cat2.png',
+                    mimeType: 'image/png',
+                    originalName: 'cat2.png',
+                    path: expect.stringContaining('uploads'),
+                    sizeBytes: 560274
+                }
+            ]
         });
     });
 });

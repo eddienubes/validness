@@ -25,7 +25,7 @@ export const multerModificationMiddleware = (
             if ((!files || !files?.length) && !metadata.optional) {
                 return next(
                     new Error(
-                        `You have encountered an unexpected validness packages error. If you see this message please create an issue or somehow notify the developer about it`
+                        `You have encountered an unexpected validness package error. If you see this message please create an issue or somehow notify the developer about it`
                     )
                 );
             }

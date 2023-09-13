@@ -31,8 +31,8 @@ export const getMulterFileValidationChain: FileValidationChainGetter = (
             ValidationConfigType.FILE_VALIDATOR,
             fileValidationConfig
         ),
-        multerUploadMiddleware(DtoConstructor, processedFileDtoConstructor, coreConfig),
-        multerValidationMiddleware(processedFileDtoConstructor),
+        multerUploadMiddleware(processedFileDtoConstructor, coreConfig),
+        multerValidationMiddleware(DtoConstructor, processedFileDtoConstructor, fileValidationConfig),
         multerModificationMiddleware(processedFileDtoConstructor),
         multerErrorHandlerMiddleware(fileValidationConfig?.customErrorFactory)
     );

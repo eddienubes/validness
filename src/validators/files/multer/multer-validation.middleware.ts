@@ -1,17 +1,24 @@
 import { RequestHandler } from 'express';
 import { ProcessedFileDtoConstructor } from '../interfaces/processed-file-dto-constructor.interface';
-import { ErrorField, DefaultFileError } from '@src';
+import { ErrorField, DefaultFileError, ConfigStore, ClassConstructor } from '@src';
 import { MulterFile } from './types';
+import { isValidTextFields } from '@src/validators/files/helpers';
+import { FileValidationConfig } from '@src/config/file-validation-config.interface';
 
 /**
  * Some validation logic preserved on upload stage by multer itself.
- * Here we just extend it.
+ * Here we just extend it with additional checks.
+ * @param DtoConstructor
  * @param processedFileDtoConstructor
+ * @param fileValidationConfig
  */
 export const multerValidationMiddleware = (
-    processedFileDtoConstructor: ProcessedFileDtoConstructor
+    DtoConstructor: ClassConstructor,
+    processedFileDtoConstructor: ProcessedFileDtoConstructor,
+    fileValidationConfig?: Partial<FileValidationConfig>
 ): RequestHandler => {
     return async (req, res, next) => {
+        const globalConfig = ConfigStore.getInstance().getConfig();
         const errors: ErrorField[] = [];
 
         // Extended file validation
@@ -33,9 +40,23 @@ export const multerValidationMiddleware = (
             }
         }
 
+        // Text fields validation, basically repeats body or query validation
+        const validationConfig =
+            fileValidationConfig?.textFieldsValidationConfig ||
+            globalConfig.fileValidationConfig.textFieldsValidationConfig;
+        const { violatedFields, instance } = await isValidTextFields(
+            DtoConstructor,
+            req.body,
+            validationConfig
+        );
+        errors.push(...violatedFields);
+
         if (errors.length) {
             return next(new DefaultFileError(errors));
         }
+
+        // If everything is good, assign transformed instance to body and pass ctx to the next middleware
+        req.body = instance;
 
         next();
     };
