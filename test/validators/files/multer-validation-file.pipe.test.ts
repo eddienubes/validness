@@ -3,6 +3,7 @@ import request from 'supertest';
 import { getTestFilePath } from '@test/test-utils/files';
 import { ConfigStore, validationFilePipe } from '@src';
 import {
+    IsFilesDecoratorWithTransformDto,
     MultipleFieldsWithWeirdSignDto,
     MultipleFilesDto,
     MultipleFilesMaxAmountDto,
@@ -477,6 +478,50 @@ describe('Multer validation file pipe', () => {
             ],
             name: 'DefaultFileError',
             statusCode: 400
+        });
+    });
+
+    it('should call transform decorator only once when file pipe applied', async () => {
+        const app = createRouteWithPipe(validationFilePipe(IsFilesDecoratorWithTransformDto));
+
+        const path1 = getTestFilePath('cat1.png');
+        const path2 = getTestFilePath('cat2.png');
+
+        const res = await request(app)
+            .get('/')
+            .field('count', '0')
+            .attach('files', path1)
+            .attach('files', path2)
+            .attach('files', path2);
+
+        expect(res.statusCode).toEqual(200);
+        expect(res.body).toEqual({
+            data: {
+                count: 1,
+                files: [
+                    {
+                        buffer: 'Buffer',
+                        encoding: '7bit',
+                        mimeType: 'image/png',
+                        originalName: 'cat1.png',
+                        sizeBytes: 7333311
+                    },
+                    {
+                        buffer: 'Buffer',
+                        encoding: '7bit',
+                        mimeType: 'image/png',
+                        originalName: 'cat2.png',
+                        sizeBytes: 560274
+                    },
+                    {
+                        buffer: 'Buffer',
+                        encoding: '7bit',
+                        mimeType: 'image/png',
+                        originalName: 'cat2.png',
+                        sizeBytes: 560274
+                    }
+                ]
+            }
         });
     });
 });

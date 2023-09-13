@@ -1,7 +1,8 @@
 import { IsFile } from '@src/validators/files/decorators/is-file.decorator';
 import { ValidatedFile } from '@src/validators/files/interfaces/validated-file.interface';
-import { IsEmail, IsNumberString, IsPhoneNumber } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsNumber, IsNumberString, IsPhoneNumber } from 'class-validator';
 import { IsFiles } from '@src/validators/files/decorators/is-files.decorator';
+import { Transform } from 'class-transformer';
 
 export class SingleFileDto {
     @IsFile()
@@ -121,4 +122,14 @@ export class MultipleFilesOptionalArrayTextDto {
 
     @IsNumberString(undefined, { each: true })
     numbers: string[];
+}
+
+export class IsFilesDecoratorWithTransformDto {
+    @IsFiles()
+    files: ValidatedFile[];
+
+    @Transform(({ value }) => {
+        return parseInt(value, 10) + 1;
+    })
+    count: number;
 }

@@ -5,13 +5,12 @@ import { RequestHandler } from 'express';
 import { ClassConstructor } from '@src';
 
 export const multerUploadMiddleware = (
-    DtoConstructor: ClassConstructor,
     processedFileDtoConstructor: ProcessedFileDtoConstructor,
     coreConfig: Options
 ): RequestHandler => {
     const upload = multer({
         ...coreConfig,
-        fileFilter: fileFilter(DtoConstructor, processedFileDtoConstructor.fileValidationMap)
+        fileFilter: fileFilter(processedFileDtoConstructor.fileValidationMap)
     });
 
     return upload.fields(processedFileDtoConstructor.multerFields);
