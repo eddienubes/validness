@@ -2,8 +2,7 @@
   "compilerOptions": {
     "experimentalDecorators": true,
     "incremental": true,
-    "target": "es6",
-    "module": "commonjs",
+    "module": "NodeNext",
     "lib": [
       "es6"
     ],
@@ -15,7 +14,6 @@
     "strict": true,
     "noImplicitAny": true,
     "strictPropertyInitialization": false,
-    "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
       "@src/*": [

@@ -1,0 +1,33 @@
+name: Package CI
+
+on:
+  push:
+  workflow_dispatch:
+  workflow_call:
+
+
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.11.0
+          cache: 'yarn'
+          cache-dependency-path: 'yarn.lock'
+
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build Dev
+        run: yarn build:dev
+
+      - name: Lint Check
+        run: yarn lint:check
+
+      - name: Run Tests
+        run: yarn test:all

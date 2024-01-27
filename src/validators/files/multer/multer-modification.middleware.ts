@@ -53,7 +53,6 @@ export const multerModificationMiddleware = (
 const mapMulterFiles = (files: MulterFile[]): ValidatedFile[] =>
     files.map((file) => ({
         originalName: file.originalname,
-        encoding: file.encoding,
         mimeType: file.mimetype,
         buffer: file.buffer,
         sizeBytes: file.size,

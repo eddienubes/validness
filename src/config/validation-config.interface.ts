@@ -11,6 +11,8 @@ export interface ValidationConfig {
         | FileValidatorType
         | undefined
         | FileValidationConfig
+        | QueryValidationConfig
+        | BodyValidationConfig
         | string[];
 
     /**

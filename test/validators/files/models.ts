@@ -1,6 +1,6 @@
 import { IsFile } from '@src/validators/files/decorators/is-file.decorator';
 import { ValidatedFile } from '@src/validators/files/interfaces/validated-file.interface';
-import { IsEmail, IsNotEmpty, IsNumber, IsNumberString, IsPhoneNumber } from 'class-validator';
+import { Allow, IsEmail, IsNotEmpty, IsNumber, IsNumberString, IsPhoneNumber } from 'class-validator';
 import { IsFiles } from '@src/validators/files/decorators/is-files.decorator';
 import { Transform } from 'class-transformer';
 
@@ -131,5 +131,6 @@ export class IsFilesDecoratorWithTransformDto {
     @Transform(({ value }) => {
         return parseInt(value, 10) + 1;
     })
+    @Allow()
     count: number;
 }

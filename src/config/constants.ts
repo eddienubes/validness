@@ -1,9 +1,8 @@
 import { ValidationConfig, FileValidatorType } from '@src';
 
 export const VALIDATION_CONFIG_DEFAULTS: ValidationConfig = {
-    bodyValidationConfig: { forbidNonWhitelisted: true, contentTypes: ['application/json'] },
+    bodyValidationConfig: { contentTypes: ['application/json'] },
     queryValidationConfig: {
-        forbidNonWhitelisted: true,
         contentTypes: [] // empty array means any
     },
     customErrorFactory: undefined,
@@ -15,9 +14,7 @@ export const VALIDATION_CONFIG_DEFAULTS: ValidationConfig = {
             multiples: true
         },
 
-        textFieldsValidationConfig: {
-            forbidNonWhitelisted: true
-        },
+        textFieldsValidationConfig: {},
 
         contentTypes: ['multipart/form-data']
     }

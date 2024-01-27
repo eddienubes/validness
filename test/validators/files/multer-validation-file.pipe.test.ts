@@ -43,7 +43,6 @@ describe('Multer validation file pipe', () => {
         expect(res.body.data).toEqual({
             file: {
                 buffer: 'Buffer',
-                encoding: '7bit',
                 mimeType: 'image/png',
                 originalName: 'cat1.png',
                 sizeBytes: 7333311
@@ -71,14 +70,12 @@ describe('Multer validation file pipe', () => {
                 photos: [
                     {
                         buffer: 'Buffer',
-                        encoding: '7bit',
                         mimeType: 'image/png',
                         originalName: 'cat1.png',
                         sizeBytes: 7333311
                     },
                     {
                         buffer: 'Buffer',
-                        encoding: '7bit',
                         mimeType: 'image/png',
                         originalName: 'cat2.png',
                         sizeBytes: 560274
@@ -342,7 +339,6 @@ describe('Multer validation file pipe', () => {
             data: {
                 file: {
                     buffer: 'Buffer',
-                    encoding: '7bit',
                     mimeType: 'application/octet-stream',
                     originalName: 'file-wrong-mime-type',
                     sizeBytes: 17
@@ -391,7 +387,6 @@ describe('Multer validation file pipe', () => {
         expect(res.body.data).toEqual({
             file: {
                 destination: 'test/test-data/uploads',
-                encoding: '7bit',
                 fileName: 'file-wrong-mime-type',
                 mimeType: 'application/octet-stream',
                 originalName: 'file-wrong-mime-type',
@@ -446,14 +441,12 @@ describe('Multer validation file pipe', () => {
                 'photos[]': [
                     {
                         buffer: 'Buffer',
-                        encoding: '7bit',
                         mimeType: 'image/png',
                         originalName: 'cat1.png',
                         sizeBytes: 7333311
                     },
                     {
                         buffer: 'Buffer',
-                        encoding: '7bit',
                         mimeType: 'image/png',
                         originalName: 'cat2.png',
                         sizeBytes: 560274
@@ -501,21 +494,18 @@ describe('Multer validation file pipe', () => {
                 files: [
                     {
                         buffer: 'Buffer',
-                        encoding: '7bit',
                         mimeType: 'image/png',
                         originalName: 'cat1.png',
                         sizeBytes: 7333311
                     },
                     {
                         buffer: 'Buffer',
-                        encoding: '7bit',
                         mimeType: 'image/png',
                         originalName: 'cat2.png',
                         sizeBytes: 560274
                     },
                     {
                         buffer: 'Buffer',
-                        encoding: '7bit',
                         mimeType: 'image/png',
                         originalName: 'cat2.png',
                         sizeBytes: 560274

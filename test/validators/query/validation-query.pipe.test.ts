@@ -1,8 +1,8 @@
-import { ConfigStore, validationFilePipe, validationQueryPipe, validness } from '@src';
+import { ConfigStore, validationFilePipe, validationQueryPipe, validness } from '@src/index.js';
 import request from 'supertest';
-import { QueryDto } from './models';
-import { errorFactory, errorFactoryOverridden } from '@test/utils/error-utils';
-import { createRouteWithPipe } from '@test/utils/server-utils';
+import { QueryDto } from './models.js';
+import { errorFactory, errorFactoryOverridden } from '@test/utils/error-utils.js';
+import { createRouteWithPipe } from '@test/utils/server-utils.js';
 
 describe('Validation Query Pipe', () => {
     afterEach(() => {

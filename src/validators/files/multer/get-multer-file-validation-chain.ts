@@ -26,15 +26,15 @@ export const getMulterFileValidationChain: FileValidationChainGetter = (
     };
 
     router.use(
-        contentTypeValidationMiddleware(
-            DefaultFileError,
-            ValidationConfigType.FILE_VALIDATOR,
-            fileValidationConfig
-        ),
+        // contentTypeValidationMiddleware(
+        //     DefaultFileError,
+        //     ValidationConfigType.FILE_VALIDATOR,
+        //     fileValidationConfig
+        // ),
         multerUploadMiddleware(processedFileDtoConstructor, coreConfig),
-        multerValidationMiddleware(DtoConstructor, processedFileDtoConstructor, fileValidationConfig),
-        multerModificationMiddleware(processedFileDtoConstructor),
-        multerErrorHandlerMiddleware(fileValidationConfig?.customErrorFactory)
+        // multerValidationMiddleware(DtoConstructor, processedFileDtoConstructor, fileValidationConfig),
+        // multerModificationMiddleware(processedFileDtoConstructor),
+        // multerErrorHandlerMiddleware(fileValidationConfig?.customErrorFactory)
     );
 
     return router;

@@ -8,11 +8,6 @@ const config: Config.InitialOptions = {
     testEnvironment: 'node',
     setupFilesAfterEnv: ['<rootDir>/jest/jest-setup.ts'],
     roots: ['<rootDir>/test'],
-    globals: {
-        'ts-jest': {
-            tsconfig: 'tsconfig.json'
-        }
-    },
     modulePaths: [compilerOptions.baseUrl],
     moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths),
     coverageDirectory: '<rootDir>/jest/coverage',

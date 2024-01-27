@@ -2,14 +2,16 @@ import { FileFilterCallback } from 'multer';
 import { FileValidationMap, MulterFileFilter } from '../types';
 import { MIME_TYPE_MAP } from '../constants';
 import { MulterFile } from './types';
-import { isValidMimeType, isValidTextFields } from '../helpers';
-import { ConfigStore, ClassConstructor, ErrorField, DefaultFileError } from '@src';
-import { FileValidationConfig } from '@src/config/file-validation-config.interface';
+import { isValidMimeType } from '../helpers';
+import { ErrorField, DefaultFileError } from '@src';
 
 export const fileFilter = (fileValidationMap: FileValidationMap): MulterFileFilter => {
     return async (req, file: MulterFile, callback: FileFilterCallback) => {
         const metadata = fileValidationMap[file.fieldname];
-        const fileSize = file.size || req.headers['content-length'] || 0;
+        const headerSizeStr = req.header('content-length');
+        const headerSize = headerSizeStr ? parseInt(headerSizeStr, 10) : null;
+        const fileSize = file.size || headerSize || 0;
+
         // Array of errored fields. Mix of text field violations and file violations.
         const errors: ErrorField[] = [];
         // Array of strings containing violations

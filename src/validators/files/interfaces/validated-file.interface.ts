@@ -1,7 +1,6 @@
 /**
  * fieldname: 'file',
  * originalname: 'cat.png',
- * encoding: '7bit',
  * mimetype: 'image/png',
  * destination: 'uploads/',
  * filename: 'ae2bcc3291957152cda942c302668927',
@@ -24,10 +23,6 @@ export interface ValidatedFile {
      * Sometimes it's undefined, sometimes it's null
      */
     originalName?: string;
-    /**
-     * Defined only when multer is used
-     */
-    encoding?: string;
     /**
      * Defined only when memory storage of multer is used
      */
