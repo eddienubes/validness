@@ -1,5 +1,8 @@
-import { createRouteWithPipe } from '@test/utils/server-utils';
-import { ConfigStore, FileValidatorType, validationFilePipe } from '@src';
+import { FileValidationConfig, FileValidatorType, validationFilePipe } from '@src/index.js';
+import request from 'supertest';
+import { getFormidableUploadFolderPath, getTestFilePath } from '@test/test-utils/files.js';
+import { ConfigStore } from '@src/config/config-store.js';
+import { createRouteWithPipe } from '@test/utils/server-utils.js';
 import {
     IsFilesDecoratorWithTransformDto,
     MultipleFilesDto,
@@ -13,11 +16,8 @@ import {
     SingleFileDto,
     SingleFileNoTextDto,
     SingleFileWithTypeDto
-} from './models';
-import { getFormidableUploadFolderPath, getTestFilePath } from '@test/test-utils/files';
-import request from 'supertest';
-import { FileValidationConfig } from '@src/config/file-validation-config.interface';
-import { errorFactoryOverridden } from '@test/utils/error-utils';
+} from '@test/validators/files/models.js';
+import { errorFactoryOverridden } from '@test/utils/error-utils.js';
 
 const options: Partial<FileValidationConfig> = {
     fileValidatorType: FileValidatorType.FORMIDABLE,
@@ -39,7 +39,11 @@ describe('Formidable validation pipe', () => {
         const app = createRouteWithPipe(validationFilePipe(SingleFileDto, options));
 
         const path = getTestFilePath('cat1.png');
-        const res = await request(app).get('/').field('number', '123').attach('file', path);
+        const res = await request(app)
+            .get('/')
+            .field('number', '123')
+            .field('number', '456')
+            .attach('file', path);
 
         expect(res.statusCode).toEqual(200);
         expect(res.body.data).toEqual({

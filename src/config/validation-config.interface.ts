@@ -1,8 +1,9 @@
 import { ValidatorOptions } from 'class-validator';
-import { CustomErrorFactory, FileValidatorType } from '@src';
-import { FileValidationConfig } from './file-validation-config.interface';
-import { BodyValidationConfig } from '@src/validators/body/types';
-import { QueryValidationConfig } from '@src/validators/query/types';
+import { CustomErrorFactory } from '@src/common/types/types.js';
+import { FileValidatorType } from '@src/common/enums/file-validator-type.enum.js';
+import { FileValidationConfig } from '@src/config/file-validation-config.interface.js';
+import { QueryValidationConfig } from '@src/validators/query/types.js';
+import { BodyValidationConfig } from '@src/validators/body/types.js';
 
 export interface ValidationConfig {
     [key: string]:

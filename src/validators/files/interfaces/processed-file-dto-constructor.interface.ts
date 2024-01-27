@@ -1,5 +1,5 @@
-import { FileValidationMap } from '../types';
 import { Field } from 'multer';
+import { FileValidationMap } from '@src/validators/files/types.js';
 
 export interface ProcessedFileDtoConstructor {
     [key: string]: FileValidationMap | Field[];

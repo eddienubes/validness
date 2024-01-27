@@ -1,7 +1,8 @@
-import { createRouteWithPipe } from '@test/utils/server-utils';
 import request from 'supertest';
-import { getTestFilePath } from '@test/test-utils/files';
-import { ConfigStore, validationFilePipe } from '@src';
+import { validationFilePipe } from '@src/index.js';
+import { Options, diskStorage } from 'multer';
+import { ConfigStore } from '@src/config/config-store.js';
+import { createRouteWithPipe } from '@test/utils/server-utils.js';
 import {
     IsFilesDecoratorWithTransformDto,
     MultipleFieldsWithWeirdSignDto,
@@ -16,9 +17,9 @@ import {
     SingleFileDto,
     SingleFileNoTextDto,
     SingleFileWithTypeDto
-} from './models';
-import { errorFactoryOverridden } from '../../utils/error-utils';
-import { Options, diskStorage } from 'multer';
+} from '@test/validators/files/models.js';
+import { getTestFilePath } from '@test/test-utils/files.js';
+import { errorFactoryOverridden } from '@test/utils/error-utils.js';
 
 const uploadOptions: Options = {
     storage: diskStorage({

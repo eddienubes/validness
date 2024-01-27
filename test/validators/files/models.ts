@@ -1,8 +1,6 @@
-import { IsFile } from '@src/validators/files/decorators/is-file.decorator';
-import { ValidatedFile } from '@src/validators/files/interfaces/validated-file.interface';
-import { Allow, IsEmail, IsNotEmpty, IsNumber, IsNumberString, IsPhoneNumber } from 'class-validator';
-import { IsFiles } from '@src/validators/files/decorators/is-files.decorator';
 import { Transform } from 'class-transformer';
+import { IsFile, IsFiles, ValidatedFile } from '@src/index.js';
+import { Allow, IsEmail, IsNumberString, IsPhoneNumber } from 'class-validator';
 
 export class SingleFileDto {
     @IsFile()

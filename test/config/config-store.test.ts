@@ -1,4 +1,5 @@
-import { ConfigStore, ValidationConfig, FileValidatorType } from '@src';
+import { FileValidatorType } from '@src/index.js';
+import { ConfigStore } from '@src/config/config-store.js';
 
 describe('Config Store', () => {
     it('should set config recursively in a proper way', function () {
@@ -18,8 +19,7 @@ describe('Config Store', () => {
 
         expect(instance.getConfig()).toEqual({
             bodyValidationConfig: {
-                contentTypes: ['application/json'],
-                forbidNonWhitelisted: true
+                contentTypes: ['application/json']
             },
             fileValidationConfig: {
                 contentTypes: [],
@@ -30,14 +30,11 @@ describe('Config Store', () => {
                     multiples: true
                 },
                 fileValidatorType: 'FORMIDABLE',
-                textFieldsValidationConfig: {
-                    forbidNonWhitelisted: true
-                }
+                textFieldsValidationConfig: {}
             },
             queryValidationConfig: {
-                contentTypes: [],
-                forbidNonWhitelisted: true
+                contentTypes: []
             }
-        } as ValidationConfig);
+        });
     });
 });

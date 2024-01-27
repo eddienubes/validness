@@ -1,14 +1,19 @@
 import { Router } from 'express';
-import { multerUploadMiddleware } from './multer-upload.middleware';
-import { multerValidationMiddleware } from './multer-validation.middleware';
-import { multerModificationMiddleware } from './multer-modification.middleware';
-import { ProcessedFileDtoConstructor } from '../interfaces/processed-file-dto-constructor.interface';
-import { ClassConstructor, ConfigStore, DefaultFileError, ValidationConfigType } from '@src';
-import { FileValidationConfig } from '@src/config/file-validation-config.interface';
-import { multerErrorHandlerMiddleware } from './multer-error-handler.middleware';
+import {
+    ClassConstructor,
+    DefaultFileError,
+    FileValidationConfig,
+    ProcessedFileDtoConstructor,
+    ValidationConfigType
+} from '@src/index.js';
+import { FileValidationChainGetter } from '@src/validators/files/multer/types.js';
+import { ConfigStore } from '@src/config/config-store.js';
 import { Options } from 'multer';
-import { FileValidationChainGetter } from '@src/validators/files/multer/types';
-import { contentTypeValidationMiddleware } from '@src/validators/content-type-validation.middleware';
+import { multerUploadMiddleware } from '@src/validators/files/multer/multer-upload.middleware.js';
+import { contentTypeValidationMiddleware } from '@src/validators/content-type-validation.middleware.js';
+import { multerModificationMiddleware } from '@src/validators/files/multer/multer-modification.middleware.js';
+import { multerValidationMiddleware } from '@src/validators/files/multer/multer-validation.middleware.js';
+import { multerErrorHandlerMiddleware } from '@src/validators/files/multer/multer-error-handler.middleware.js';
 
 export const getMulterFileValidationChain: FileValidationChainGetter = (
     DtoConstructor: ClassConstructor,
@@ -26,15 +31,15 @@ export const getMulterFileValidationChain: FileValidationChainGetter = (
     };
 
     router.use(
-        // contentTypeValidationMiddleware(
-        //     DefaultFileError,
-        //     ValidationConfigType.FILE_VALIDATOR,
-        //     fileValidationConfig
-        // ),
+        contentTypeValidationMiddleware(
+            DefaultFileError,
+            ValidationConfigType.FILE_VALIDATOR,
+            fileValidationConfig
+        ),
         multerUploadMiddleware(processedFileDtoConstructor, coreConfig),
-        // multerValidationMiddleware(DtoConstructor, processedFileDtoConstructor, fileValidationConfig),
-        // multerModificationMiddleware(processedFileDtoConstructor),
-        // multerErrorHandlerMiddleware(fileValidationConfig?.customErrorFactory)
+        multerValidationMiddleware(DtoConstructor, processedFileDtoConstructor, fileValidationConfig),
+        multerModificationMiddleware(processedFileDtoConstructor),
+        multerErrorHandlerMiddleware(fileValidationConfig?.customErrorFactory)
     );
 
     return router;

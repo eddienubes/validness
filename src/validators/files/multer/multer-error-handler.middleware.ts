@@ -1,6 +1,7 @@
 import { ErrorRequestHandler } from 'express';
 import { MulterError } from 'multer';
-import { DefaultFileError, CustomErrorFactory, ErrorField, ConfigStore } from '@src';
+import { DefaultFileError, CustomErrorFactory, ErrorField } from '@src/index.js';
+import { ConfigStore } from '@src/config/config-store.js';
 
 export const multerErrorHandlerMiddleware =
     (customErrorFactory?: CustomErrorFactory): ErrorRequestHandler =>

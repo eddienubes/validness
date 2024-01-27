@@ -1,9 +1,10 @@
-import { ClassConstructor } from '@src';
-import { ProcessedFileDtoConstructor } from './interfaces/processed-file-dto-constructor.interface';
-import { FileValidationMap } from './types';
+import { ClassConstructor, FileMetadata, ProcessedFileDtoConstructor } from '@src/index.js';
 import { Field } from 'multer';
-import { FILE_VALIDATION_DECORATED_FIELDS_LIST_KEY, FILE_VALIDATION_METADATA_KEY } from './constants';
-import { FileMetadata } from './interfaces/file-metadata.interface';
+import { FileValidationMap } from '@src/validators/files/types.js';
+import {
+    FILE_VALIDATION_DECORATED_FIELDS_LIST_KEY,
+    FILE_VALIDATION_METADATA_KEY
+} from '@src/validators/files/constants.js';
 
 export const processFileDtoConstructor = (DtoConstructor: ClassConstructor): ProcessedFileDtoConstructor => {
     const map: FileValidationMap = {};

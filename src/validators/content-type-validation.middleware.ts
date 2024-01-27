@@ -1,8 +1,11 @@
 import { RequestHandler } from 'express';
-import { ValidationErrorsCollectable } from '@src/common/interfaces/validation-errors-collectable.interface';
-import { ClassConstructor, ConfigStore } from '@src';
-import { ValidationConfigType } from '@src/config/validation-config-type.enum';
-import { ValidatorConfigurable } from '@src/config/validator-configurable.interface';
+import {
+    ClassConstructor,
+    ValidationConfigType,
+    ValidationErrorsCollectable,
+    ValidatorConfigurable
+} from '@src/index.js';
+import { ConfigStore } from '@src/config/config-store.js';
 
 export const contentTypeValidationMiddleware = (
     ErrorConstructor: ClassConstructor<ValidationErrorsCollectable>,

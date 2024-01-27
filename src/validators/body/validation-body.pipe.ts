@@ -1,10 +1,13 @@
 import { plainToInstance } from 'class-transformer';
 import { validateOrReject, ValidationError } from 'class-validator';
-import { ClassConstructor, ConfigStore, DefaultBodyError, findViolatedFields } from '@src';
 import { Router } from 'express';
-import { BodyValidationConfig } from '@src/validators/body/types';
-import { contentTypeValidationMiddleware } from '@src/validators/content-type-validation.middleware';
-import { ValidationConfigType } from '@src/config/validation-config-type.enum';
+import { ClassConstructor } from '@src/common/interfaces/class-constructor.interface.js';
+import { BodyValidationConfig } from '@src/validators/body/types.js';
+import { contentTypeValidationMiddleware } from '@src/validators/content-type-validation.middleware.js';
+import { DefaultBodyError } from '@src/validators/body/errors/default-body.error.js';
+import { ValidationConfigType } from '@src/config/validation-config-type.enum.js';
+import { ConfigStore } from '@src/config/config-store.js';
+import { findViolatedFields } from '@src/utils/find-violated-fields.js';
 
 /**
  * Validates the body of an incoming request.

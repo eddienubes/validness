@@ -1,14 +1,19 @@
 import { Router } from 'express';
-import { ClassConstructor, ConfigStore, DefaultFileError, ValidationConfigType } from '@src';
-import { ProcessedFileDtoConstructor } from '../interfaces/processed-file-dto-constructor.interface';
-import { FileValidationConfig } from '@src/config/file-validation-config.interface';
-import { formidableUploadMiddleware } from './formidable-upload.middleware';
 import { Options } from 'formidable';
-import { formidableValidationMiddleware } from './formidable-validation.middleware';
-import { formidableModificationMiddleware } from './formidable-modification.middleware';
-import { formidableErrorHandler } from './formidable-error-handler.middleware';
-import { FileValidationChainGetter } from '@src/validators/files/multer/types';
-import { contentTypeValidationMiddleware } from '@src/validators/content-type-validation.middleware';
+import { FileValidationChainGetter } from '@src/validators/files/multer/types.js';
+import {
+    ClassConstructor,
+    DefaultFileError,
+    FileValidationConfig,
+    ProcessedFileDtoConstructor,
+    ValidationConfigType
+} from '@src/index.js';
+import { ConfigStore } from '@src/config/config-store.js';
+import { contentTypeValidationMiddleware } from '@src/validators/content-type-validation.middleware.js';
+import { formidableUploadMiddleware } from '@src/validators/files/formidable/formidable-upload.middleware.js';
+import { formidableValidationMiddleware } from '@src/validators/files/formidable/formidable-validation.middleware.js';
+import { formidableModificationMiddleware } from '@src/validators/files/formidable/formidable-modification.middleware.js';
+import { formidableErrorHandler } from '@src/validators/files/formidable/formidable-error-handler.middleware.js';
 
 export const getFormidableValidationChain: FileValidationChainGetter = (
     DtoConstructor: ClassConstructor,

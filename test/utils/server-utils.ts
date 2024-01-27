@@ -1,6 +1,6 @@
 import express, { RequestHandler, Express, ErrorRequestHandler } from 'express';
 import bodyParser from 'body-parser';
-import { parseReqBody } from '@src';
+import { parseReqBody } from '@src/index.js';
 import util from 'util';
 
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {

@@ -1,6 +1,11 @@
+import { CustomErrorFactory } from '@src/common/types/types.js';
 import { ErrorRequestHandler } from 'express';
-import { DefaultFileError, CustomErrorFactory, ConfigStore } from '@src';
-import formidable from 'formidable';
+import { errors } from 'formidable';
+import { ConfigStore } from '@src/config/config-store.js';
+import { DefaultFileError } from '@src/validators/files/errors/default-file.error.js';
+
+// @ts-ignore
+const FormidableError = errors.default;
 
 export const formidableErrorHandler =
     (customErrorFactory?: CustomErrorFactory): ErrorRequestHandler =>
@@ -13,7 +18,7 @@ export const formidableErrorHandler =
             globalConfig.fileValidationConfig.customErrorFactory;
 
         // formidable core error differs too much so pass it as is
-        if (err instanceof formidable.errors.FormidableError) {
+        if (err instanceof FormidableError) {
             return next(err);
         } else if (err instanceof DefaultFileError) {
             const error = errorFactory ? errorFactory(err.fields) : new DefaultFileError(err.fields);

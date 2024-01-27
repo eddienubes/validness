@@ -1,9 +1,10 @@
 import request from 'supertest';
-import { ConfigStore, validationBodyPipe, validness } from '@src';
+import { validationBodyPipe, validness } from '@src/index.js';
 import { StatusCodes } from 'http-status-codes';
-import { BodyDto, MyCustomError } from './models';
-import { createRouteWithPipe } from '@test/utils/server-utils';
-import { errorFactory, errorFactoryOverridden } from '@test/utils/error-utils';
+import { ConfigStore } from '@src/config/config-store.js';
+import { BodyDto, MyCustomError } from '@test/validators/body/models.js';
+import { createRouteWithPipe } from '@test/utils/server-utils.js';
+import { errorFactory, errorFactoryOverridden } from '@test/utils/error-utils.js';
 
 describe('Validation Body Pipe', () => {
     afterEach(() => {

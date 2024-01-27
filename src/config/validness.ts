@@ -1,4 +1,6 @@
-import { ValidationConfig, ConfigStore, DeepPartial } from '@src';
+import { DeepPartial } from '@src/common/types/types.js';
+import { ValidationConfig } from '@src/config/validation-config.interface.js';
+import { ConfigStore } from '@src/config/config-store.js';
 
 /**
  * Configures global validation config

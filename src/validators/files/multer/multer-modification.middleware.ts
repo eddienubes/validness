@@ -1,7 +1,6 @@
 import { RequestHandler } from 'express';
-import { ProcessedFileDtoConstructor } from '../interfaces/processed-file-dto-constructor.interface';
-import { MulterFile } from './types';
-import { ValidatedFile } from '../interfaces/validated-file.interface';
+import { ProcessedFileDtoConstructor, ValidatedFile } from '@src/index.js';
+import { MulterFile } from '@src/validators/files/multer/types.js';
 
 /**
  * Processes files and body to concatenate them into a single object

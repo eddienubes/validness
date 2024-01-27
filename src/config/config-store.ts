@@ -1,8 +1,11 @@
-import { DeepPartial, isObject, VALIDATION_CONFIG_DEFAULTS, ValidationConfig } from '@src';
-import { ValidationConfigType } from '@src/config/validation-config-type.enum';
-import { FileValidationConfig } from '@src/config/file-validation-config.interface';
-import { QueryValidationConfig } from '@src/validators/query/types';
-import { BodyValidationConfig } from '@src/validators/body/types';
+import { ValidationConfig } from '@src/config/validation-config.interface.js';
+import { VALIDATION_CONFIG_DEFAULTS } from '@src/config/constants.js';
+import { DeepPartial } from '@src/common/types/types.js';
+import { ValidationConfigType } from '@src/config/validation-config-type.enum.js';
+import { FileValidationConfig } from '@src/config/file-validation-config.interface.js';
+import { QueryValidationConfig } from '@src/validators/query/types.js';
+import { BodyValidationConfig } from '@src/validators/body/types.js';
+import { isObject } from '@src/utils/is-object.js';
 
 export class ConfigStore {
     private config: ValidationConfig = VALIDATION_CONFIG_DEFAULTS;

@@ -5,11 +5,19 @@ import { pathsToModuleNameMapper } from 'ts-jest';
 const config: Config.InitialOptions = {
     verbose: true,
     preset: 'ts-jest',
+    transform: {
+        '^.+\\.ts?$': [
+            'ts-jest',
+            {
+                useESM: true
+            }
+        ]
+    },
     testEnvironment: 'node',
     setupFilesAfterEnv: ['<rootDir>/jest/jest-setup.ts'],
     roots: ['<rootDir>/test'],
     modulePaths: [compilerOptions.baseUrl],
-    moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths),
+    moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { useESM: true }),
     coverageDirectory: '<rootDir>/jest/coverage',
     coverageReporters: ['json-summary', 'text', 'lcov']
 };

@@ -1,4 +1,5 @@
-import { ValidationConfig, FileValidatorType } from '@src';
+import { ValidationConfig } from '@src/config/validation-config.interface.js';
+import { FileValidatorType } from '@src/common/enums/file-validator-type.enum.js';
 
 export const VALIDATION_CONFIG_DEFAULTS: ValidationConfig = {
     bodyValidationConfig: { contentTypes: ['application/json'] },

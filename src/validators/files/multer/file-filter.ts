@@ -1,9 +1,9 @@
 import { FileFilterCallback } from 'multer';
-import { FileValidationMap, MulterFileFilter } from '../types';
-import { MIME_TYPE_MAP } from '../constants';
-import { MulterFile } from './types';
-import { isValidMimeType } from '../helpers';
-import { ErrorField, DefaultFileError } from '@src';
+import { ErrorField, DefaultFileError } from '@src/index.js';
+import { FileValidationMap, MulterFileFilter } from '@src/validators/files/types.js';
+import { MulterFile } from '@src/validators/files/multer/types.js';
+import { isValidMimeType } from '@src/validators/files/helpers.js';
+import { MIME_TYPE_MAP } from '@src/validators/files/constants.js';
 
 export const fileFilter = (fileValidationMap: FileValidationMap): MulterFileFilter => {
     return async (req, file: MulterFile, callback: FileFilterCallback) => {

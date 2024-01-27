@@ -3,6 +3,8 @@
     "experimentalDecorators": true,
     "incremental": true,
     "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "ESNext",
     "lib": [
       "es6"
     ],

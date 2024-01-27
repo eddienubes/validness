@@ -1,8 +1,7 @@
 import multer, { Options } from 'multer';
-import { fileFilter } from './file-filter';
-import { ProcessedFileDtoConstructor } from '../interfaces/processed-file-dto-constructor.interface';
 import { RequestHandler } from 'express';
-import { ClassConstructor } from '@src';
+import { ProcessedFileDtoConstructor } from '@src/index.js';
+import { fileFilter } from '@src/validators/files/multer/file-filter.js';
 
 export const multerUploadMiddleware = (
     processedFileDtoConstructor: ProcessedFileDtoConstructor,

@@ -3,13 +3,13 @@ import { plainToInstance } from 'class-transformer';
 import { validateOrReject, ValidationError } from 'class-validator';
 import {
     ClassConstructor,
-    ConfigStore,
     DefaultQueryError,
-    findViolatedFields,
+    QueryValidationConfig,
     ValidationConfigType
-} from '@src';
-import { QueryValidationConfig } from '@src/validators/query/types';
-import { contentTypeValidationMiddleware } from '@src/validators/content-type-validation.middleware';
+} from '@src/index.js';
+import { contentTypeValidationMiddleware } from '@src/validators/content-type-validation.middleware.js';
+import { ConfigStore } from '@src/config/config-store.js';
+import { findViolatedFields } from '@src/utils/find-violated-fields.js';
 
 export const validationQueryPipe = (
     QueryDtoConstructor: ClassConstructor,

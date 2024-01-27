@@ -1,4 +1,4 @@
-import { SingleFileConfig } from './single-file-config.interface';
+import { SingleFileConfig } from '@src/validators/files/interfaces/single-file-config.interface.js';
 
 /**
  * Multiple files configuration*

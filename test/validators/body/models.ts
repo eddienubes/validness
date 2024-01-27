@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
-import { BaseHttpError, ErrorField } from '@src';
+import { BaseHttpError, ErrorField } from '@src/index.js';
 import { StatusCodes } from 'http-status-codes';
 
 export class Picture {
@@ -28,14 +28,21 @@ export class BodyDto {
 }
 
 export class MyCustomError extends Error {
-    constructor(message: string, public readonly statusCode: number, public readonly errors: ErrorField[]) {
+    constructor(
+        message: string,
+        public readonly statusCode: number,
+        public readonly errors: ErrorField[]
+    ) {
         super(message);
         this.name = MyCustomError.name;
     }
 }
 
 export class MyError extends BaseHttpError {
-    constructor(private readonly field: string, private readonly errors: ErrorField[]) {
+    constructor(
+        private readonly field: string,
+        private readonly errors: ErrorField[]
+    ) {
         super(StatusCodes.FORBIDDEN, 'MyError');
     }
 }

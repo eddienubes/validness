@@ -1,4 +1,4 @@
-import { ErrorField } from '@src';
+import { ErrorField } from '@src/index.js';
 
 export type AnyObject = Record<string | number | symbol, any>;
 export type CustomErrorFactory = (errors: ErrorField[]) => Error;

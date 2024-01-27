@@ -1,12 +1,18 @@
 import { RequestHandler } from 'express';
-import { ProcessedFileDtoConstructor } from '../interfaces/processed-file-dto-constructor.interface';
-import { ClassConstructor, ErrorField, ConfigStore, DefaultFileError } from '@src';
-import { FileValidationConfig } from '@src/config/file-validation-config.interface';
-import { isValidMimeType, isValidTextFields } from '../helpers';
-import { FileMetadata } from '../interfaces/file-metadata.interface';
-import { File, Files } from 'formidable';
-import { MIME_TYPE_MAP } from '../constants';
+import {
+    ClassConstructor,
+    ErrorField,
+    DefaultFileError,
+    ProcessedFileDtoConstructor,
+    FileValidationConfig,
+    FileMetadata,
+    AnyObject
+} from '@src/index.js';
+import { Fields, File, Files } from 'formidable';
 import * as fs from 'node:fs/promises';
+import { ConfigStore } from '@src/config/config-store.js';
+import { isValidMimeType, isValidTextFields } from '@src/validators/files/helpers.js';
+import { MIME_TYPE_MAP } from '@src/validators/files/constants.js';
 
 export const formidableValidationMiddleware =
     (
@@ -39,9 +45,10 @@ export const formidableValidationMiddleware =
             fileValidationConfig?.textFieldsValidationConfig ||
             globalConfig.fileValidationConfig.textFieldsValidationConfig;
 
+        const unwrappedFields = unwrapIfSingleTextField(fields);
         const { violatedFields, instance } = await isValidTextFields(
             DtoConstructor,
-            fields,
+            unwrappedFields,
             validationConfig
         );
         errors.push(...violatedFields);
@@ -55,7 +62,10 @@ export const formidableValidationMiddleware =
             // can be array and can be undefined
             const wrappedFileField = wrapFormidableFileField(fileField);
             const errorField = validateFileField(wrappedFileField, metadata, key);
-            !errorField || errors.push(errorField);
+
+            if (errorField) {
+                errors.push(errorField);
+            }
         }
 
         if (errors.length) {
@@ -175,4 +185,20 @@ export const wrapFormidableFileField = (file: File | File[] | undefined): File[]
     }
 
     return !!file ? [file] : null;
+};
+
+export const unwrapIfSingleTextField = (fields: Fields): AnyObject => {
+    const unwrappedFields: AnyObject = {};
+
+    for (const key in fields) {
+        const value = fields[key];
+
+        if (Array.isArray(value) && value.length === 1) {
+            unwrappedFields[key] = value[0];
+        } else {
+            unwrappedFields[key] = value;
+        }
+    }
+
+    return unwrappedFields;
 };

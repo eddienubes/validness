@@ -1,8 +1,8 @@
-import { ClassConstructor, ConfigStore } from '@src';
-import { processFileDtoConstructor } from './process-file-dto-constructor';
-import { FILE_VALIDATOR_CHAIN_MAP } from './constants';
-import { FileValidationConfig } from '@src/config/file-validation-config.interface';
+import { ClassConstructor, FileValidationConfig } from '@src/index.js';
 import { Router } from 'express';
+import { ConfigStore } from '@src/config/config-store.js';
+import { processFileDtoConstructor } from '@src/validators/files/process-file-dto-constructor.js';
+import { FILE_VALIDATOR_CHAIN_MAP } from '@src/validators/files/constants.js';
 
 /**
  * File validation consists of 4 stages (4 middlewares)
