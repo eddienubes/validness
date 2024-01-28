@@ -39,12 +39,7 @@ describe('Formidable validation pipe', () => {
         const app = createRouteWithPipe(validationFilePipe(SingleFileDto, options));
 
         const path = getTestFilePath('cat1.png');
-        const res = await request(app)
-            .get('/')
-            .field('number', '123')
-            .attach('file', path)
-            .set('Connection', 'keep-alive');
-
+        const res = await request(app).get('/').field('number', '123').attach('file', path);
         expect(res.statusCode).toEqual(200);
         expect(res.body.data).toEqual({
             file: {
@@ -69,9 +64,7 @@ describe('Formidable validation pipe', () => {
             .field('email', 'asda@example.com')
             .field('phone', '+15852826457')
             .attach('photos', path1)
-            .attach('photos', path2)
-            .set('Connection', 'keep-alive');
-
+            .attach('photos', path2);
         expect(res.statusCode).toEqual(200);
         expect(res.body.data).toEqual({
             email: 'asda@example.com',
@@ -108,9 +101,7 @@ describe('Formidable validation pipe', () => {
             .field('phone', '+15852826457')
             .field('email', 'example@gmail.com')
             .attach('photos[]', path1)
-            .attach('photos[]', path2)
-            .set('Connection', 'keep-alive');
-
+            .attach('photos[]', path2);
         expect(res.statusCode).toEqual(400);
         expect(res.body).toEqual({
             fields: [
@@ -138,9 +129,7 @@ describe('Formidable validation pipe', () => {
             .get('/')
             .field('phone', '+15852826457')
             .field('email', 'example@gmail.com')
-            .attach('photos', path1)
-            .set('Connection', 'keep-alive');
-
+            .attach('photos', path1);
         expect(res.statusCode).toEqual(500);
         expect(res.body).toEqual({
             code: 1009,
@@ -158,9 +147,7 @@ describe('Formidable validation pipe', () => {
             .field('phone', '+15852826457')
             .field('email', 'example@gmail.com')
             .attach('photos', path1)
-            .attach('photos', path2)
-            .set('Connection', 'keep-alive');
-
+            .attach('photos', path2);
         expect(res.statusCode).toEqual(400);
         expect(res.body).toEqual({
             fields: [
@@ -186,9 +173,7 @@ describe('Formidable validation pipe', () => {
             .field('phone', '+15852826457')
             .field('email', 'example@gmail.com')
             .attach('photos', path1)
-            .attach('photos', path2)
-            .set('Connection', 'keep-alive');
-
+            .attach('photos', path2);
         expect(res.statusCode).toEqual(400);
         expect(res.body).toEqual({
             fields: [
@@ -215,9 +200,7 @@ describe('Formidable validation pipe', () => {
             .field('phone', '+15852826457')
             .field('email', 'example@gmail.com')
             .attach('photos', path1)
-            .attach('photos', path2)
-            .set('Connection', 'keep-alive');
-
+            .attach('photos', path2);
         expect(res.statusCode).toEqual(400);
         expect(res.body).toEqual({
             fields: [
@@ -244,9 +227,7 @@ describe('Formidable validation pipe', () => {
             .field('phone', '+15852826457')
             .field('email', 'example@gmail.com')
             .attach('photos', path1)
-            .attach('photos', path2)
-            .set('Connection', 'keep-alive');
-
+            .attach('photos', path2);
         expect(res.statusCode).toEqual(400);
         expect(res.body).toEqual({
             fields: [
@@ -273,9 +254,7 @@ describe('Formidable validation pipe', () => {
             .field('phone', '+15852826457')
             .field('email', 'example@gmail.com')
             .attach('photos', path1)
-            .attach('photos', path2)
-            .set('Connection', 'keep-alive');
-
+            .attach('photos', path2);
         expect(res.statusCode).toEqual(400);
         expect(res.body).toEqual({
             fields: [
@@ -298,9 +277,7 @@ describe('Formidable validation pipe', () => {
         const res = await request(app)
             .get('/')
             .field('phone', '+15852826457')
-            .field('email', 'example@gmail.com')
-            .set('Connection', 'keep-alive');
-
+            .field('email', 'example@gmail.com');
         expect(res.statusCode).toEqual(400);
         expect(res.body).toEqual({
             fields: [
@@ -320,9 +297,7 @@ describe('Formidable validation pipe', () => {
         const res = await request(app)
             .get('/')
             .field('phone', '+15852826457')
-            .field('email', 'example@gmail.com')
-            .set('Connection', 'keep-alive');
-
+            .field('email', 'example@gmail.com');
         expect(res.statusCode).toEqual(200);
         expect(res.body).toEqual({
             data: {
@@ -340,9 +315,7 @@ describe('Formidable validation pipe', () => {
         const res = await request(app)
             .get('/')
             .field('phone', '+15852826457')
-            .field('email', 'example@gmail.com')
-            .set('Connection', 'keep-alive');
-
+            .field('email', 'example@gmail.com');
         expect(res.statusCode).toEqual(401);
         expect(res.body).toEqual({
             errors: [
@@ -365,9 +338,7 @@ describe('Formidable validation pipe', () => {
             .get('/')
             .field('phone', '+15852826457')
             .field('numbers', '123')
-            .field('numbers', '123')
-            .set('Connection', 'keep-alive');
-
+            .field('numbers', '123');
         expect(res.statusCode).toEqual(200);
         expect(res.body).toEqual({
             data: {
@@ -382,12 +353,7 @@ describe('Formidable validation pipe', () => {
 
         const path1 = getTestFilePath('cat1.png');
         const path2 = getTestFilePath('cat2.png');
-        const res = await request(app)
-            .get('/')
-            .attach('file', path1)
-            .attach('file', path2)
-            .set('Connection', 'keep-alive');
-
+        const res = await request(app).get('/').attach('file', path1).attach('file', path2);
         expect(res.statusCode).toEqual(400);
         expect(res.body).toEqual({
             fields: [
@@ -407,12 +373,7 @@ describe('Formidable validation pipe', () => {
         const app = createRouteWithPipe(validationFilePipe(SingleFileDto, options));
 
         const path1 = getTestFilePath('file-wrong-mime-type');
-        const res = await request(app)
-            .get('/')
-            .field('number', '123123')
-            .attach('file', path1)
-            .set('Connection', 'keep-alive');
-
+        const res = await request(app).get('/').field('number', '123123').attach('file', path1);
         expect(res.statusCode).toEqual(200);
         expect(res.body.data).toEqual({
             file: {
@@ -431,12 +392,7 @@ describe('Formidable validation pipe', () => {
         const app = createRouteWithPipe(validationFilePipe(SingleFileWithTypeDto, options));
 
         const path1 = getTestFilePath('file-wrong-mime-type');
-        const res = await request(app)
-            .get('/')
-            .field('number', '123123')
-            .attach('file', path1)
-            .set('Connection', 'keep-alive');
-
+        const res = await request(app).get('/').field('number', '123123').attach('file', path1);
         expect(res.statusCode).toEqual(400);
         expect(res.body).toEqual({
             fields: [
@@ -456,12 +412,7 @@ describe('Formidable validation pipe', () => {
         const app = createRouteWithPipe(validationFilePipe(SingleFileDto, options));
 
         const path1 = getTestFilePath('file-wrong-mime-type');
-        const res = await request(app)
-            .get('/')
-            .field('number', '123123')
-            .attach('file', path1)
-            .set('Connection', 'keep-alive');
-
+        const res = await request(app).get('/').field('number', '123123').attach('file', path1);
         expect(res.statusCode).toEqual(200);
         expect(res.body.data).toEqual({
             file: {
@@ -480,12 +431,7 @@ describe('Formidable validation pipe', () => {
         const app = createRouteWithPipe(validationFilePipe(SingleFileDto, options));
 
         const path1 = getTestFilePath('file-wrong-mime-type');
-        const res = await request(app)
-            .get('/')
-            .field('number', 'asd')
-            .attach('file', path1)
-            .set('Connection', 'keep-alive');
-
+        const res = await request(app).get('/').field('number', 'asd').attach('file', path1);
         expect(res.statusCode).toEqual(400);
         expect(res.body).toEqual({
             fields: [
@@ -502,12 +448,7 @@ describe('Formidable validation pipe', () => {
     it('should reject calls with invalid content-type', async () => {
         const app = createRouteWithPipe(validationFilePipe(SingleFileDto, options));
 
-        const res = await request(app)
-            .get('/')
-            .send('')
-            .set('Content-Type', 'audio/wav')
-            .set('Connection', 'keep-alive');
-
+        const res = await request(app).get('/').send('').set('Content-Type', 'audio/wav');
         expect(res.statusCode).toEqual(400);
         expect(res.body).toEqual({
             fields: [
@@ -532,9 +473,7 @@ describe('Formidable validation pipe', () => {
             .field('count', '0')
             .attach('files', path1)
             .attach('files', path2)
-            .attach('files', path2)
-            .set('Connection', 'keep-alive');
-
+            .attach('files', path2);
         expect(res.statusCode).toEqual(200);
         expect(res.body.data).toEqual({
             count: 1,
