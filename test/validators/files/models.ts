@@ -6,8 +6,8 @@ export class SingleFileDto {
     @IsFile()
     file: ValidatedFile;
 
-    @IsNumberString()
-    number: string;
+    // @IsNumberString()
+    // number: string;
 }
 
 export class SingleFileNoTextDto {

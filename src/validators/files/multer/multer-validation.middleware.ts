@@ -52,6 +52,7 @@ export const multerValidationMiddleware = (
         const { violatedFields, instance } = await isValidTextFields(
             DtoConstructor,
             req.body,
+            processedFileDtoConstructor.fileValidationMap,
             validationConfig
         );
         errors.push(...violatedFields);

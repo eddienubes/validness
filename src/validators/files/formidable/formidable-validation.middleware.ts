@@ -50,6 +50,7 @@ export const formidableValidationMiddleware =
         const { violatedFields, instance } = await isValidTextFields(
             DtoConstructor,
             unwrappedFields,
+            processedFileDtoConstructor.fileValidationMap,
             validationConfig
         );
         errors.push(...violatedFields);
