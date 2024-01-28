@@ -45,7 +45,8 @@ export const formidableValidationMiddleware =
             fileValidationConfig?.textFieldsValidationConfig ||
             globalConfig.fileValidationConfig.textFieldsValidationConfig;
 
-        const unwrappedFields = unwrapIfSingleTextField(fields);
+        // we're sure fields are defined here
+        const unwrappedFields = unwrapIfSingleTextField(fields as Fields);
         const { violatedFields, instance } = await isValidTextFields(
             DtoConstructor,
             unwrappedFields,
@@ -57,7 +58,7 @@ export const formidableValidationMiddleware =
         for (const key in processedFileDtoConstructor.fileValidationMap) {
             const metadata = processedFileDtoConstructor.fileValidationMap[key];
 
-            const fileField = files[key];
+            const fileField = (files as Files)[key];
 
             // can be array and can be undefined
             const wrappedFileField = wrapFormidableFileField(fileField);
@@ -68,15 +69,16 @@ export const formidableValidationMiddleware =
             }
         }
 
+        // For cases where upload directory is specified
         if (errors.length) {
-            await removeFormidableUploadedFiles(files);
+            await removeFormidableUploadedFiles(files as Files);
             next(new DefaultFileError(errors));
         }
 
         req.formidablePayload = {
             files,
-            fields: instance, // remap fields body to an instance of class-transformer
-            error: formidableError
+            error: formidableError,
+            validatedFields: instance // remap fields body to an instance of class-transformer
         };
 
         next();

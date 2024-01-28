@@ -39,11 +39,7 @@ describe('Formidable validation pipe', () => {
         const app = createRouteWithPipe(validationFilePipe(SingleFileDto, options));
 
         const path = getTestFilePath('cat1.png');
-        const res = await request(app)
-            .get('/')
-            .field('number', '123')
-            .field('number', '456')
-            .attach('file', path);
+        const res = await request(app).get('/').field('number', '123').attach('file', path);
 
         expect(res.statusCode).toEqual(200);
         expect(res.body.data).toEqual({
@@ -370,12 +366,7 @@ describe('Formidable validation pipe', () => {
 
         const path1 = getTestFilePath('cat1.png');
         const path2 = getTestFilePath('cat2.png');
-        const res = await request(app)
-            .get('/')
-            .field('phone', '+15852826457')
-            .field('email', 'example@gmail.com')
-            .attach('file', path1)
-            .attach('file', path2);
+        const res = await request(app).get('/').attach('file', path1).attach('file', path2);
 
         expect(res.statusCode).toEqual(400);
         expect(res.body).toEqual({

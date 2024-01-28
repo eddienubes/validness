@@ -9,15 +9,12 @@ export const formidableUploadMiddleware =
             const [fields, files] = await form.parse(req);
 
             req.formidablePayload = {
-                error: null,
                 fields,
                 files
             };
         } catch (e) {
             req.formidablePayload = {
-                error: e as typeof errors.FormidableError,
-                fields: null,
-                files: null
+                error: e as typeof errors.FormidableError
             };
         }
 

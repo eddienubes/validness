@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import { File, Options } from 'formidable';
+import { File, Files, Options } from 'formidable';
 import { ProcessedFileDtoConstructor, ValidatedFile } from '@src/index.js';
 import { wrapFormidableFileField } from '@src/validators/files/formidable/formidable-validation.middleware.js';
 import { FORMIDABLE_DEFAULT_MIMETYPE } from '@src/validators/files/formidable/constants.js';
@@ -17,7 +17,7 @@ export const formidableModificationMiddleware =
         }
 
         for (const key in processedFileDtoConstructor.fileValidationMap) {
-            const fileField = formidablePayload.files[key];
+            const fileField = (formidablePayload.files as Files)[key];
             const metadata = processedFileDtoConstructor.fileValidationMap[key];
 
             const wrappedFile = wrapFormidableFileField(fileField);
@@ -37,10 +37,18 @@ export const formidableModificationMiddleware =
             req.body[key] = mappedFiles[0];
         }
 
+        // Order of spreading is important here.
+        // Formidable validated fields might contain properties conflicting with the actual file fields.
+        // E.g. Constructor might have a field named file.
+        // The same file field will be present in the instance after validation (class-validator)
+        // This happens because plainToInstance() preserves uninitialized fields.
         req.body = {
-            ...req.body,
-            ...formidablePayload.fields
+            ...formidablePayload.validatedFields,
+            ...req.body
         };
+
+        // Cleanup the request
+        delete req.formidablePayload;
 
         next();
     };
