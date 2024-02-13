@@ -1,6 +1,10 @@
 import { ErrorRequestHandler } from 'express';
 import { MulterError } from 'multer';
-import { DefaultFileError, CustomErrorFactory, ErrorField } from '@src/index.js';
+import {
+    DefaultFileError,
+    CustomErrorFactory,
+    ErrorField
+} from '@src/index.js';
 import { ConfigStore } from '@src/config/config-store.js';
 
 export const multerErrorHandlerMiddleware =
@@ -16,11 +20,15 @@ export const multerErrorHandlerMiddleware =
 
         if (err instanceof MulterError) {
             const errorFields = mapMulterErrorToErrorFields(err);
-            const error = errorFactory ? errorFactory(errorFields) : new DefaultFileError(errorFields);
+            const error = errorFactory
+                ? errorFactory(errorFields)
+                : new DefaultFileError(errorFields);
 
             return next(error);
         } else if (err instanceof DefaultFileError) {
-            const error = errorFactory ? errorFactory(err.fields) : new DefaultFileError(err.fields);
+            const error = errorFactory
+                ? errorFactory(err.fields)
+                : new DefaultFileError(err.fields);
 
             return next(error);
         }
@@ -28,7 +36,9 @@ export const multerErrorHandlerMiddleware =
         return next(err);
     };
 
-const mapMulterErrorToErrorFields = (multerError: MulterError): ErrorField[] => {
+const mapMulterErrorToErrorFields = (
+    multerError: MulterError
+): ErrorField[] => {
     const field = multerError.field || 'unknown';
 
     return [

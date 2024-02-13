@@ -17,7 +17,9 @@ const config: Config.InitialOptions = {
     setupFilesAfterEnv: ['<rootDir>/jest/jest-setup.ts'],
     roots: ['<rootDir>/test'],
     modulePaths: [compilerOptions.baseUrl],
-    moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { useESM: true }),
+    moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
+        useESM: true
+    }),
     coverageDirectory: '<rootDir>/jest/coverage',
     coverageReporters: ['json-summary', 'text', 'lcov']
 };

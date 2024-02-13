@@ -1,5 +1,9 @@
 import { Router } from 'express';
-import { ClassConstructor, FileValidationConfig, ProcessedFileDtoConstructor } from '@src/index.js';
+import {
+    ClassConstructor,
+    FileValidationConfig,
+    ProcessedFileDtoConstructor
+} from '@src/index.js';
 
 /**
  * Alias for a multer file type in the express multer namespace

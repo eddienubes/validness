@@ -21,7 +21,10 @@ export const isValidTextFields = async (
     };
 };
 
-export const isValidMimeType = (required: string | string[], actual: string): boolean => {
+export const isValidMimeType = (
+    required: string | string[],
+    actual: string
+): boolean => {
     if (Array.isArray(required)) {
         return required.includes(actual);
     }

@@ -1,11 +1,16 @@
 import { FileFilterCallback } from 'multer';
 import { ErrorField, DefaultFileError } from '@src/index.js';
-import { FileValidationMap, MulterFileFilter } from '@src/validators/files/types.js';
+import {
+    FileValidationMap,
+    MulterFileFilter
+} from '@src/validators/files/types.js';
 import { MulterFile } from '@src/validators/files/multer/types.js';
 import { isValidMimeType } from '@src/validators/files/helpers.js';
 import { MIME_TYPE_MAP } from '@src/validators/files/constants.js';
 
-export const fileFilter = (fileValidationMap: FileValidationMap): MulterFileFilter => {
+export const fileFilter = (
+    fileValidationMap: FileValidationMap
+): MulterFileFilter => {
     return async (req, file: MulterFile, callback: FileFilterCallback) => {
         const metadata = fileValidationMap[file.fieldname];
         const headerSizeStr = req.header('content-length');
@@ -31,14 +36,20 @@ export const fileFilter = (fileValidationMap: FileValidationMap): MulterFileFilt
         }
 
         // Validation by a concrete mimetype
-        if (metadata.mimetype && !isValidMimeType(metadata.mimetype, file.mimetype)) {
+        if (
+            metadata.mimetype &&
+            !isValidMimeType(metadata.mimetype, file.mimetype)
+        ) {
             fileViolations.push(
                 `The following field contains file of the invalid mimetype ${file.mimetype}, but expected: ${metadata.mimetype}`
             );
         }
 
         // Validation by type (basically array of mimetypes)
-        if (metadata.type && !MIME_TYPE_MAP[metadata.type].includes(file.mimetype)) {
+        if (
+            metadata.type &&
+            !MIME_TYPE_MAP[metadata.type].includes(file.mimetype)
+        ) {
             fileViolations.push(
                 `The following field contains file of the invalid mimetype ${
                     file.mimetype

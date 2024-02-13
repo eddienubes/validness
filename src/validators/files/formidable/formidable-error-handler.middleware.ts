@@ -21,7 +21,9 @@ export const formidableErrorHandler =
         if (err instanceof FormidableError) {
             return next(err);
         } else if (err instanceof DefaultFileError) {
-            const error = errorFactory ? errorFactory(err.fields) : new DefaultFileError(err.fields);
+            const error = errorFactory
+                ? errorFactory(err.fields)
+                : new DefaultFileError(err.fields);
 
             return next(error);
         }

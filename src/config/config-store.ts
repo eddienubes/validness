@@ -49,7 +49,11 @@ export class ConfigStore {
      * @param overrides object with overridden fields
      * @param defaults defaults
      */
-    private mapObjectWithOverridesAndDefaults<T>(obj: T, overrides: Partial<T>, defaults: T): T {
+    private mapObjectWithOverridesAndDefaults<T>(
+        obj: T,
+        overrides: Partial<T>,
+        defaults: T
+    ): T {
         for (const key in overrides) {
             const typedKey = key as keyof typeof overrides;
 

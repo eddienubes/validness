@@ -34,7 +34,8 @@ export const validationBodyPipe = (
 
             const instance = plainToInstance(DtoConstructor, body);
 
-            const validatorConfig = bodyValidationConfig || globalConfig.bodyValidationConfig;
+            const validatorConfig =
+                bodyValidationConfig || globalConfig.bodyValidationConfig;
             const errorFactory =
                 bodyValidationConfig?.customErrorFactory ||
                 globalConfig.customErrorFactory ||
@@ -47,7 +48,11 @@ export const validationBodyPipe = (
             } catch (e) {
                 const errors = findViolatedFields(e as ValidationError[]);
 
-                return next(errorFactory ? errorFactory(errors) : new DefaultBodyError(errors));
+                return next(
+                    errorFactory
+                        ? errorFactory(errors)
+                        : new DefaultBodyError(errors)
+                );
             }
 
             return next();

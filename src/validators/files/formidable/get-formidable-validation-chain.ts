@@ -35,8 +35,15 @@ export const getFormidableValidationChain: FileValidationChainGetter = (
             fileValidationConfig
         ),
         formidableUploadMiddleware(coreConfig),
-        formidableValidationMiddleware(processedFileDtoConstructor, DtoConstructor, fileValidationConfig),
-        formidableModificationMiddleware(processedFileDtoConstructor, coreConfig),
+        formidableValidationMiddleware(
+            processedFileDtoConstructor,
+            DtoConstructor,
+            fileValidationConfig
+        ),
+        formidableModificationMiddleware(
+            processedFileDtoConstructor,
+            coreConfig
+        ),
         formidableErrorHandler(fileValidationConfig?.customErrorFactory)
     );
 

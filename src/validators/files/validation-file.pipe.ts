@@ -16,10 +16,13 @@ export const validationFilePipe = (
     config?: Partial<FileValidationConfig>
 ): Router => {
     const configStore = ConfigStore.getInstance().getConfig();
-    const processedFileDtoConstructor = processFileDtoConstructor(DtoConstructor);
+    const processedFileDtoConstructor =
+        processFileDtoConstructor(DtoConstructor);
 
     // TODO: Global store set by user is unavailable here. Validness() hasn't been called yet
-    const validatorType = config?.fileValidatorType || configStore.fileValidationConfig.fileValidatorType;
+    const validatorType =
+        config?.fileValidatorType ||
+        configStore.fileValidationConfig.fileValidatorType;
 
     const chainGetter = FILE_VALIDATOR_CHAIN_MAP[validatorType];
 

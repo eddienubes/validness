@@ -5,7 +5,10 @@ import { wrapFormidableFileField } from '@src/validators/files/formidable/formid
 import { FORMIDABLE_DEFAULT_MIMETYPE } from '@src/validators/files/formidable/constants.js';
 
 export const formidableModificationMiddleware =
-    (processedFileDtoConstructor: ProcessedFileDtoConstructor, coreConfig: Options): RequestHandler =>
+    (
+        processedFileDtoConstructor: ProcessedFileDtoConstructor,
+        coreConfig: Options
+    ): RequestHandler =>
     async (req, res, next) => {
         const formidablePayload = req.formidablePayload;
         if (!formidablePayload) {
@@ -53,7 +56,10 @@ export const formidableModificationMiddleware =
         next();
     };
 
-const mapFormidableFiles = (files: File[], coreConfig: Options): ValidatedFile[] =>
+const mapFormidableFiles = (
+    files: File[],
+    coreConfig: Options
+): ValidatedFile[] =>
     files.map((file) => ({
         originalName: file.originalFilename || undefined, // avoids nulls
         mimeType: file.mimetype || FORMIDABLE_DEFAULT_MIMETYPE,

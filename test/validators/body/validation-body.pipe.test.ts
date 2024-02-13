@@ -1,10 +1,13 @@
-import request from 'supertest';
+import { request } from 'sagetest';
 import { validationBodyPipe, validness } from '@src/index.js';
 import { StatusCodes } from 'http-status-codes';
 import { ConfigStore } from '@src/config/config-store.js';
 import { BodyDto, MyCustomError } from '@test/validators/body/models.js';
 import { createRouteWithPipe } from '@test/utils/server-utils.js';
-import { errorFactory, errorFactoryOverridden } from '@test/utils/error-utils.js';
+import {
+    errorFactory,
+    errorFactoryOverridden
+} from '@test/utils/error-utils.js';
 
 describe('Validation Body Pipe', () => {
     afterEach(() => {
@@ -38,7 +41,7 @@ describe('Validation Body Pipe', () => {
 
         const res = await request(app).get('/').send(dto);
 
-        expect(res.badRequest).toBeTruthy();
+        expect(res.statusCode).toEqual(400);
         expect(res.body).toEqual({
             fields: [
                 {
@@ -47,11 +50,16 @@ describe('Validation Body Pipe', () => {
                 },
                 {
                     field: 'age',
-                    violations: ['age must be a number conforming to the specified constraints']
+                    violations: [
+                        'age must be a number conforming to the specified constraints'
+                    ]
                 },
                 {
                     field: 'transformed',
-                    violations: ['transformed must be a string', 'transformed should not be empty']
+                    violations: [
+                        'transformed must be a string',
+                        'transformed should not be empty'
+                    ]
                 }
             ],
             name: 'DefaultBodyError',
@@ -81,7 +89,10 @@ describe('Validation Body Pipe', () => {
                 },
                 {
                     field: 'transformed',
-                    violations: ['transformed must be a string', 'transformed should not be empty']
+                    violations: [
+                        'transformed must be a string',
+                        'transformed should not be empty'
+                    ]
                 }
             ],
             name: 'DefaultBodyError',
@@ -98,13 +109,17 @@ describe('Validation Body Pipe', () => {
         const app = createRouteWithPipe(
             validationBodyPipe(BodyDto, {
                 customErrorFactory: (errors) =>
-                    new MyCustomError('my custom message', StatusCodes.CONFLICT, errors)
+                    new MyCustomError(
+                        'my custom message',
+                        StatusCodes.CONFLICT,
+                        errors
+                    )
             })
         );
 
         const res = await request(app).get('/').send(dto);
 
-        expect(res.badRequest).toBeFalsy();
+        expect(res.statusCode).toEqual(400);
         expect(res.body).toEqual({
             errors: [
                 {
@@ -113,11 +128,16 @@ describe('Validation Body Pipe', () => {
                 },
                 {
                     field: 'age',
-                    violations: ['age must be a number conforming to the specified constraints']
+                    violations: [
+                        'age must be a number conforming to the specified constraints'
+                    ]
                 },
                 {
                     field: 'transformed',
-                    violations: ['transformed must be a string', 'transformed should not be empty']
+                    violations: [
+                        'transformed must be a string',
+                        'transformed should not be empty'
+                    ]
                 }
             ],
             name: 'MyCustomError',
@@ -150,7 +170,10 @@ describe('Validation Body Pipe', () => {
                 },
                 {
                     field: 'transformed',
-                    violations: ['transformed must be a string', 'transformed should not be empty']
+                    violations: [
+                        'transformed must be a string',
+                        'transformed should not be empty'
+                    ]
                 }
             ],
             field: 'John Doe',
@@ -171,7 +194,9 @@ describe('Validation Body Pipe', () => {
         validness({ customErrorFactory: errorFactory });
 
         const app = createRouteWithPipe(
-            validationBodyPipe(BodyDto, { customErrorFactory: errorFactoryOverridden })
+            validationBodyPipe(BodyDto, {
+                customErrorFactory: errorFactoryOverridden
+            })
         );
 
         const res = await request(app).get('/').send(dto);
@@ -185,7 +210,10 @@ describe('Validation Body Pipe', () => {
                 },
                 {
                     field: 'transformed',
-                    violations: ['transformed must be a string', 'transformed should not be empty']
+                    violations: [
+                        'transformed must be a string',
+                        'transformed should not be empty'
+                    ]
                 }
             ],
             name: 'MyOverriddenError',
@@ -197,14 +225,19 @@ describe('Validation Body Pipe', () => {
 
     it('should reject requests with invalid content-type', async () => {
         const app = createRouteWithPipe(validationBodyPipe(BodyDto));
-        const res = await request(app).get('/').send('').set('Content-Type', 'audio/wav');
+        const res = await request(app)
+            .get('/')
+            .send('')
+            .set('Content-Type', 'audio/wav');
 
         expect(res.statusCode).toEqual(400);
         expect(res.body).toEqual({
             fields: [
                 {
                     field: 'Content-Type header',
-                    violations: ['Content-Type audio/wav is not allowed. Use [application/json]']
+                    violations: [
+                        'Content-Type audio/wav is not allowed. Use [application/json]'
+                    ]
                 }
             ],
             name: 'DefaultBodyError',

@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
+import {
+    IsNotEmpty,
+    IsNumber,
+    IsOptional,
+    IsString,
+    ValidateNested
+} from 'class-validator';
 import { Transform, Type } from 'class-transformer';
 import { BaseHttpError, ErrorField } from '@src/index.js';
 import { StatusCodes } from 'http-status-codes';

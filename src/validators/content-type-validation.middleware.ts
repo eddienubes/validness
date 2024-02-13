@@ -19,7 +19,9 @@ export const contentTypeValidationMiddleware = (
 
         // local -> global -> default
         const allowedContentTypes =
-            localConfig?.contentTypes || globalConfig.contentTypes || validatorConfig.contentTypes;
+            localConfig?.contentTypes ||
+            globalConfig.contentTypes ||
+            validatorConfig.contentTypes;
 
         const errorFactory =
             localConfig?.customErrorFactory ||

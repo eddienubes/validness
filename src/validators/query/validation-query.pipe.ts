@@ -34,7 +34,8 @@ export const validationQueryPipe = (
 
             const instance = plainToInstance(QueryDtoConstructor, query);
 
-            const validatorConfig = queryValidationConfig || globalConfig.queryValidationConfig;
+            const validatorConfig =
+                queryValidationConfig || globalConfig.queryValidationConfig;
 
             try {
                 await validateOrReject(instance, validatorConfig);
@@ -43,7 +44,11 @@ export const validationQueryPipe = (
             } catch (e) {
                 const errors = findViolatedFields(e as ValidationError[]);
 
-                return next(errorFactory ? errorFactory(errors) : new DefaultQueryError(errors));
+                return next(
+                    errorFactory
+                        ? errorFactory(errors)
+                        : new DefaultQueryError(errors)
+                );
             }
 
             return next();

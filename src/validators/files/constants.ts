@@ -3,8 +3,10 @@ import { FileValidationChainGetter } from '@src/validators/files/multer/types.js
 import { getMulterFileValidationChain } from '@src/validators/files/multer/get-multer-file-validation-chain.js';
 import { getFormidableValidationChain } from '@src/validators/files/formidable/get-formidable-validation-chain.js';
 
-export const FILE_VALIDATION_METADATA_KEY = 'validness-validation-file-metadata';
-export const FILE_VALIDATION_DECORATED_FIELDS_LIST_KEY = 'validness-validation-decorated-fields-list';
+export const FILE_VALIDATION_METADATA_KEY =
+    'validness-validation-file-metadata';
+export const FILE_VALIDATION_DECORATED_FIELDS_LIST_KEY =
+    'validness-validation-decorated-fields-list';
 
 // https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
 export const MIME_TYPE_MAP: Record<FileType, string[]> = {
@@ -43,7 +45,10 @@ export const MIME_TYPE_MAP: Record<FileType, string[]> = {
     ]
 };
 
-export const FILE_VALIDATOR_CHAIN_MAP: Record<FileValidatorType, FileValidationChainGetter> = {
+export const FILE_VALIDATOR_CHAIN_MAP: Record<
+    FileValidatorType,
+    FileValidationChainGetter
+> = {
     [FileValidatorType.MULTER]: getMulterFileValidationChain,
     [FileValidatorType.FORMIDABLE]: getFormidableValidationChain
 };

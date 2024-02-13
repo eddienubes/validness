@@ -40,7 +40,9 @@ export const multerValidationMiddleware = (
             if ((!files || !files?.length) && !metadata.optional) {
                 errors.push({
                     field: key,
-                    violations: [`The following file field: [${key}] is empty, but required`]
+                    violations: [
+                        `The following file field: [${key}] is empty, but required`
+                    ]
                 });
             }
         }

@@ -1,4 +1,8 @@
-import { ClassConstructor, FileMetadata, ProcessedFileDtoConstructor } from '@src/index.js';
+import {
+    ClassConstructor,
+    FileMetadata,
+    ProcessedFileDtoConstructor
+} from '@src/index.js';
 import { Field } from 'multer';
 import { FileValidationMap } from '@src/validators/files/types.js';
 import {
@@ -6,7 +10,9 @@ import {
     FILE_VALIDATION_METADATA_KEY
 } from '@src/validators/files/constants.js';
 
-export const processFileDtoConstructor = (DtoConstructor: ClassConstructor): ProcessedFileDtoConstructor => {
+export const processFileDtoConstructor = (
+    DtoConstructor: ClassConstructor
+): ProcessedFileDtoConstructor => {
     const map: FileValidationMap = {};
     const multerFields: Field[] = [];
 

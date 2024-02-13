@@ -11,7 +11,10 @@ import {
 import { Fields, File, Files } from 'formidable';
 import * as fs from 'node:fs/promises';
 import { ConfigStore } from '@src/config/config-store.js';
-import { isValidMimeType, isValidTextFields } from '@src/validators/files/helpers.js';
+import {
+    isValidMimeType,
+    isValidTextFields
+} from '@src/validators/files/helpers.js';
 import { MIME_TYPE_MAP } from '@src/validators/files/constants.js';
 
 export const formidableValidationMiddleware =
@@ -63,7 +66,11 @@ export const formidableValidationMiddleware =
 
             // can be array and can be undefined
             const wrappedFileField = wrapFormidableFileField(fileField);
-            const errorField = validateFileField(wrappedFileField, metadata, key);
+            const errorField = validateFileField(
+                wrappedFileField,
+                metadata,
+                key
+            );
 
             if (errorField) {
                 errors.push(errorField);
@@ -107,7 +114,9 @@ const validateFileField = (
 
     // if field is not defined, but required
     if (!files && !metadata.optional) {
-        return new ErrorField(fieldName, [`The following file field: [${fieldName}] is empty, but required`]);
+        return new ErrorField(fieldName, [
+            `The following file field: [${fieldName}] is empty, but required`
+        ]);
     }
 
     if (files && metadata.maxAmount && files.length > metadata.maxAmount) {
@@ -138,14 +147,22 @@ const validateFileField = (
         }
 
         // Validation by a concrete mimetype
-        if (metadata.mimetype && file.mimetype && !isValidMimeType(metadata.mimetype, file.mimetype)) {
+        if (
+            metadata.mimetype &&
+            file.mimetype &&
+            !isValidMimeType(metadata.mimetype, file.mimetype)
+        ) {
             violations.push(
                 `The following field contains file of the invalid mimetype ${file.mimetype}, but expected: ${metadata.mimetype}`
             );
         }
 
         // Validation by type (basically array of mimetypes)
-        if (metadata.type && file.mimetype && !MIME_TYPE_MAP[metadata.type].includes(file.mimetype)) {
+        if (
+            metadata.type &&
+            file.mimetype &&
+            !MIME_TYPE_MAP[metadata.type].includes(file.mimetype)
+        ) {
             violations.push(
                 `The following field contains file of the invalid mimetype ${
                     file.mimetype
@@ -161,7 +178,9 @@ const validateFileField = (
     return null;
 };
 
-export const removeFormidableUploadedFiles = async (files: Files): Promise<void> => {
+export const removeFormidableUploadedFiles = async (
+    files: Files
+): Promise<void> => {
     const promises: Promise<void>[] = [];
 
     for (const key in files) {
@@ -182,7 +201,9 @@ export const removeFormidableUploadedFiles = async (files: Files): Promise<void>
 };
 
 // wrapped represents a single field that might contain multiple files
-export const wrapFormidableFileField = (file: File | File[] | undefined): File[] | null => {
+export const wrapFormidableFileField = (
+    file: File | File[] | undefined
+): File[] | null => {
     if (Array.isArray(file)) {
         return file;
     }

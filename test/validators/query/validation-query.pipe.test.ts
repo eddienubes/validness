@@ -1,6 +1,9 @@
 import request from 'supertest';
 import { QueryDto } from './models.js';
-import { errorFactory, errorFactoryOverridden } from '@test/utils/error-utils.js';
+import {
+    errorFactory,
+    errorFactoryOverridden
+} from '@test/utils/error-utils.js';
 import { createRouteWithPipe } from '@test/utils/server-utils.js';
 import { ConfigStore } from '@src/config/config-store.js';
 import { validationQueryPipe, validness } from '@src/index.js';
@@ -79,7 +82,9 @@ describe('Validation Query Pipe', () => {
         validness({ customErrorFactory: errorFactory });
 
         const app = createRouteWithPipe(
-            validationQueryPipe(QueryDto, { customErrorFactory: errorFactoryOverridden })
+            validationQueryPipe(QueryDto, {
+                customErrorFactory: errorFactoryOverridden
+            })
         );
 
         const res = await request(app).get('/').query(dto);
@@ -107,14 +112,19 @@ describe('Validation Query Pipe', () => {
             })
         );
 
-        const res = await request(app).get('/').send('').set('Content-Type', 'audio/wav');
+        const res = await request(app)
+            .get('/')
+            .send('')
+            .set('Content-Type', 'audio/wav');
 
         expect(res.statusCode).toEqual(401);
         expect(res.body).toEqual({
             errors: [
                 {
                     field: 'Content-Type header',
-                    violations: ['Content-Type audio/wav is not allowed. Use [application/json]']
+                    violations: [
+                        'Content-Type audio/wav is not allowed. Use [application/json]'
+                    ]
                 }
             ],
             name: 'MyOverriddenError',
