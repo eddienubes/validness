@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "outDir": "build/esm",
+    "noEmit": false,
+    "baseUrl": ".",
+    "sourceMap": false,
+    "declarationMap": false,
+    "incremental": false
+  },
+  "include": [
+    "src/**/*.ts"
+  ]
+}

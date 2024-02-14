@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "noEmit": true,
     "experimentalDecorators": true,
     "incremental": true,
     "module": "NodeNext",
@@ -12,7 +13,6 @@
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
-    "outDir": "build",
     "strict": true,
     "noImplicitAny": true,
     "strictPropertyInitialization": false,
@@ -47,6 +47,7 @@
   "include": [
     "src",
     "test",
+    "examples",
     "jest",
     "jest.config.ts"
   ]

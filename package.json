@@ -1,12 +1,19 @@
 {
   "name": "validness",
+  "version": "0.1.16",
   "engines": {
-    "node": ">=20.11.0",
-    "npm": ">=10.2.4"
+    "node": ">=16.5"
   },
   "type": "module",
-  "version": "0.1.16",
-  "homepage": "https://github.com/eddienubes/validness",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eddienubes/validness.git"
+  },
+  "homepage": "https://github.com/eddienubes/validness#readme",
+  "author": "Eddie Nubes <cool.gegeg@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/eddienubes/validness/issues"
+  },
   "keywords": [
     "express",
     "dto",
@@ -46,8 +53,18 @@
   "files": [
     "build/**/*"
   ],
-  "main": "build/index",
-  "types": "build/index",
+  "main": "build/cjs/index.js",
+  "types": "build/cjs/index",
+  "exports": {
+    ".": {
+      "import": "./build/esm/index.js",
+      "require": "./build/cjs/index.js"
+    },
+    "./*": {
+      "import": "./build/esm/*.js",
+      "require": "./build/cjs/*.js"
+    }
+  },
   "scripts": {
     "lint:check": "eslint --max-warnings=50 .",
     "lint:fix": "eslint --max-warnings=50 --fix .",
@@ -55,8 +72,10 @@
     "test:all": "npx jest",
     "test:cov": "npx jest --coverage",
     "test:cov:badge": "npx coverage-badges --source jest/coverage/coverage-summary.json --output jest/badges/coverage.svg",
-    "build:prod": "rm -rf ./build && tsc -p tsconfig.build.json && npx tsc-alias -p tsconfig.build.json",
-    "build:dev": "rm -rf ./build && tsc -p tsconfig.json && npx tsc-alias -p tsconfig.json"
+    "build:prod:cjs": "tsc -p tsconfig.cjs.json && npx tsc-alias -p tsconfig.cjs.json",
+    "build:prod:esm": "tsc -p tsconfig.esm.json && npx tsc-alias -p tsconfig.esm.json",
+    "build:prod": "rm -rf ./build && pnpm run build:prod:cjs && pnpm run build:prod:esm",
+    "build:dev": "rm -rf ./build && tsc -p tsconfig.json"
   },
   "peerDependencies": {
     "@types/formidable": "^3.4.5",
