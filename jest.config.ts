@@ -20,7 +20,7 @@ const config: Config.InitialOptions = {
     moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
         useESM: true
     }),
-    coverageDirectory: '<rootDir>/jest/coverage',
+    coverageDirectory: '<rootDir>/coverage',
     coverageReporters: ['json-summary', 'text', 'lcov']
 };
 

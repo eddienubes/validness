@@ -5,10 +5,12 @@
     <img src="https://github.com/eddienubes/validness/blob/master/misc/water2.png?raw=true" alt="water2" width="30">
 </p>
 <p align="center">
-    <a href="https/app.travis-ci.com/github/eddienubes/validness" target="_blank"><img src="https://app.travis-ci.com/eddienubes/validness.svg?branch=master" alt="TravisCI" /></a>
-    <img src="https://github.com/eddienubes/validness/blob/master/jest/badges/coverage.svg?raw=true" alt="coverage" />
-    <a href="https://badge.fury.io/js/validness"><img src="https://badge.fury.io/js/validness.svg" alt="npm version" height="18"></a>
-    <a href="https://img.shields.io/npm/dw/validness"><img src="https://img.shields.io/npm/dw/validness" alt="npm version" height="18"></a>
+    <img src="https://github.com/eddienubes/validness/actions/workflows/ci.yml/badge.svg?branch=master)" alt="ci-status" />
+    <a href="https://www.npmjs.com/package/sagetest"><img src="https://img.shields.io/npm/v/validness?color=729B1B&label=npm"/></a>
+    <a href="https://www.npmjs.com/package/sagetest"><img src="https://img.shields.io/npm/dw/validness" alt="npm version" height="18"></a>
+    <a href="https://codecov.io/gh/eddienubes/validness" > 
+        <img src="https://codecov.io/gh/eddienubes/validness/graph/badge.svg?token=3FU7I90B4Q"/> 
+    </a>
 </p>
 
 ---
@@ -72,11 +74,11 @@ _registration.dto.ts_
 import { IsEmail, IsPhoneNumber } from "class-validator";
 
 export class RegistrationDto {
-    @IsPhoneNumber()
-    phone: ValidatedFile;
+  @IsPhoneNumber()
+  phone: ValidatedFile;
 
-    @IsEmail()
-    email: string;
+  @IsEmail()
+  email: string;
 }
 ```
 
@@ -92,21 +94,21 @@ const router = Router()
 
 // controller
 router.post('/', validationBodyPipe(RegistrationDto), async (req, res, next) => {
-    const validatedBody = req.body as RegistrationDto;
+  const validatedBody = req.body as RegistrationDto;
 
-    await registerUser(validatedBody);
+  await registerUser(validatedBody);
 
-    res.json({ message: 'SUCCESS' })
+  res.json({ message: 'SUCCESS' })
 });
 
 // Error handling
 router.use((err, req, res, next) => {
-    // validness throws Default error models if customErrorFactory isn't sepcified.
-    // Standard models contain everything you need, like status code and errored fields
-    if (err instanceof DefaultBodyError) {
-        // implement handling logic
-        res.status(StatusCodes.BAD_REQUEST).json({ message: 'ERROR' });
-    }
+  // validness throws Default error models if customErrorFactory isn't sepcified.
+  // Standard models contain everything you need, like status code and errored fields
+  if (err instanceof DefaultBodyError) {
+    // implement handling logic
+    res.status(StatusCodes.BAD_REQUEST).json({ message: 'ERROR' });
+  }
 });
 ```
 
@@ -122,15 +124,15 @@ _get-users-query.dto.ts_
 import { IsEmail, IsNotEmpty, IsNumberString, IsPhoneNumber } from "class-validator";
 
 export class GetUsersQueryDto {
-    @IsString()
-    @IsNotEmpty()
-    query: string;
+  @IsString()
+  @IsNotEmpty()
+  query: string;
 
-    @IsNumberString()
-    pageIndex: string;
+  @IsNumberString()
+  pageIndex: string;
 
-    @IsNumberString()
-    perPage: string;
+  @IsNumberString()
+  perPage: string;
 }
 ```
 
@@ -146,21 +148,21 @@ const router = Router()
 
 // controller
 router.get('/', validationQueryPipe(GetUsersQueryDto), async (req, res, next) => {
-    const validatedQuery = req.query as GetUsersQueryDto;
+  const validatedQuery = req.query as GetUsersQueryDto;
 
-    await findUsers(validatedQuery);
+  await findUsers(validatedQuery);
 
-    res.json({ message: 'SUCCESS' })
+  res.json({ message: 'SUCCESS' })
 });
 
 // Error handling
 router.use((err, req, res, next) => {
-    // validness throws Default error models if customErrorFactory isn't sepcified.
-    // Standard models contain everything you need, like status code and errored fields
-    if (err instanceof DefaultQueryError) {
-        // implement handling logic
-        res.status(StatusCodes.BAD_REQUEST).json({ message: 'ERROR' });
-    }
+  // validness throws Default error models if customErrorFactory isn't sepcified.
+  // Standard models contain everything you need, like status code and errored fields
+  if (err instanceof DefaultQueryError) {
+    // implement handling logic
+    res.status(StatusCodes.BAD_REQUEST).json({ message: 'ERROR' });
+  }
 });
 ```
 
@@ -188,23 +190,23 @@ import { IsEmail, IsNotEmpty, IsNumberString, IsPhoneNumber, IsString } from "cl
 import { ValidatedFile, IsFiles, IsFile } from "validness";
 
 export class SignUpDto {
-    // form-data text field
-    @IsString()
-    @IsNotEmpty()
-    firstName: string;
+  // form-data text field
+  @IsString()
+  @IsNotEmpty()
+  firstName: string;
 
-    // form-data text field
-    @IsString()
-    @IsNotEmpty()
-    lastName: string;
+  // form-data text field
+  @IsString()
+  @IsNotEmpty()
+  lastName: string;
 
-    // a single file
-    @IsFile({ type: 'image' })
-    photo: ValidatedFile
+  // a single file
+  @IsFile({ type: 'image' })
+  photo: ValidatedFile
 
-    // a multiple files
-    @IsFiles({ type: 'image' })
-    documents: ValidatedFile[]
+  // a multiple files
+  @IsFiles({ type: 'image' })
+  documents: ValidatedFile[]
 }
 ```
 
@@ -220,25 +222,25 @@ const router = Router()
 
 // controller
 router.post('/', validationFilePipe(SignUpDto), async (req, res, next) => {
-    const validatedBody = req.body as SignUpDto;
+  const validatedBody = req.body as SignUpDto;
 
-    // We do not use any disk storage engines for multer
-    // So, validatedBody.photo.buffer is accessbile and stored in memory
-    // Consult API section for more details
+  // We do not use any disk storage engines for multer
+  // So, validatedBody.photo.buffer is accessbile and stored in memory
+  // Consult API section for more details
 
-    await signUp(validatedBody);
+  await signUp(validatedBody);
 
-    res.json({ message: 'SUCCESS' })
+  res.json({ message: 'SUCCESS' })
 });
 
 // Error handling
 router.use((err, req, res, next) => {
-    // validness throws Default error models if customErrorFactory isn't sepcified.
-    // Standard models contain everything you need, like status code and errored fields
-    if (err instanceof DefaultFileError) {
-        // implement handling logic
-        res.status(StatusCodes.BAD_REQUEST).json({ message: 'ERROR' });
-    }
+  // validness throws Default error models if customErrorFactory isn't sepcified.
+  // Standard models contain everything you need, like status code and errored fields
+  if (err instanceof DefaultFileError) {
+    // implement handling logic
+    res.status(StatusCodes.BAD_REQUEST).json({ message: 'ERROR' });
+  }
 });
 ```
 
@@ -270,12 +272,12 @@ Let's take a look at the **validationFilePipe** and **validationBodyPipe** signa
 ```typescript
 // ...
 export const validationFilePipe =
-    (DtoConstructor: ClassConstructor, config?: ValidationFileConfig): Router => {
-    }
+  (DtoConstructor: ClassConstructor, config?: ValidationFileConfig): Router => {
+  }
 // ...
 export const validationBodyPipe =
-    (DtoConstructor: ClassConstructor, config?: ValidationBodyConfig): RequestHandler => {
-    }
+  (DtoConstructor: ClassConstructor, config?: ValidationBodyConfig): RequestHandler => {
+  }
 // ...
 ```
 
@@ -286,11 +288,11 @@ If you want to customise config globally for all pipes use
 import { validness } from "validness";
 
 validness({
-    // And many other options..
-    customErrorFactory: errorFactory,
-    queryValidationConfig: {
-        enableDebugMessages: true
-    }
+  // And many other options..
+  customErrorFactory: errorFactory,
+  queryValidationConfig: {
+    enableDebugMessages: true
+  }
 });
 ```
 
