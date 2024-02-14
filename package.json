@@ -70,7 +70,7 @@
     "lint:fix": "eslint --max-warnings=50 --fix .",
     "valid": "yarn run build:dev && yarn run lint:fix",
     "test:all": "npx jest",
-    "test:cov": "npx jest --coverage",
+    "test:ci": "npx jest --coverage",
     "test:cov:badge": "npx coverage-badges --source jest/coverage/coverage-summary.json --output jest/badges/coverage.svg",
     "build:prod:cjs": "tsc -p tsconfig.cjs.json && npx tsc-alias -p tsconfig.cjs.json",
     "build:prod:esm": "tsc -p tsconfig.esm.json && npx tsc-alias -p tsconfig.esm.json",
