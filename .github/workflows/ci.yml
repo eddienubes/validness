@@ -1,0 +1,44 @@
+name: CI
+on: [ pull_request, workflow_dispatch, workflow_call ]
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ '16.x', '18.x', 20.x ]
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout Repository
+
+      - name: Install PNPM
+        uses: pnpm/action-setup@v3
+        with:
+          version: latest
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'pnpm'
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - run: pnpm run lint:check
+        name: Lint Check
+
+      - run: pnpm run build:dev
+        name: Build Development
+
+      - run: pnpm run test:ci
+        name: Test All
+
+      - name: Upload coverage reports to Codecov
+        if: ${{ matrix.node-version == '20.x' }}
+        uses: codecov/codecov-action@v4.0.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: eddienubes/validness
+
+
+
