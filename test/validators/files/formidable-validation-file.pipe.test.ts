@@ -32,7 +32,7 @@ const options: Partial<FileValidationConfig> = {
         uploadDir: getFormidableUploadFolderPath(),
         keepExtensions: true,
         filename: (name, ext) => {
-            return name + ext + '.' + new Date().getTime();
+            return name + ext;
         }
     }
 };

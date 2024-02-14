@@ -1,4 +1,4 @@
-import request from 'supertest';
+import { request } from 'sagetest';
 import { QueryDto } from './models.js';
 import {
     errorFactory,
@@ -22,7 +22,6 @@ describe('Validation Query Pipe', () => {
 
         const res = await request(app).get('/').query(dto);
         expect(res.statusCode).toEqual(200);
-        expect(res.badRequest).toBeFalsy();
     });
 
     it('should reject incorrect query', async () => {
@@ -36,7 +35,6 @@ describe('Validation Query Pipe', () => {
         const res = await request(app).get('/').query(dto);
 
         expect(res.statusCode).toEqual(400);
-        expect(res.badRequest).toBeTruthy();
         expect(res.body).toEqual({
             fields: [
                 {

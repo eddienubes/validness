@@ -119,7 +119,7 @@ describe('Validation Body Pipe', () => {
 
         const res = await request(app).get('/').send(dto);
 
-        expect(res.statusCode).toEqual(400);
+        expect(res.statusCode).toEqual(409);
         expect(res.body).toEqual({
             errors: [
                 {

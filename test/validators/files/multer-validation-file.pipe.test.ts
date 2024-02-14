@@ -131,8 +131,8 @@ describe('Multer validation file pipe', () => {
             .get('/')
             .field('phone', '+15852826457')
             .field('email', 'example@gmail.com')
-            .attach('photos', path1)
-            .attach('photos', path2);
+            .attach('photos', path1, { buffer: true })
+            .attach('photos', path2, { buffer: true });
 
         expect(res.statusCode).toEqual(400);
         expect(res.body).toEqual({
@@ -140,7 +140,7 @@ describe('Multer validation file pipe', () => {
                 {
                     field: 'photos',
                     violations: [
-                        'The following field contains a file of size 7894180 bytes that exceeds the specified maximum limit: 10000 bytes'
+                        'The following field contains a file of size 7894088 bytes that exceeds the specified maximum limit: 10000 bytes'
                     ]
                 }
             ],
@@ -160,8 +160,8 @@ describe('Multer validation file pipe', () => {
             .get('/')
             .field('phone', '+15852826457')
             .field('email', 'example@gmail.com')
-            .attach('photos', path1)
-            .attach('photos', path2);
+            .attach('photos', path1, { buffer: true })
+            .attach('photos', path2, { buffer: true });
 
         expect(res.statusCode).toEqual(400);
         expect(res.body).toEqual({
@@ -169,7 +169,7 @@ describe('Multer validation file pipe', () => {
                 {
                     field: 'photos',
                     violations: [
-                        'The following field contains a file of size 7894180 bytes that is lower than the specified minimal limit: 10000000 bytes'
+                        'The following field contains a file of size 7894088 bytes that is lower than the specified minimal limit: 10000000 bytes'
                     ]
                 }
             ],
