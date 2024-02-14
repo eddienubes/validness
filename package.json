@@ -1,6 +1,6 @@
 {
   "name": "validness",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "engines": {
     "node": ">=16.5"
   },
@@ -26,7 +26,6 @@
     "query",
     "body",
     "form",
-    "travisci",
     "multipart/form-data",
     "nodejs",
     "node",
