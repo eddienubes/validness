@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { Options } from 'formidable';
+import type { Options } from 'formidable';
 import { FileValidationChainGetter } from '@src/validators/files/multer/types.js';
 import {
     ClassConstructor,

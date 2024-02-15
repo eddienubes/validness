@@ -3,7 +3,7 @@ import {
     FileMetadata,
     ProcessedFileDtoConstructor
 } from '@src/index.js';
-import { Field } from 'multer';
+import type { Field } from 'multer';
 import { FileValidationMap } from '@src/validators/files/types.js';
 import {
     FILE_VALIDATION_DECORATED_FIELDS_LIST_KEY,

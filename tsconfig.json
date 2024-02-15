@@ -34,10 +34,6 @@
     "rootDirs": [
       "src"
     ],
-    "typeRoots": [
-      "node_modules/@types",
-      "src/common/@types"
-    ],
     "esModuleInterop": true,
     "emitDecoratorMetadata": true,
     "resolveJsonModule": true,

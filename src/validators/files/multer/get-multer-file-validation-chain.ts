@@ -8,7 +8,7 @@ import {
 } from '@src/index.js';
 import { FileValidationChainGetter } from '@src/validators/files/multer/types.js';
 import { ConfigStore } from '@src/config/config-store.js';
-import { Options } from 'multer';
+import type { Options } from 'multer';
 import { multerUploadMiddleware } from '@src/validators/files/multer/multer-upload.middleware.js';
 import { contentTypeValidationMiddleware } from '@src/validators/content-type-validation.middleware.js';
 import { multerModificationMiddleware } from '@src/validators/files/multer/multer-modification.middleware.js';

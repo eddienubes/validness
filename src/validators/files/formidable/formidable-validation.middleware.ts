@@ -8,7 +8,7 @@ import {
     FileMetadata,
     AnyObject
 } from '@src/index.js';
-import { Fields, File, Files } from 'formidable';
+import type { Fields, File, Files } from 'formidable';
 import * as fs from 'node:fs/promises';
 import { ConfigStore } from '@src/config/config-store.js';
 import {

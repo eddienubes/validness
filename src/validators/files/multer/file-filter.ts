@@ -1,4 +1,4 @@
-import { FileFilterCallback } from 'multer';
+import type { FileFilterCallback } from 'multer';
 import { ErrorField, DefaultFileError } from '@src/index.js';
 import {
     FileValidationMap,

@@ -1,15 +1,19 @@
 import { ErrorRequestHandler } from 'express';
-import { MulterError } from 'multer';
 import {
     DefaultFileError,
     CustomErrorFactory,
     ErrorField
 } from '@src/index.js';
 import { ConfigStore } from '@src/config/config-store.js';
+import { loadMulter } from '@src/validators/files/multer/multerLoader.js';
+import type { MulterError } from 'multer';
 
-export const multerErrorHandlerMiddleware =
-    (customErrorFactory?: CustomErrorFactory): ErrorRequestHandler =>
-    async (err, req, res, next) => {
+export const multerErrorHandlerMiddleware = (
+    customErrorFactory?: CustomErrorFactory
+): ErrorRequestHandler => {
+    const multer = loadMulter();
+
+    return async (err, req, res, next) => {
         const configStore = ConfigStore.getInstance();
         const globalConfig = configStore.getConfig();
 
@@ -18,7 +22,7 @@ export const multerErrorHandlerMiddleware =
             globalConfig.customErrorFactory ||
             globalConfig.fileValidationConfig.customErrorFactory;
 
-        if (err instanceof MulterError) {
+        if (err instanceof multer.MulterError) {
             const errorFields = mapMulterErrorToErrorFields(err);
             const error = errorFactory
                 ? errorFactory(errorFields)
@@ -35,6 +39,7 @@ export const multerErrorHandlerMiddleware =
 
         return next(err);
     };
+};
 
 const mapMulterErrorToErrorFields = (
     multerError: MulterError

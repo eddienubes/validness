@@ -1,10 +1,14 @@
 import { RequestHandler } from 'express';
-import formidable, { Options, errors } from 'formidable';
+import type { Options, errors } from 'formidable';
+import { loadFormidable } from '@src/validators/files/formidable/formidableLoader.js';
 
-export const formidableUploadMiddleware =
-    (coreConfig: Options): RequestHandler =>
-    async (req, res, next) => {
-        const form = formidable(coreConfig);
+export const formidableUploadMiddleware = (
+    coreConfig: Options
+): RequestHandler => {
+    const formidable = loadFormidable();
+
+    return async (req, res, next) => {
+        const form = formidable.formidable(coreConfig);
         try {
             const [fields, files] = await form.parse(req);
 
@@ -20,3 +24,4 @@ export const formidableUploadMiddleware =
 
         return next();
     };
+};

@@ -1,4 +1,4 @@
-import { errors, Fields, Files } from 'formidable';
+import type { errors, Fields, Files } from 'formidable';
 import { AnyObject } from '@src/index.js';
 
 export interface FormidablePayload {

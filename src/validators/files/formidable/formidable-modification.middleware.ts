@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import { File, Files, Options } from 'formidable';
+import type { File, Files, Options } from 'formidable';
 import { ProcessedFileDtoConstructor, ValidatedFile } from '@src/index.js';
 import { wrapFormidableFileField } from '@src/validators/files/formidable/formidable-validation.middleware.js';
 import { FORMIDABLE_DEFAULT_MIMETYPE } from '@src/validators/files/formidable/constants.js';
