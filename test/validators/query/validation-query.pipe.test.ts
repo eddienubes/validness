@@ -35,7 +35,7 @@ describe('Validation Query Pipe', () => {
         const res = await request(app).get('/').query(dto);
 
         expect(res.statusCode).toEqual(400);
-        expect(res.body).toEqual({
+        expect(res.body).toMatchObject({
             fields: [
                 {
                     field: 'age',

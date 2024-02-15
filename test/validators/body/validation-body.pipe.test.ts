@@ -9,7 +9,6 @@ import {
     errorFactoryOverridden
 } from '@test/utils/error-utils.js';
 import express from 'express';
-import { ValidnessError } from '@src/common/errors/validness.error.js';
 
 describe('Validation Body Pipe', () => {
     afterEach(() => {
@@ -44,7 +43,7 @@ describe('Validation Body Pipe', () => {
         const res = await request(app).get('/').send(dto);
 
         expect(res.statusCode).toEqual(400);
-        expect(res.body).toEqual({
+        expect(res.body).toMatchObject({
             fields: [
                 {
                     field: 'name',
@@ -83,7 +82,7 @@ describe('Validation Body Pipe', () => {
         const res = await request(app).get('/').send(dto);
 
         expect(res.statusCode).toEqual(400);
-        expect(res.body).toEqual({
+        expect(res.body).toMatchObject({
             fields: [
                 {
                     field: 'name',

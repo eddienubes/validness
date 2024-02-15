@@ -61,7 +61,7 @@ export const validationBodyPipe = (
                 return next(
                     errorFactory
                         ? errorFactory(errors)
-                        : new DefaultBodyError(errors)
+                        : new DefaultBodyError(errors, e as ValidationError[])
                 );
             }
 

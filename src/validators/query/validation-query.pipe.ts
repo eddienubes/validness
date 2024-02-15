@@ -47,7 +47,7 @@ export const validationQueryPipe = (
                 return next(
                     errorFactory
                         ? errorFactory(errors)
-                        : new DefaultQueryError(errors)
+                        : new DefaultQueryError(errors, e as ValidationError[])
                 );
             }
 
