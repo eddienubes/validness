@@ -8,6 +8,8 @@ import {
     errorFactory,
     errorFactoryOverridden
 } from '@test/utils/error-utils.js';
+import express from 'express';
+import { ValidnessError } from '@src/common/errors/validness.error.js';
 
 describe('Validation Body Pipe', () => {
     afterEach(() => {
@@ -243,5 +245,27 @@ describe('Validation Body Pipe', () => {
             name: 'DefaultBodyError',
             statusCode: 400
         });
+    });
+
+    it('should throw an error if body is undefined', async () => {
+        const app = express();
+        app.get('/', validationBodyPipe(BodyDto), (req, res) => {
+            res.send('ok');
+        });
+        app.use(
+            (
+                err: unknown,
+                req: express.Request,
+                res: express.Response,
+                next: express.NextFunction
+            ) => {
+                res.status(500);
+                res.json(err);
+            }
+        );
+
+        const res = await request(app).get('/').send({ whatever: 'message' });
+
+        expect(res.statusCode).toEqual(500);
     });
 });

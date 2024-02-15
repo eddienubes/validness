@@ -6,6 +6,7 @@ import { FileValidationConfig } from '@src/config/file-validation-config.interfa
 import { QueryValidationConfig } from '@src/validators/query/types.js';
 import { BodyValidationConfig } from '@src/validators/body/types.js';
 import { isObject } from '@src/utils/is-object.js';
+import { ValidnessError } from '@src/common/errors/validness.error.js';
 
 export class ConfigStore {
     private config: ValidationConfig = VALIDATION_CONFIG_DEFAULTS;
@@ -39,7 +40,7 @@ export class ConfigStore {
             case ValidationConfigType.QUERY_VALIDATOR:
                 return this.config.queryValidationConfig;
             default:
-                throw new Error(`Unknown validator type: ${type}`);
+                throw new ValidnessError(`Unknown validator type: ${type}`);
         }
     }
 

@@ -8,6 +8,7 @@ import { DefaultBodyError } from '@src/validators/body/errors/default-body.error
 import { ValidationConfigType } from '@src/config/validation-config-type.enum.js';
 import { ConfigStore } from '@src/config/config-store.js';
 import { findViolatedFields } from '@src/utils/find-violated-fields.js';
+import { ValidnessError } from '@src/common/errors/validness.error.js';
 
 /**
  * Validates the body of an incoming request.
@@ -29,6 +30,15 @@ export const validationBodyPipe = (
         ),
         async (req, res, next) => {
             const { body } = req;
+
+            if (!body) {
+                next(
+                    new ValidnessError(
+                        'Unable to validate since body is not defined, please apply body parser middleware before this one.'
+                    )
+                );
+            }
+
             const configStore = ConfigStore.getInstance();
             const globalConfig = configStore.getConfig();
 
