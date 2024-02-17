@@ -44,7 +44,6 @@
     "src",
     "test",
     "examples",
-    "jest",
-    "jest.config.ts"
+    "vitest.config.ts"
   ]
 }
