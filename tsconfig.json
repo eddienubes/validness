@@ -10,8 +10,6 @@
       "es6"
     ],
     "allowJs": false,
-    "declaration": true,
-    "declarationMap": true,
     "sourceMap": true,
     "strict": true,
     "noImplicitAny": true,

@@ -1,4 +1,4 @@
-import { AnyObject } from '@src/index.js';
+import { AnyObject } from '@src/common/types/types.js';
 import { isObject } from '@src/utils/is-object.js';
 
 /**
