@@ -17,12 +17,13 @@
 
 🟢 Your favourite library for validating incoming data in [express.js](https://expressjs.com/).
 
-With a creation of a single class and usage of decorators we achieve validation of the following content types (body
+With the creation of a single class and usage of decorators we achieve validation of the following content types (body
 parser required):
 
 - application/json
 - multipart/form-data (yes, with files and text fields)
 
+> Also, this library supports both ESM and CJS versions via dynamic exports in package.json.
 ---
 
 ## ⚙️ Installation:
@@ -33,9 +34,9 @@ parser required):
 - class-transformer
 - reflect-metadata
 
-  _Optional, for multipart/form-data parsing only:_
+  _Optional, for multipart/form-data parsing only (These are truly optional):_
 - multer _(recommended)_
-- formidable@v2
+- formidable (yes, we support an ESM version only)
 
 ```shell
 yarn add validness class-validator class-transformer reflect-metadata
@@ -171,7 +172,7 @@ router.use((err, req, res, next) => {
 Install an underlying driver of your choice:
 
 - multer (highly recommended)
-- formidable@v2 (Has some nuances)
+- formidable (Has some nuances)
 
 ```shell
 yarn add multer
