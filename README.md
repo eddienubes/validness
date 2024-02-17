@@ -5,7 +5,7 @@
     <img src="https://github.com/eddienubes/validness/blob/master/misc/water2.png?raw=true" alt="water2" width="30">
 </p>
 <p align="center">
-    <img src="https://github.com/eddienubes/validness/actions/workflows/ci.yml/badge.svg)" alt="ci-status" />
+    <img src="https://github.com/eddienubes/validness/actions/workflows/ci.yml/badge.svg" alt="ci-status" />
     <a href="https://www.npmjs.com/package/sagetest"><img src="https://img.shields.io/npm/v/validness?color=729B1B&label=npm"/></a>
     <a href="https://www.npmjs.com/package/sagetest"><img src="https://img.shields.io/npm/dw/validness" alt="npm version" height="18"></a>
     <a href="https://codecov.io/gh/eddienubes/validness" > 
