@@ -69,7 +69,7 @@
     "lint:fix": "eslint --max-warnings=50 --fix .",
     "valid": "yarn run build:dev && yarn run lint:fix",
     "test:all": "npx vitest run",
-    "test:ci": "npx vitetest run --coverage",
+    "test:ci": "npx vitest run --coverage",
     "build:prod": "rm -rf ./build && pnpm rollup -c && tsc -p tsconfig.build.json && pnpm tsc-alias -p tsconfig.build.json",
     "build:dev": "rm -rf ./build && tsc -p tsconfig.json"
   },
