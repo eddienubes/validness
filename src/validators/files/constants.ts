@@ -1,7 +1,8 @@
-import { FileType, FileValidatorType } from '@src/index.js';
 import { FileValidationChainGetter } from '@src/validators/files/multer/types.js';
 import { getMulterFileValidationChain } from '@src/validators/files/multer/get-multer-file-validation-chain.js';
 import { getFormidableValidationChain } from '@src/validators/files/formidable/get-formidable-validation-chain.js';
+import { FileType } from '@src/validators/files/interfaces/single-file-config.interface.js';
+import { FileValidatorType } from '@src/common/enums/file-validator-type.enum.js';
 
 export const FILE_VALIDATION_METADATA_KEY =
     'validness-validation-file-metadata';
@@ -43,12 +44,4 @@ export const MIME_TYPE_MAP: Record<FileType, string[]> = {
         'video/3gpp',
         'video/3gpp2'
     ]
-};
-
-export const FILE_VALIDATOR_CHAIN_MAP: Record<
-    FileValidatorType,
-    FileValidationChainGetter
-> = {
-    [FileValidatorType.MULTER]: getMulterFileValidationChain,
-    [FileValidatorType.FORMIDABLE]: getFormidableValidationChain
 };

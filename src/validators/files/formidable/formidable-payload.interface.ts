@@ -1,5 +1,5 @@
+import { AnyObject } from '@src/common/types/types.js';
 import type { errors, Fields, Files } from 'formidable';
-import { AnyObject } from '@src/index.js';
 
 export interface FormidablePayload {
     error?: typeof errors.FormidableError | null;

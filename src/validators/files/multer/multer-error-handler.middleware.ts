@@ -1,12 +1,10 @@
 import { ErrorRequestHandler } from 'express';
-import {
-    DefaultFileError,
-    CustomErrorFactory,
-    ErrorField
-} from '@src/index.js';
 import { ConfigStore } from '@src/config/config-store.js';
 import { loadMulter } from '@src/validators/files/multer/multerLoader.js';
 import type { MulterError } from 'multer';
+import { CustomErrorFactory } from '@src/common/types/types.js';
+import { DefaultFileError } from '@src/validators/files/errors/default-file.error.js';
+import { ErrorField } from '@src/common/errors/error-field.js';
 
 export const multerErrorHandlerMiddleware = (
     customErrorFactory?: CustomErrorFactory

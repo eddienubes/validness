@@ -1,15 +1,13 @@
 import { Router } from 'express';
 import { plainToInstance } from 'class-transformer';
 import { validateOrReject, ValidationError } from 'class-validator';
-import {
-    ClassConstructor,
-    DefaultQueryError,
-    QueryValidationConfig,
-    ValidationConfigType
-} from '@src/index.js';
 import { contentTypeValidationMiddleware } from '@src/validators/content-type-validation.middleware.js';
 import { ConfigStore } from '@src/config/config-store.js';
 import { findViolatedFields } from '@src/utils/find-violated-fields.js';
+import { ClassConstructor } from '@src/common/interfaces/class-constructor.interface.js';
+import { QueryValidationConfig } from './types.js';
+import { DefaultQueryError } from './errors/default-query.error.js';
+import { ValidationConfigType } from '@src/config/validation-config-type.enum.js';
 
 export const validationQueryPipe = (
     QueryDtoConstructor: ClassConstructor,

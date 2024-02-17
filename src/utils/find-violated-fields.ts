@@ -1,4 +1,4 @@
-import { ErrorField } from '@src/index.js';
+import { ErrorField } from '@src/common/errors/error-field.js';
 import { ValidationError } from 'class-validator';
 
 export const findViolatedFields = (

@@ -1,5 +1,4 @@
 import type { FileFilterCallback } from 'multer';
-import { ErrorField, DefaultFileError } from '@src/index.js';
 import {
     FileValidationMap,
     MulterFileFilter
@@ -7,6 +6,8 @@ import {
 import { MulterFile } from '@src/validators/files/multer/types.js';
 import { isValidMimeType } from '@src/validators/files/helpers.js';
 import { MIME_TYPE_MAP } from '@src/validators/files/constants.js';
+import { ErrorField } from '@src/common/errors/error-field.js';
+import { DefaultFileError } from '@src/validators/files/errors/default-file.error.js';
 
 export const fileFilter = (
     fileValidationMap: FileValidationMap

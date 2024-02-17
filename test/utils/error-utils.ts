@@ -1,4 +1,4 @@
-import { CustomErrorFactory } from '@src/index.js';
+import { CustomErrorFactory } from '@src/common/types/types.js';
 import { MyError, MyOverriddenError } from '@test/validators/body/models.js';
 
 export const errorFactory: CustomErrorFactory = (errors) =>

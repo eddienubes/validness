@@ -1,8 +1,9 @@
 import { RequestHandler } from 'express';
 import type { File, Files, Options } from 'formidable';
-import { ProcessedFileDtoConstructor, ValidatedFile } from '@src/index.js';
 import { wrapFormidableFileField } from '@src/validators/files/formidable/formidable-validation.middleware.js';
 import { FORMIDABLE_DEFAULT_MIMETYPE } from '@src/validators/files/formidable/constants.js';
+import { ProcessedFileDtoConstructor } from '@src/validators/files/interfaces/processed-file-dto-constructor.interface.js';
+import { ValidatedFile } from '@src/validators/files/interfaces/validated-file.interface.js';
 
 export const formidableModificationMiddleware =
     (
