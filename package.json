@@ -53,15 +53,12 @@
     "build/**/*"
   ],
   "main": "build/index.js",
-  "types": "build/index",
+  "types": "build/index.d.ts",
   "exports": {
     ".": {
       "import": "./build/index.mjs",
-      "require": "./build/index.js"
-    },
-    "./*": {
-      "import": "./build/index.mjs",
-      "require": "./build/index.js"
+      "require": "./build/index.js",
+      "types": "./build/index.d.ts"
     }
   },
   "scripts": {
