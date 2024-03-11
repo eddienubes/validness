@@ -38,8 +38,8 @@ devDependencies:
     specifier: ^0.14.1
     version: 0.14.1
   coverage-badges-cli:
-    specifier: ^1.2.5
-    version: 1.2.5
+    specifier: ^2.0.0
+    version: 2.0.0
   eslint:
     specifier: ^8.57.0
     version: 8.57.0
@@ -1564,15 +1564,15 @@ packages:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
     dev: true
 
-  /coverage-badges-cli@1.2.5:
-    resolution: {integrity: sha512-jQ8BcDqXfFsIN7PTgMOGGJoW2d4zSk2Bayv0zGPMNS+OiWBhALK5n/4Xmxzsl/HXjfXmBnyx2zzNl6JuqL/ghQ==}
-    engines: {node: '>=16.0.0'}
+  /coverage-badges-cli@2.0.0:
+    resolution: {integrity: sha512-fwvBOA/osuedbIpYp8iprPp84L952bVRTOcQEoAreghVC2fI8E0rQH85phK/vhXCLH7iDkz/hb+znOtAD9DqtA==}
+    engines: {node: '>=v20.11.0', npm: '>=10.2.4'}
     hasBin: true
     dependencies:
       '@types/fs-extra': 11.0.4
       '@types/minimist': 1.2.5
       badgen: 3.2.3
-      fs-extra: 11.1.1
+      fs-extra: 11.2.0
       lodash.get: 4.4.2
       mini-svg-data-uri: 1.4.4
       minimist: 1.2.8
@@ -2260,8 +2260,8 @@ packages:
     engines: {node: '>= 0.6'}
     dev: true
 
-  /fs-extra@11.1.1:
-    resolution: {integrity: sha512-MGIE4HOvQCeUCzmlHs0vXpih4ysz4wg9qiSAu6cd42lVwPbTM1TjV7RusoyQqMmk/95gdQZX72u+YW+c3eEpFQ==}
+  /fs-extra@11.2.0:
+    resolution: {integrity: sha512-PmDi3uwK5nFuXh7XDTlVnS17xJS7vW36is2+w3xcv8SVxiB4NyATf4ctkVY5bkSjX0Y4nbvZCq1/EjtEyr9ktw==}
     engines: {node: '>=14.14'}
     dependencies:
       graceful-fs: 4.2.11
