@@ -80,8 +80,8 @@ devDependencies:
     specifier: ^1.5.2
     version: 1.5.2(rollup@4.12.0)(typescript@5.3.3)
   sagetest:
-    specifier: ^0.1.11
-    version: 0.1.11
+    specifier: ^0.1.12
+    version: 0.1.12
   ts-node:
     specifier: ^10.9.2
     version: 10.9.2(@types/node@20.11.25)(typescript@5.3.3)
@@ -3380,8 +3380,8 @@ packages:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
     dev: true
 
-  /sagetest@0.1.11:
-    resolution: {integrity: sha512-YM2WOtEDF9jlnRFbUgujZRX0YBlP+R10FQ8Zg2kxD2gZyzQzAMJA8HVO7Gip1ZlHvvRO8cPSgQv5WSI8L+5iCg==}
+  /sagetest@0.1.12:
+    resolution: {integrity: sha512-cxnbPlPfY7jiI4wMGwOLaUXCSR4npVbDM5D1WltxBDfUQWYWs9bp7t74Dz18dvMmiIv+9f26OS/nF4AGgC2wIQ==}
     engines: {node: '>=16.5.0'}
     dependencies:
       undici: 6.6.2
