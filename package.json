@@ -76,7 +76,7 @@
     "@types/multer": "^1.4.7",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
-    "reflect-metadata": "^0.2.1"
+    "reflect-metadata": "^0.2.2"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
@@ -98,7 +98,7 @@
     "formidable": "^3.5.1",
     "multer": "1.4.5-lts.1",
     "prettier": "^3.2.5",
-    "reflect-metadata": "^0.2.1",
+    "reflect-metadata": "^0.2.2",
     "rollup": "^4.13.1",
     "rollup-plugin-esbuild": "^6.1.1",
     "rollup-plugin-tsconfig-paths": "^1.5.2",
