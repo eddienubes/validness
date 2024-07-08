@@ -17,7 +17,7 @@
 
 🟢 Your favourite library for validating incoming data in [express.js](https://expressjs.com/).
 
-With the creation of a single class and usage of decorators we achieve validation of the following content types (body
+With the creation of a single class and usage of decorators, we achieve validation of the following content types (body
 parser required):
 
 - application/json
@@ -66,8 +66,8 @@ For typescript decorators usage turn this option on in your **tsconfig.json** fi
 
 ### Body validation
 
-As stated above we're going to utilise decorators.
-Let's create a DTO of a commonly expected data:
+As stated above, we're going to use decorators.
+Let's create a DTO of commonly expected data:
 
 _registration.dto.ts_
 
