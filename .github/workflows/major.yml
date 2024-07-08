@@ -45,6 +45,7 @@ jobs:
 
       - name: Bump Major Version
         run: |
+          git status
           version=$(pnpm version major -m "v%s")
           echo "VERSION=$version" >> $GITHUB_ENV 
 
