@@ -33,6 +33,17 @@ export class BodyDto {
     transformed: string;
 }
 
+export class BodyDtoWithContext extends BodyDto {
+    @IsNumber(undefined, {
+        context: {
+            i18n: 'form.age',
+            value: 123
+        }
+    })
+    // initializer to override the paren class' age
+    age: number = 1;
+}
+
 export class MyCustomError extends Error {
     constructor(
         message: string,

@@ -2,7 +2,11 @@ import { request } from 'sagetest';
 import { validationBodyPipe, validness } from '@src/index.js';
 import { StatusCodes } from 'http-status-codes';
 import { ConfigStore } from '@src/config/config-store.js';
-import { BodyDto, MyCustomError } from '@test/validators/body/models.js';
+import {
+    BodyDto,
+    BodyDtoWithContext,
+    MyCustomError
+} from '@test/validators/body/models.js';
 import { createRouteWithPipe } from '@test/utils/server-utils.js';
 import {
     errorFactory,
@@ -273,5 +277,50 @@ describe('Validation Body Pipe', () => {
         const res = await request(app).get('/').send({ whatever: 'message' });
 
         expect(res.statusCode).toEqual(500);
+    });
+
+    it('should pass context to the error field', async () => {
+        const dto = {
+            age: 'age',
+            name: 5
+        };
+
+        const app = createRouteWithPipe(validationBodyPipe(BodyDtoWithContext));
+
+        const res = await request(app).get('/').send(dto);
+
+        expect(res.statusCode).toEqual(400);
+        expect(res.body).toMatchObject({
+            fields: expect.arrayContaining([
+                {
+                    contexts: {},
+                    field: 'name',
+                    violations: ['name must be a string']
+                },
+                {
+                    contexts: {
+                        isNumber: {
+                            i18n: 'form.age',
+                            value: 123
+                        }
+                    },
+                    field: 'age',
+                    violations: [
+                        'age must be a number conforming to the specified constraints'
+                    ]
+                },
+                {
+                    contexts: {},
+                    field: 'transformed',
+                    violations: [
+                        'transformed must be a string',
+                        'transformed should not be empty'
+                    ]
+                }
+            ]),
+            name: 'DefaultBodyError',
+            statusCode: 400
+        });
+        expect(res.statusCode).toEqual(400);
     });
 });

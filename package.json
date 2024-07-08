@@ -65,7 +65,7 @@
     "prepack": "misc/package.sh",
     "lint:check": "eslint --max-warnings=50 .",
     "lint:fix": "eslint --max-warnings=50 --fix .",
-    "valid": "yarn run build:dev && yarn run lint:fix",
+    "valid": "pnpm run build:dev && pnpm run lint:fix",
     "test:all": "npx vitest run",
     "test:ci": "npx vitest run --coverage",
     "build:prod": "rm -rf ./build && pnpm rollup -c && tsc -p tsconfig.build.json && pnpm tsc-alias -p tsconfig.build.json",

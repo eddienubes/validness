@@ -36,10 +36,9 @@ export const contentTypeValidationMiddleware = (
         if (!contentType) {
             const error = errorFactory
                 ? errorFactory([
-                      {
-                          field: 'Content-Type header',
-                          violations: ['Content-Type header should be present']
-                      }
+                      new ErrorField('Content-Type header', [
+                          'Content-Type header should be present'
+                      ])
                   ])
                 : new ErrorConstructor([
                       {

@@ -253,6 +253,7 @@ describe('Multer validation file pipe', () => {
         expect(res.body).toEqual({
             fields: [
                 {
+                    contexts: {},
                     field: 'photos',
                     violations: [
                         'The following file field: [photos] is empty, but required'
@@ -299,6 +300,7 @@ describe('Multer validation file pipe', () => {
         expect(res.body).toEqual({
             errors: [
                 {
+                    contexts: {},
                     field: 'photos',
                     violations: [
                         'The following file field: [photos] is empty, but required'
