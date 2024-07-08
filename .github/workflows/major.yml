@@ -49,23 +49,23 @@ jobs:
           version=$(pnpm version major -m "v%s")
           echo "VERSION=$version" >> $GITHUB_ENV 
 
-#      - name: Create Draft Release
-#        uses: release-drafter/release-drafter@v5
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#        with:
-#          tag: ${{ env.VERSION }}
-#          name: ${{ env.VERSION }}
-#          version: ${{ env.VERSION }}
-#
-#      - run: npm publish
-#        name: Publish to NPM
-#        env:
-#          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-#
-#      - name: Push Bumped Version
-#        run: |
-#          git push
+      - name: Create Draft Release
+        uses: release-drafter/release-drafter@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag: ${{ env.VERSION }}
+          name: ${{ env.VERSION }}
+          version: ${{ env.VERSION }}
+
+      - run: npm publish
+        name: Publish to NPM
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
+      - name: Push Bumped Version
+        run: |
+          git push
 
 
 
