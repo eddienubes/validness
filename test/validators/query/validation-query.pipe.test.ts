@@ -121,6 +121,7 @@ describe('Validation Query Pipe', () => {
         expect(res.body).toEqual({
             errors: [
                 {
+                    contexts: {},
                     field: 'Content-Type header',
                     violations: [
                         'Content-Type audio/wav is not allowed. Use [application/json]'
