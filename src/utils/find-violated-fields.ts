@@ -18,7 +18,9 @@ export const findViolatedFields = (
                 rawConstraints.push(object.constraints[constraintKey]);
             }
 
-            errors.push(new ErrorField(object.property, rawConstraints));
+            errors.push(
+                new ErrorField(object.property, rawConstraints, object.contexts)
+            );
         }
 
         if (object.children?.length) {

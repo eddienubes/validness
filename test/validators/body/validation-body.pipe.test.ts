@@ -124,16 +124,19 @@ describe('Validation Body Pipe', () => {
         expect(res.body).toEqual({
             errors: [
                 {
+                    contexts: {},
                     field: 'name',
                     violations: ['name must be a string']
                 },
                 {
+                    contexts: {},
                     field: 'age',
                     violations: [
                         'age must be a number conforming to the specified constraints'
                     ]
                 },
                 {
+                    contexts: {},
                     field: 'transformed',
                     violations: [
                         'transformed must be a string',
@@ -166,10 +169,12 @@ describe('Validation Body Pipe', () => {
         expect(res.body).toEqual({
             errors: [
                 {
+                    contexts: {},
                     field: 'name',
                     violations: ['name should not be empty']
                 },
                 {
+                    contexts: {},
                     field: 'transformed',
                     violations: [
                         'transformed must be a string',
@@ -206,10 +211,12 @@ describe('Validation Body Pipe', () => {
         expect(res.body).toEqual({
             errors: [
                 {
+                    contexts: {},
                     field: 'name',
                     violations: ['name should not be empty']
                 },
                 {
+                    contexts: {},
                     field: 'transformed',
                     violations: [
                         'transformed must be a string',

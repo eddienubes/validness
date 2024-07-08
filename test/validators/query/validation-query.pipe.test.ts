@@ -62,6 +62,7 @@ describe('Validation Query Pipe', () => {
         expect(res.body).toEqual({
             errors: [
                 {
+                    contexts: {},
                     field: 'age',
                     violations: ['age must be a number string']
                 }
@@ -91,6 +92,7 @@ describe('Validation Query Pipe', () => {
         expect(res.body).toEqual({
             errors: [
                 {
+                    contexts: {},
                     field: 'age',
                     violations: ['age must be a number string']
                 }
