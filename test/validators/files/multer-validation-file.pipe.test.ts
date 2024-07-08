@@ -15,6 +15,7 @@ import {
     MultipleFilesOptionalDto,
     MultipleFilesTypeDto,
     SingleFileDto,
+    SingleFileDtoWithContext,
     SingleFileNoTextDto,
     SingleFileWithTypeDto
 } from '@test/validators/files/models.js';
@@ -109,6 +110,7 @@ describe('Multer validation file pipe', () => {
         expect(res.body).toEqual({
             fields: [
                 {
+                    contexts: {},
                     field: 'photos',
                     violations: [
                         'The following file field [photos] has exceeded its maxCount or is not expected'
@@ -138,6 +140,7 @@ describe('Multer validation file pipe', () => {
         expect(res.body).toEqual({
             fields: [
                 {
+                    contexts: {},
                     field: 'photos',
                     violations: [
                         'The following field contains a file of size 7894088 bytes that exceeds the specified maximum limit: 10000 bytes'
@@ -167,6 +170,7 @@ describe('Multer validation file pipe', () => {
         expect(res.body).toEqual({
             fields: [
                 {
+                    contexts: {},
                     field: 'photos',
                     violations: [
                         'The following field contains a file of size 7894088 bytes that is lower than the specified minimal limit: 10000000 bytes'
@@ -196,6 +200,7 @@ describe('Multer validation file pipe', () => {
         expect(res.body).toEqual({
             fields: [
                 {
+                    contexts: {},
                     field: 'photos',
                     violations: [
                         'The following field contains file of the invalid mimetype image/png, but expected any of: [audio/aac,audio/midi,audio/x-midi,audio/mpeg,audio/ogg,audio/opus,audio/wav,audio/webm,audio/3gpp,audio/3gpp2]'
@@ -225,6 +230,7 @@ describe('Multer validation file pipe', () => {
         expect(res.body).toEqual({
             fields: [
                 {
+                    contexts: {},
                     field: 'photos',
                     violations: [
                         'The following field contains file of the invalid mimetype image/png, but expected: audio/mpeg'
@@ -248,6 +254,7 @@ describe('Multer validation file pipe', () => {
         expect(res.body).toEqual({
             fields: [
                 {
+                    contexts: {},
                     field: 'photos',
                     violations: [
                         'The following file field: [photos] is empty, but required'
@@ -294,6 +301,7 @@ describe('Multer validation file pipe', () => {
         expect(res.body).toEqual({
             errors: [
                 {
+                    contexts: {},
                     field: 'photos',
                     violations: [
                         'The following file field: [photos] is empty, but required'
@@ -345,6 +353,7 @@ describe('Multer validation file pipe', () => {
         expect(res.body).toEqual({
             fields: [
                 {
+                    contexts: {},
                     field: 'file',
                     violations: [
                         'The following file field [file] has exceeded its maxCount or is not expected'
@@ -396,6 +405,7 @@ describe('Multer validation file pipe', () => {
         expect(res.body).toEqual({
             fields: [
                 {
+                    contexts: {},
                     field: 'file',
                     violations: [
                         'The following field contains file of the invalid mimetype application/octet-stream, but expected any of: [image/avif,image/bmp,image/gif,image/vnd.microsoft.icon,image/jpeg,image/png,image/svg+xml,image/tiff,image/webp]'
@@ -451,10 +461,49 @@ describe('Multer validation file pipe', () => {
         expect(res.body).toEqual({
             fields: [
                 {
+                    contexts: {},
                     field: 'number',
                     violations: ['number must be a number string']
                 }
             ],
+            name: 'DefaultFileError',
+            statusCode: 400
+        });
+    });
+
+    it('should NOT upload files and pass context to errors', async () => {
+        const app = createRouteWithPipe(
+            validationFilePipe(SingleFileDtoWithContext, {
+                coreConfig: uploadOptions
+            })
+        );
+
+        const res = await request(app).get('/').field('number', 'asd');
+
+        expect(res.statusCode).toEqual(400);
+        expect(res.body).toEqual({
+            fields: expect.arrayContaining([
+                {
+                    contexts: {
+                        isFile: {
+                            i18n: 'file.key.whatever'
+                        }
+                    },
+                    field: 'file',
+                    violations: [
+                        'The following file field: [file] is empty, but required'
+                    ]
+                },
+                {
+                    contexts: {
+                        isNumberString: {
+                            i18n: 'number.key.whatever'
+                        }
+                    },
+                    field: 'number',
+                    violations: ['number must be a number string']
+                }
+            ]),
             name: 'DefaultFileError',
             statusCode: 400
         });
@@ -512,6 +561,7 @@ describe('Multer validation file pipe', () => {
         expect(res.body).toEqual({
             fields: [
                 {
+                    contexts: {},
                     field: 'Content-Type header',
                     violations: [
                         'Content-Type audio/wav is not allowed. Use [multipart/form-data]'

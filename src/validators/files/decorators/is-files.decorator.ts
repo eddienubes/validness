@@ -10,6 +10,7 @@ export const IsFiles = (config?: MultipleFilesConfig): PropertyDecorator => {
     return (target, propertyKey) => {
         const metadata: FileMetadata = {
             multiple: true,
+            decorator: 'isFiles',
             ...config
         };
 

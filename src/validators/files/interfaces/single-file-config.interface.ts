@@ -29,4 +29,6 @@ export interface SingleFileConfig {
      * Allows optional file attachment
      */
     optional?: boolean;
+
+    context?: any;
 }

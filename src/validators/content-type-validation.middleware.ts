@@ -4,6 +4,7 @@ import { ClassConstructor } from '@src/common/interfaces/class-constructor.inter
 import { ValidationErrorsCollectable } from '@src/common/interfaces/validation-errors-collectable.interface.js';
 import { ValidationConfigType } from '@src/config/validation-config-type.enum.js';
 import { ValidatorConfigurable } from '@src/config/validator-configurable.interface.js';
+import { ErrorField } from '@src/common/errors/error-field.js';
 
 export const contentTypeValidationMiddleware = (
     ErrorConstructor: ClassConstructor<ValidationErrorsCollectable>,
@@ -36,10 +37,9 @@ export const contentTypeValidationMiddleware = (
         if (!contentType) {
             const error = errorFactory
                 ? errorFactory([
-                      {
-                          field: 'Content-Type header',
-                          violations: ['Content-Type header should be present']
-                      }
+                      new ErrorField('Content-Type header', [
+                          'Content-Type header should be present'
+                      ])
                   ])
                 : new ErrorConstructor([
                       {
@@ -55,24 +55,18 @@ export const contentTypeValidationMiddleware = (
         if (!allowedContentTypes.some((ct) => contentType.includes(ct))) {
             const error = errorFactory
                 ? errorFactory([
-                      {
-                          field: 'Content-Type header',
-                          violations: [
-                              `Content-Type ${contentType} is not allowed. Use [${allowedContentTypes.join(
-                                  ', '
-                              )}]`
-                          ]
-                      }
+                      new ErrorField('Content-Type header', [
+                          `Content-Type ${contentType} is not allowed. Use [${allowedContentTypes.join(
+                              ', '
+                          )}]`
+                      ])
                   ])
                 : new ErrorConstructor([
-                      {
-                          field: 'Content-Type header',
-                          violations: [
-                              `Content-Type ${contentType} is not allowed. Use [${allowedContentTypes.join(
-                                  ', '
-                              )}]`
-                          ]
-                      }
+                      new ErrorField('Content-Type header', [
+                          `Content-Type ${contentType} is not allowed. Use [${allowedContentTypes.join(
+                              ', '
+                          )}]`
+                      ])
                   ]);
 
             next(error);
