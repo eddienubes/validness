@@ -7,4 +7,6 @@ import { MultipleFilesConfig } from '@src/validators/files/interfaces/multiple-f
  */
 export interface FileMetadata extends SingleFileConfig, MultipleFilesConfig {
     multiple: boolean;
+    // name of the decorator
+    decorator: string;
 }

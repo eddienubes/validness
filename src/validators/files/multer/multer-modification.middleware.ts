@@ -16,11 +16,11 @@ export const multerModificationMiddleware = (
 
             const metadata = processedFileDtoConstructor.fileValidationMap[key];
 
-            // We are certainly sure it's a multer file because we use .fields method.
+            // We are certain it's a multer file because we use .fields method.
             // See http://expressjs.com/en/resources/middleware/multer.html
             const files = req?.files?.[typedKey] as unknown as MulterFile[];
 
-            // if file is not optional but still not defined this is BAD, because such cases
+            // if file is not optional but still not defined, this is BAD, because such cases
             // should be handled in the validation level of file filter
             if ((!files || !files?.length) && !metadata.optional) {
                 return next(
@@ -30,7 +30,7 @@ export const multerModificationMiddleware = (
                 );
             }
 
-            // if file is optional and not defined there is nothing to modify, skip it.
+            // if a file is optional and not defined, there is nothing to modify, skip it.
             if (!files?.length && metadata.optional) {
                 continue;
             }

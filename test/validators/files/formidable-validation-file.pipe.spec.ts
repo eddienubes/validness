@@ -535,6 +535,7 @@ describe('Formidable validation pipe', () => {
         expect(res.body).toEqual({
             fields: [
                 {
+                    contexts: {},
                     field: 'Content-Type header',
                     violations: [
                         'Content-Type audio/wav is not allowed. Use [multipart/form-data]'

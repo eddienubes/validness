@@ -110,23 +110,37 @@ const validateFileField = (
         return null;
     }
 
+    const contexts = !!metadata.context
+        ? { [metadata.decorator]: metadata.context }
+        : {};
+
     // if field is not defined, but required
     if (!files && !metadata.optional) {
-        return new ErrorField(fieldName, [
-            `The following file field: [${fieldName}] is empty, but required`
-        ]);
+        return new ErrorField(
+            fieldName,
+            [`The following file field: [${fieldName}] is empty, but required`],
+            contexts
+        );
     }
 
     if (files && metadata.maxAmount && files.length > metadata.maxAmount) {
-        return new ErrorField(fieldName, [
-            `The following file field [${fieldName}] has exceeded its maxCount or is not expected`
-        ]);
+        return new ErrorField(
+            fieldName,
+            [
+                `The following file field [${fieldName}] has exceeded its maxCount or is not expected`
+            ],
+            contexts
+        );
     }
 
     if (files && !metadata.multiple && files.length > 1) {
-        return new ErrorField(fieldName, [
-            `The following file field [${fieldName}] has exceeded its maxCount (1) or is not expected`
-        ]);
+        return new ErrorField(
+            fieldName,
+            [
+                `The following file field [${fieldName}] has exceeded its maxCount (1) or is not expected`
+            ],
+            contexts
+        );
     }
 
     // if field is defined validate each file in its array
@@ -170,7 +184,11 @@ const validateFileField = (
     }
 
     if (violations.length) {
-        return new ErrorField(fieldName, violations);
+        const contexts = !!metadata.context
+            ? { [metadata.decorator]: metadata.context }
+            : {};
+
+        return new ErrorField(fieldName, violations, contexts);
     }
 
     return null;

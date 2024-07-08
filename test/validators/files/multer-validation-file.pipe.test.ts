@@ -15,6 +15,7 @@ import {
     MultipleFilesOptionalDto,
     MultipleFilesTypeDto,
     SingleFileDto,
+    SingleFileDtoWithContext,
     SingleFileNoTextDto,
     SingleFileWithTypeDto
 } from '@test/validators/files/models.js';
@@ -470,6 +471,44 @@ describe('Multer validation file pipe', () => {
         });
     });
 
+    it('should NOT upload files and pass context to errors', async () => {
+        const app = createRouteWithPipe(
+            validationFilePipe(SingleFileDtoWithContext, {
+                coreConfig: uploadOptions
+            })
+        );
+
+        const res = await request(app).get('/').field('number', 'asd');
+
+        expect(res.statusCode).toEqual(400);
+        expect(res.body).toEqual({
+            fields: expect.arrayContaining([
+                {
+                    contexts: {
+                        isFile: {
+                            i18n: 'file.key.whatever'
+                        }
+                    },
+                    field: 'file',
+                    violations: [
+                        'The following file field: [file] is empty, but required'
+                    ]
+                },
+                {
+                    contexts: {
+                        isNumberString: {
+                            i18n: 'number.key.whatever'
+                        }
+                    },
+                    field: 'number',
+                    violations: ['number must be a number string']
+                }
+            ]),
+            name: 'DefaultFileError',
+            statusCode: 400
+        });
+    });
+
     it('should send multer files properly with [] sign in name', async () => {
         const app = createRouteWithPipe(
             validationFilePipe(MultipleFieldsWithWeirdSignDto)
@@ -522,6 +561,7 @@ describe('Multer validation file pipe', () => {
         expect(res.body).toEqual({
             fields: [
                 {
+                    contexts: {},
                     field: 'Content-Type header',
                     violations: [
                         'Content-Type audio/wav is not allowed. Use [multipart/form-data]'

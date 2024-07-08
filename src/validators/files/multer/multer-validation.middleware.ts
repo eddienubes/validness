@@ -36,15 +36,17 @@ export const multerValidationMiddleware = (
 
             // if field is not defined and required or is empty and required
             if ((!files || !files?.length) && !metadata.optional) {
+                const contexts = !!metadata.context
+                    ? { [metadata.decorator]: metadata.context }
+                    : {};
+
                 errors.push(
                     new ErrorField(
                         key,
                         [
                             `The following file field: [${key}] is empty, but required`
                         ],
-                        {
-                            isFile: metadata.context
-                        }
+                        contexts
                     )
                 );
             }

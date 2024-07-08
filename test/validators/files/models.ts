@@ -10,6 +10,22 @@ export class SingleFileDto {
     number: string;
 }
 
+export class SingleFileDtoWithContext extends SingleFileDto {
+    @IsFile({
+        context: {
+            i18n: 'file.key.whatever'
+        }
+    })
+    file: ValidatedFile = {} as ValidatedFile;
+
+    @IsNumberString(undefined, {
+        context: {
+            i18n: 'number.key.whatever'
+        }
+    })
+    number: string = '';
+}
+
 export class SingleFileNoTextDto {
     @IsFile()
     file: ValidatedFile;

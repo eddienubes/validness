@@ -10,6 +10,8 @@ export const IsFile = (config?: SingleFileConfig): PropertyDecorator => {
     return (target, propertyKey) => {
         const metadata: FileMetadata = {
             multiple: false,
+            // comply with class-validator naming
+            decorator: 'isFile',
             ...config
         };
 

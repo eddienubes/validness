@@ -41,7 +41,10 @@ export const getMulterFileValidationChain: FileValidationChainGetter = (
             fileValidationConfig
         ),
         multerModificationMiddleware(processedFileDtoConstructor),
-        multerErrorHandlerMiddleware(fileValidationConfig?.customErrorFactory)
+        multerErrorHandlerMiddleware(
+            processedFileDtoConstructor,
+            fileValidationConfig?.customErrorFactory
+        )
     );
 
     return router;
