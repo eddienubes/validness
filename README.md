@@ -253,11 +253,11 @@ router.use((err, req, res, next) => {
 
 1. Formidable.
 
-IMO this library does not have a convenient API, therefore some decisions were made while developing mine.
+IMO this library does not have a convenient API, therefore, some decisions were made while developing mine.
 
 If you decide to change core config of this library (**coreConfig** property), e.g. set max size for files there and not
 in
-the decorator, than the error thrown by formidable will **NOT** be mapped to DefaultFileError, but rather passed as is.
+the decorator, then the error thrown by formidable will **NOT** be mapped to DefaultFileError, but rather passed as is.
 
 2. Some options in configuration might not be complete, such as **mimetype** or **type**. If you hardly demand new ones,
    just open an issue and I will expend the list within a day.
@@ -282,8 +282,8 @@ export const validationBodyPipe =
 // ...
 ```
 
-If you want to customise config globally for all pipes use
-**validness** function and pass object with options there. (Be careful with what you change in **coreConfig**)
+If you want to customise config globally for all pipes, use
+**validness** function and pass an object with options there. (Be careful with what you change in **coreConfig**)
 
 ```typescript
 import { validness } from "validness";
@@ -305,8 +305,8 @@ validness({
 
 Defaults can be found [HERE](https://github.com/eddienubes/validness/blob/master/src/config/constants.ts)
 
-I think an overall documentation for each property is not required, because they're well commented directly in the
-library itself.
+I think overall documentation for each property is not required because they're well commented in the
+code itself.
 
 If you feel a lack of examples - open an issue, I will add as many as you want. Thanks.
 
@@ -314,7 +314,7 @@ If you feel a lack of examples - open an issue, I will add as many as you want. 
 
 ## ❤️ Contributing
 
-If you wish to contribute in evolving of this package, please submit your issues or even open pull requests. You're
+If you wish to contribute to evolving of this package, please submit your issues or even open pull requests. You're
 always welcome. 🥰
 
 ---
