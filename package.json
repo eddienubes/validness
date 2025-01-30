@@ -97,7 +97,7 @@
     "express": "^4.19.2",
     "formidable": "^3.5.1",
     "multer": "1.4.5-lts.1",
-    "prettier": "^3.2.5",
+    "prettier": "^3.4.2",
     "reflect-metadata": "^0.2.2",
     "rollup": "^4.27.2",
     "rollup-plugin-esbuild": "^6.1.1",
