@@ -1,0 +1,79 @@
+name: Release
+on:
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: Version bump type
+        type: choice
+        required: true
+        default: patch
+        options:
+          - major
+          - minor
+          - patch
+
+# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
+# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
+concurrency:
+  group: pushable
+  cancel-in-progress: false
+
+jobs:
+  CI:
+    uses: ./.github/workflows/ci.yml
+    secrets: inherit
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: CI
+    permissions:
+      contents: write
+      id-token: write # npm trusted publishing (OIDC)
+    env:
+      MISE_NODE_VERSION: '24'
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Set up toolchain (Node 24, pnpm)
+        uses: jdx/mise-action@v5
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Git Config
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Bump Version
+        id: bump
+        run: |
+          pnpm version "${{ inputs.bump }}" -m "v%s"
+          echo "version=v$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
+
+      - name: Pack
+        run: pnpm pack
+
+      - name: Publish to NPM
+        run: |
+          # Trusted publishing requires npm >= 11.5.1
+          npm install -g npm@latest
+          npm publish ./validness-*.tgz
+
+      - name: Push Bumped Version
+        run: git push --follow-tags
+
+      - name: Create Draft Release
+        uses: release-drafter/release-drafter@v7
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag: ${{ steps.bump.outputs.version }}
+          name: ${{ steps.bump.outputs.version }}
+          version: ${{ steps.bump.outputs.version }}
