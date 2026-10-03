@@ -1,6 +1,6 @@
 {
   "name": "validness",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "Your favourite library for validating incoming data in express.js",
   "keywords": [
     "DTO",
