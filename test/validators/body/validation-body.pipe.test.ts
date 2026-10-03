@@ -288,7 +288,7 @@ describe('Validation Body Pipe', () => {
         // Count every next() call leaving the pipe to catch a fall-through
         app.get(
             '/',
-            (req, res, next) => {
+            (req, res) => {
                 pipe(req, res, (err?: unknown) => {
                     errors.push(err);
                     if (!res.headersSent) {

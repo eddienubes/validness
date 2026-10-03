@@ -66,7 +66,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "vitest run",
     "test:ci": "vitest run --coverage",
-    "check:package": "publint --pack pnpm && attw --pack . --profile esm-only",
+    "check:package": "publint --pack pnpm && d=$(mktemp -d) && pnpm pack --pack-destination \"$d\" > /dev/null && attw \"$d\"/*.tgz --profile esm-only; rc=$?; rm -rf \"$d\"; exit $rc",
     "lint:fix": "oxlint --type-aware --fix",
     "lint": "oxlint --type-aware",
     "format": "oxfmt",
