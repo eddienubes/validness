@@ -75,7 +75,7 @@ export const formidableValidationMiddleware =
         // For cases where upload directory is specified
         if (errors.length) {
             await removeFormidableUploadedFiles(files as Files);
-            next(new DefaultFileError(errors));
+            return next(new DefaultFileError(errors));
         }
 
         req.formidablePayload = {

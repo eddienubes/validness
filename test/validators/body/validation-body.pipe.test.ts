@@ -13,6 +13,7 @@ import {
     errorFactoryOverridden
 } from '#test/utils/error-utils.ts';
 import express from 'express';
+import { ValidnessError } from '#src/common/errors/validness.error.ts';
 
 describe('Validation Body Pipe', () => {
     afterEach(() => {
@@ -278,6 +279,34 @@ describe('Validation Body Pipe', () => {
         const res = await request(app).get('/').send({ whatever: 'message' });
 
         expect(res.statusCode).toEqual(500);
+    });
+
+    it('should report a missing body exactly once', async () => {
+        const errors: unknown[] = [];
+        const pipe = validationBodyPipe(BodyDto);
+        const app = express();
+        // Count every next() call leaving the pipe to catch a fall-through
+        app.get(
+            '/',
+            (req, res, next) => {
+                pipe(req, res, (err?: unknown) => {
+                    errors.push(err);
+                    if (!res.headersSent) {
+                        res.status(500).json({});
+                    }
+                });
+            },
+            (req, res) => {
+                res.send('ok');
+            }
+        );
+
+        const res = await request(app).get('/').send({ whatever: 'message' });
+        await new Promise((resolve) => setTimeout(resolve, 20));
+
+        expect(res.statusCode).toEqual(500);
+        expect(errors).toHaveLength(1);
+        expect(errors[0]).toBeInstanceOf(ValidnessError);
     });
 
     it('should pass context to the error field', async () => {

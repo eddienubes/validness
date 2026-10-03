@@ -32,7 +32,7 @@ export const validationBodyPipe = (
             const { body } = req;
 
             if (!body) {
-                next(
+                return next(
                     new ValidnessError(
                         'Unable to validate since body is not defined, please apply body parser middleware before this one.'
                     )
