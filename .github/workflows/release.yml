@@ -28,6 +28,7 @@ jobs:
     needs: CI
     permissions:
       contents: write
+      pull-requests: read # release-drafter
       id-token: write # npm trusted publishing (OIDC)
     env:
       MISE_NODE_VERSION: '24'
