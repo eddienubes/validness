@@ -2,7 +2,19 @@
   "name": "validness",
   "version": "2.1.0",
   "engines": {
-    "node": ">=16.5"
+    "node": ">=22.12"
+  },
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^12",
+      "onFail": "download"
+    },
+    "runtime": {
+      "name": "node",
+      "version": ">=22.12",
+      "onFail": "error"
+    }
   },
   "type": "module",
   "repository": {
@@ -56,58 +68,73 @@
   "types": "build/index.d.ts",
   "exports": {
     ".": {
-      "import": "./build/index.mjs",
-      "require": "./build/index.js",
-      "types": "./build/index.d.ts"
+      "types": "./build/index.d.ts",
+      "default": "./build/index.js"
     }
   },
+  "imports": {
+    "#src/*": "./src/*",
+    "#test/*": "./test/*"
+  },
   "scripts": {
-    "prepack": "misc/package.sh",
+    "build": "rm -rf build && tsc -p tsconfig.build.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:ci": "vitest run --coverage",
+    "check:package": "rm -f *.tgz && pnpm pack --out ./validness-check.tgz && publint ./validness-check.tgz && attw ./validness-check.tgz --profile esm-only; rc=$?; rm -f validness-check.tgz; exit $rc",
     "lint:check": "eslint --max-warnings=50 .",
-    "lint:fix": "eslint --max-warnings=50 --fix .",
-    "valid": "pnpm run build:dev && pnpm run lint:fix",
-    "test:all": "npx vitest run",
-    "test:ci": "npx vitest run --coverage",
-    "build:prod": "rm -rf ./build && pnpm rollup -c && tsc -p tsconfig.build.json && pnpm tsc-alias -p tsconfig.build.json",
-    "build:dev": "rm -rf ./build && tsc -p tsconfig.json"
+    "lint:fix": "eslint --max-warnings=50 --fix ."
   },
   "peerDependencies": {
-    "@types/formidable": "^3.4.5",
-    "@types/multer": "^1.4.7",
     "class-transformer": "^0.5.1",
-    "class-validator": "^0.14.1",
-    "reflect-metadata": "^0.2.2"
+    "class-validator": "^0.15.0",
+    "express": "^5.0.0",
+    "reflect-metadata": "^0.2.2",
+    "multer": "^2.0.0",
+    "formidable": "^3.0.0",
+    "@types/multer": "^2.0.0",
+    "@types/formidable": "^3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "multer": {
+      "optional": true
+    },
+    "formidable": {
+      "optional": true
+    },
+    "@types/multer": {
+      "optional": true
+    },
+    "@types/formidable": {
+      "optional": true
+    }
   },
   "devDependencies": {
-    "@types/express": "^4.17.21",
-    "@types/formidable": "^3.4.5",
-    "@types/multer": "^1.4.11",
-    "@types/node": "^20.11.25",
+    "@arethetypeswrong/cli": "^0.18.5",
+    "@types/express": "^5.0.6",
+    "@types/formidable": "^3.5.1",
+    "@types/multer": "^2.3.0",
+    "@types/node": "^26.6.4",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^6.21.0",
-    "@vitest/coverage-v8": "^2.0.2",
+    "@vitest/coverage-v8": "^5.0.3",
     "class-transformer": "^0.5.1",
-    "class-validator": "^0.14.1",
-    "coverage-badges-cli": "^2.0.0",
+    "class-validator": "^0.15.1",
+    "coverage-badges-cli": "^2.2.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-prettier": "^5.1.3",
-    "express": "^4.19.2",
-    "formidable": "^3.5.1",
-    "multer": "1.4.5-lts.1",
+    "express": "^5.2.1",
+    "formidable": "^3.5.4",
+    "multer": "^2.4.0",
     "prettier": "^3.2.5",
+    "publint": "^0.3.25",
     "reflect-metadata": "^0.2.2",
-    "rollup": "^4.18.0",
-    "rollup-plugin-esbuild": "^6.1.1",
-    "rollup-plugin-tsconfig-paths": "^1.5.2",
-    "sagetest": "^0.1.12",
-    "ts-node": "^10.9.2",
-    "tsc-alias": "^1.8.10",
-    "typescript": "^5.4.5",
-    "vite-tsconfig-paths": "^4.3.2",
-    "vitest": "^2.0.2"
+    "sagetest": "^0.1.27",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.3"
   },
   "dependencies": {
     "http-status-codes": "^2.3.0"
