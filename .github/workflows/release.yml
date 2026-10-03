@@ -57,9 +57,11 @@ jobs:
           echo "version=v$(node -p "require('./package.json').version")" >> "$GITHUB_OUTPUT"
 
       - name: Pack
-        run: pnpm pack
+        run: pnpm pack --pack-destination "$RUNNER_TEMP"
 
       - name: Publish to NPM
+        # Run outside the repo: npm rejects package.json devEngines.packageManager (pnpm)
+        working-directory: ${{ runner.temp }}
         run: |
           # Trusted publishing requires npm >= 11.5.1: https://docs.npmjs.com/trusted-publishers
           npm install -g npm@11
