@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
-import { MulterFile } from '@src/validators/files/multer/types.js';
-import { ProcessedFileDtoConstructor } from '@src/validators/files/interfaces/processed-file-dto-constructor.interface.js';
-import { ValidatedFile } from '@src/validators/files/interfaces/validated-file.interface.js';
+import { MulterFile } from './types.ts';
+import { ProcessedFileDtoConstructor } from '../interfaces/processed-file-dto-constructor.interface.ts';
+import { ValidatedFile } from '../interfaces/validated-file.interface.ts';
 
 /**
  * Processes files and body to concatenate them into a single object
@@ -11,6 +11,9 @@ export const multerModificationMiddleware = (
     processedFileDtoConstructor: ProcessedFileDtoConstructor
 ): RequestHandler => {
     return async (req, res, next) => {
+        // Express 5 no longer defaults req.body to {}
+        req.body ??= {};
+
         for (const key in processedFileDtoConstructor.fileValidationMap) {
             const typedKey = key as keyof typeof req.files;
 

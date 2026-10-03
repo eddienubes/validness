@@ -1,17 +1,17 @@
 import { Router } from 'express';
 import type { Options } from 'formidable';
-import { FileValidationChainGetter } from '@src/validators/files/multer/types.js';
-import { ConfigStore } from '@src/config/config-store.js';
-import { contentTypeValidationMiddleware } from '@src/validators/content-type-validation.middleware.js';
-import { formidableUploadMiddleware } from '@src/validators/files/formidable/formidable-upload.middleware.js';
-import { formidableValidationMiddleware } from '@src/validators/files/formidable/formidable-validation.middleware.js';
-import { formidableModificationMiddleware } from '@src/validators/files/formidable/formidable-modification.middleware.js';
-import { formidableErrorHandler } from '@src/validators/files/formidable/formidable-error-handler.middleware.js';
-import { ClassConstructor } from '@src/common/interfaces/class-constructor.interface.js';
-import { ProcessedFileDtoConstructor } from '@src/validators/files/interfaces/processed-file-dto-constructor.interface.js';
-import { FileValidationConfig } from '@src/config/file-validation-config.interface.js';
-import { DefaultFileError } from '@src/validators/files/errors/default-file.error.js';
-import { ValidationConfigType } from '@src/config/validation-config-type.enum.js';
+import { FileValidationChainGetter } from '../multer/types.ts';
+import { ConfigStore } from '../../../config/config-store.ts';
+import { contentTypeValidationMiddleware } from '../../content-type-validation.middleware.ts';
+import { formidableUploadMiddleware } from './formidable-upload.middleware.ts';
+import { formidableValidationMiddleware } from './formidable-validation.middleware.ts';
+import { formidableModificationMiddleware } from './formidable-modification.middleware.ts';
+import { formidableErrorHandler } from './formidable-error-handler.middleware.ts';
+import { ClassConstructor } from '../../../common/interfaces/class-constructor.interface.ts';
+import { ProcessedFileDtoConstructor } from '../interfaces/processed-file-dto-constructor.interface.ts';
+import { FileValidationConfig } from '../../../config/file-validation-config.interface.ts';
+import { DefaultFileError } from '../errors/default-file.error.ts';
+import { ValidationConfigType } from '../../../config/validation-config-type.enum.ts';
 
 export const getFormidableValidationChain: FileValidationChainGetter = (
     DtoConstructor: ClassConstructor,

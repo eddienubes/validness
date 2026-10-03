@@ -1,19 +1,19 @@
 import { RequestHandler } from 'express';
 import type { Fields, File, Files } from 'formidable';
 import * as fs from 'node:fs/promises';
-import { ConfigStore } from '@src/config/config-store.js';
+import { ConfigStore } from '../../../config/config-store.ts';
 import {
     isValidMimeType,
     isValidTextFields
-} from '@src/validators/files/helpers.js';
-import { MIME_TYPE_MAP } from '@src/validators/files/constants.js';
-import { ProcessedFileDtoConstructor } from '@src/validators/files/interfaces/processed-file-dto-constructor.interface.js';
-import { FileValidationConfig } from '@src/config/file-validation-config.interface.js';
-import { ClassConstructor } from '@src/common/interfaces/class-constructor.interface.js';
-import { ErrorField } from '@src/common/errors/error-field.js';
-import { DefaultFileError } from '@src/validators/files/errors/default-file.error.js';
-import { FileMetadata } from '@src/validators/files/interfaces/file-metadata.interface.js';
-import { AnyObject } from '@src/common/types/types.js';
+} from '../helpers.ts';
+import { MIME_TYPE_MAP } from '../constants.ts';
+import { ProcessedFileDtoConstructor } from '../interfaces/processed-file-dto-constructor.interface.ts';
+import { FileValidationConfig } from '../../../config/file-validation-config.interface.ts';
+import { ClassConstructor } from '../../../common/interfaces/class-constructor.interface.ts';
+import { ErrorField } from '../../../common/errors/error-field.ts';
+import { DefaultFileError } from '../errors/default-file.error.ts';
+import { FileMetadata } from '../interfaces/file-metadata.interface.ts';
+import { AnyObject } from '../../../common/types/types.ts';
 
 export const formidableValidationMiddleware =
     (

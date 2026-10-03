@@ -1,4 +1,4 @@
-import { ValidnessError } from '@src/common/errors/validness.error.js';
+import { ValidnessError } from '../../../common/errors/validness.error.ts';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);

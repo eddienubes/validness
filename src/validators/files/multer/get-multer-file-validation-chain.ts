@@ -1,17 +1,17 @@
 import { Router } from 'express';
-import { FileValidationChainGetter } from '@src/validators/files/multer/types.js';
-import { ConfigStore } from '@src/config/config-store.js';
+import { FileValidationChainGetter } from './types.ts';
+import { ConfigStore } from '../../../config/config-store.ts';
 import type { Options } from 'multer';
-import { multerUploadMiddleware } from '@src/validators/files/multer/multer-upload.middleware.js';
-import { contentTypeValidationMiddleware } from '@src/validators/content-type-validation.middleware.js';
-import { multerModificationMiddleware } from '@src/validators/files/multer/multer-modification.middleware.js';
-import { multerValidationMiddleware } from '@src/validators/files/multer/multer-validation.middleware.js';
-import { multerErrorHandlerMiddleware } from '@src/validators/files/multer/multer-error-handler.middleware.js';
-import { ClassConstructor } from '@src/common/interfaces/class-constructor.interface.js';
-import { ProcessedFileDtoConstructor } from '@src/validators/files/interfaces/processed-file-dto-constructor.interface.js';
-import { FileValidationConfig } from '@src/config/file-validation-config.interface.js';
-import { DefaultFileError } from '@src/validators/files/errors/default-file.error.js';
-import { ValidationConfigType } from '@src/config/validation-config-type.enum.js';
+import { multerUploadMiddleware } from './multer-upload.middleware.ts';
+import { contentTypeValidationMiddleware } from '../../content-type-validation.middleware.ts';
+import { multerModificationMiddleware } from './multer-modification.middleware.ts';
+import { multerValidationMiddleware } from './multer-validation.middleware.ts';
+import { multerErrorHandlerMiddleware } from './multer-error-handler.middleware.ts';
+import { ClassConstructor } from '../../../common/interfaces/class-constructor.interface.ts';
+import { ProcessedFileDtoConstructor } from '../interfaces/processed-file-dto-constructor.interface.ts';
+import { FileValidationConfig } from '../../../config/file-validation-config.interface.ts';
+import { DefaultFileError } from '../errors/default-file.error.ts';
+import { ValidationConfigType } from '../../../config/validation-config-type.enum.ts';
 
 export const getMulterFileValidationChain: FileValidationChainGetter = (
     DtoConstructor: ClassConstructor,

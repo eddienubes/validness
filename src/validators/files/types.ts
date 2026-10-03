@@ -1,7 +1,7 @@
 import { Request } from 'express';
 import type { FileFilterCallback } from 'multer';
-import { MulterFile } from '@src/validators/files/multer/types.js';
-import { FileMetadata } from '@src/validators/files/interfaces/file-metadata.interface.js';
+import { MulterFile } from './multer/types.ts';
+import { FileMetadata } from './interfaces/file-metadata.interface.ts';
 
 export type FileValidationMap = Record<string, FileMetadata>;
 export type MulterFileFilter = (

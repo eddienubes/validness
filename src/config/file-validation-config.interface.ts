@@ -1,8 +1,8 @@
 import type { Options as MulterOptions } from 'multer';
 import { ValidatorOptions } from 'class-validator';
 import type { Options as FormidableOptions } from 'formidable';
-import { ValidatorConfigurable } from '@src/config/validator-configurable.interface.js';
-import { FileValidatorType } from '@src/common/enums/file-validator-type.enum.js';
+import { ValidatorConfigurable } from './validator-configurable.interface.ts';
+import { FileValidatorType } from '../common/enums/file-validator-type.enum.ts';
 
 /**
  * Order of configs precedence:

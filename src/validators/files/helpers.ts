@@ -1,10 +1,10 @@
 import { plainToInstance } from 'class-transformer';
 import { validate, ValidatorOptions } from 'class-validator';
-import { findViolatedFields } from '@src/utils/find-violated-fields.js';
-import { FileValidationMap } from '@src/validators/files/types.js';
-import { ClassConstructor } from '@src/common/interfaces/class-constructor.interface.js';
-import { AnyObject } from '@src/common/types/types.js';
-import { IsValidTextFields } from '@src/validators/files/interfaces/is-valid-text-fields.interface.js';
+import { findViolatedFields } from '../../utils/find-violated-fields.ts';
+import { FileValidationMap } from './types.ts';
+import { ClassConstructor } from '../../common/interfaces/class-constructor.interface.ts';
+import { AnyObject } from '../../common/types/types.ts';
+import { IsValidTextFields } from './interfaces/is-valid-text-fields.interface.ts';
 
 export const isValidTextFields = async (
     DtoConstructor: ClassConstructor,

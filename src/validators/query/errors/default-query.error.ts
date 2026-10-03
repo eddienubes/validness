@@ -1,8 +1,8 @@
 import { StatusCodes } from 'http-status-codes';
 import { ValidationError } from 'class-validator';
-import { BaseHttpError } from '@src/common/errors/base-http.error.js';
-import { ValidationErrorsCollectable } from '@src/common/interfaces/validation-errors-collectable.interface.js';
-import { ErrorField } from '@src/common/errors/error-field.js';
+import { BaseHttpError } from '../../../common/errors/base-http.error.ts';
+import { ValidationErrorsCollectable } from '../../../common/interfaces/validation-errors-collectable.interface.ts';
+import { ErrorField } from '../../../common/errors/error-field.ts';
 
 export class DefaultQueryError
     extends BaseHttpError

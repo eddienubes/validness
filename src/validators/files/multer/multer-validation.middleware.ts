@@ -1,12 +1,12 @@
 import { RequestHandler } from 'express';
-import { ConfigStore } from '@src/config/config-store.js';
-import { MulterFile } from '@src/validators/files/multer/types.js';
-import { isValidTextFields } from '@src/validators/files/helpers.js';
-import { ClassConstructor } from '@src/common/interfaces/class-constructor.interface.js';
-import { ProcessedFileDtoConstructor } from '@src/validators/files/interfaces/processed-file-dto-constructor.interface.js';
-import { FileValidationConfig } from '@src/config/file-validation-config.interface.js';
-import { ErrorField } from '@src/common/errors/error-field.js';
-import { DefaultFileError } from '@src/validators/files/errors/default-file.error.js';
+import { ConfigStore } from '../../../config/config-store.ts';
+import { MulterFile } from './types.ts';
+import { isValidTextFields } from '../helpers.ts';
+import { ClassConstructor } from '../../../common/interfaces/class-constructor.interface.ts';
+import { ProcessedFileDtoConstructor } from '../interfaces/processed-file-dto-constructor.interface.ts';
+import { FileValidationConfig } from '../../../config/file-validation-config.interface.ts';
+import { ErrorField } from '../../../common/errors/error-field.ts';
+import { DefaultFileError } from '../errors/default-file.error.ts';
 
 /**
  * Some validation logic preserved on upload stage by multer itself.

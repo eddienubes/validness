@@ -1,4 +1,4 @@
-import { CustomErrorFactory } from '@src/common/types/types.js';
+import { CustomErrorFactory } from '../common/types/types.ts';
 
 export interface ValidatorConfigurable {
     customErrorFactory?: CustomErrorFactory;

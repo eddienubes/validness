@@ -2,12 +2,12 @@ import type { FileFilterCallback } from 'multer';
 import {
     FileValidationMap,
     MulterFileFilter
-} from '@src/validators/files/types.js';
-import { MulterFile } from '@src/validators/files/multer/types.js';
-import { isValidMimeType } from '@src/validators/files/helpers.js';
-import { MIME_TYPE_MAP } from '@src/validators/files/constants.js';
-import { ErrorField } from '@src/common/errors/error-field.js';
-import { DefaultFileError } from '@src/validators/files/errors/default-file.error.js';
+} from '../types.ts';
+import { MulterFile } from './types.ts';
+import { isValidMimeType } from '../helpers.ts';
+import { MIME_TYPE_MAP } from '../constants.ts';
+import { ErrorField } from '../../../common/errors/error-field.ts';
+import { DefaultFileError } from '../errors/default-file.error.ts';
 
 export const fileFilter = (
     fileValidationMap: FileValidationMap

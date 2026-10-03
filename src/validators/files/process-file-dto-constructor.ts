@@ -1,12 +1,12 @@
 import type { Field } from 'multer';
-import { FileValidationMap } from '@src/validators/files/types.js';
+import { FileValidationMap } from './types.ts';
 import {
     FILE_VALIDATION_DECORATED_FIELDS_LIST_KEY,
     FILE_VALIDATION_METADATA_KEY
-} from '@src/validators/files/constants.js';
-import { ClassConstructor } from '@src/common/interfaces/class-constructor.interface.js';
-import { FileMetadata } from '@src/validators/files/interfaces/file-metadata.interface.js';
-import { ProcessedFileDtoConstructor } from '@src/validators/files/interfaces/processed-file-dto-constructor.interface.js';
+} from './constants.ts';
+import { ClassConstructor } from '../../common/interfaces/class-constructor.interface.ts';
+import { FileMetadata } from './interfaces/file-metadata.interface.ts';
+import { ProcessedFileDtoConstructor } from './interfaces/processed-file-dto-constructor.interface.ts';
 
 export const processFileDtoConstructor = (
     DtoConstructor: ClassConstructor

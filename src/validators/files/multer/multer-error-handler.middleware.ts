@@ -1,12 +1,12 @@
 import { ErrorRequestHandler } from 'express';
-import { ConfigStore } from '@src/config/config-store.js';
-import { loadMulter } from '@src/validators/files/multer/multerLoader.js';
+import { ConfigStore } from '../../../config/config-store.ts';
+import { loadMulter } from './multerLoader.ts';
 import type { MulterError } from 'multer';
-import { CustomErrorFactory } from '@src/common/types/types.js';
-import { DefaultFileError } from '@src/validators/files/errors/default-file.error.js';
-import { ErrorField } from '@src/common/errors/error-field.js';
-import { ProcessedFileDtoConstructor } from '@src/validators/files/interfaces/processed-file-dto-constructor.interface.js';
-import { FileMetadata } from '@src/validators/files/interfaces/file-metadata.interface.js';
+import { CustomErrorFactory } from '../../../common/types/types.ts';
+import { DefaultFileError } from '../errors/default-file.error.ts';
+import { ErrorField } from '../../../common/errors/error-field.ts';
+import { ProcessedFileDtoConstructor } from '../interfaces/processed-file-dto-constructor.interface.ts';
+import { FileMetadata } from '../interfaces/file-metadata.interface.ts';
 
 export const multerErrorHandlerMiddleware = (
     processedFileDtoConstructor: ProcessedFileDtoConstructor,

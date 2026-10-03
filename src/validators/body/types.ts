@@ -1,4 +1,4 @@
 import { ValidatorOptions } from 'class-validator';
-import { ValidatorConfigurable } from '@src/config/validator-configurable.interface.js';
+import { ValidatorConfigurable } from '../../config/validator-configurable.interface.ts';
 
 export type BodyValidationConfig = ValidatorConfigurable & ValidatorOptions;

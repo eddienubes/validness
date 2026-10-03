@@ -1,17 +1,17 @@
 import { request } from 'sagetest';
-import { validationBodyPipe, validness } from '@src/index.js';
+import { validationBodyPipe, validness } from '#src/index.ts';
 import { StatusCodes } from 'http-status-codes';
-import { ConfigStore } from '@src/config/config-store.js';
+import { ConfigStore } from '#src/config/config-store.ts';
 import {
     BodyDto,
     BodyDtoWithContext,
     MyCustomError
-} from '@test/validators/body/models.js';
-import { createRouteWithPipe } from '@test/utils/server-utils.js';
+} from '#test/validators/body/models.ts';
+import { createRouteWithPipe } from '#test/utils/server-utils.ts';
 import {
     errorFactory,
     errorFactoryOverridden
-} from '@test/utils/error-utils.js';
+} from '#test/utils/error-utils.ts';
 import express from 'express';
 
 describe('Validation Body Pipe', () => {

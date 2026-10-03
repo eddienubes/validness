@@ -1,12 +1,12 @@
-import { ValidationConfig } from '@src/config/validation-config.interface.js';
-import { VALIDATION_CONFIG_DEFAULTS } from '@src/config/constants.js';
-import { DeepPartial } from '@src/common/types/types.js';
-import { ValidationConfigType } from '@src/config/validation-config-type.enum.js';
-import { FileValidationConfig } from '@src/config/file-validation-config.interface.js';
-import { QueryValidationConfig } from '@src/validators/query/types.js';
-import { BodyValidationConfig } from '@src/validators/body/types.js';
-import { isObject } from '@src/utils/is-object.js';
-import { ValidnessError } from '@src/common/errors/validness.error.js';
+import { ValidationConfig } from './validation-config.interface.ts';
+import { VALIDATION_CONFIG_DEFAULTS } from './constants.ts';
+import { DeepPartial } from '../common/types/types.ts';
+import { ValidationConfigType } from './validation-config-type.enum.ts';
+import { FileValidationConfig } from './file-validation-config.interface.ts';
+import { QueryValidationConfig } from '../validators/query/types.ts';
+import { BodyValidationConfig } from '../validators/body/types.ts';
+import { isObject } from '../utils/is-object.ts';
+import { ValidnessError } from '../common/errors/validness.error.ts';
 
 export class ConfigStore {
     private config: ValidationConfig = VALIDATION_CONFIG_DEFAULTS;

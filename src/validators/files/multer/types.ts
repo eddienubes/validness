@@ -1,7 +1,7 @@
-import { ClassConstructor } from '@src/common/interfaces/class-constructor.interface.js';
+import { ClassConstructor } from '../../../common/interfaces/class-constructor.interface.ts';
 import { Router } from 'express';
-import { ProcessedFileDtoConstructor } from '@src/validators/files/interfaces/processed-file-dto-constructor.interface.js';
-import { FileValidationConfig } from '@src/config/file-validation-config.interface.js';
+import { ProcessedFileDtoConstructor } from '../interfaces/processed-file-dto-constructor.interface.ts';
+import { FileValidationConfig } from '../../../config/file-validation-config.interface.ts';
 
 /**
  * Alias for a multer file type in the express multer namespace

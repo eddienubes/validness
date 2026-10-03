@@ -1,10 +1,10 @@
 import { RequestHandler } from 'express';
-import { ConfigStore } from '@src/config/config-store.js';
-import { ClassConstructor } from '@src/common/interfaces/class-constructor.interface.js';
-import { ValidationErrorsCollectable } from '@src/common/interfaces/validation-errors-collectable.interface.js';
-import { ValidationConfigType } from '@src/config/validation-config-type.enum.js';
-import { ValidatorConfigurable } from '@src/config/validator-configurable.interface.js';
-import { ErrorField } from '@src/common/errors/error-field.js';
+import { ConfigStore } from '../config/config-store.ts';
+import { ClassConstructor } from '../common/interfaces/class-constructor.interface.ts';
+import { ValidationErrorsCollectable } from '../common/interfaces/validation-errors-collectable.interface.ts';
+import { ValidationConfigType } from '../config/validation-config-type.enum.ts';
+import { ValidatorConfigurable } from '../config/validator-configurable.interface.ts';
+import { ErrorField } from '../common/errors/error-field.ts';
 
 export const contentTypeValidationMiddleware = (
     ErrorConstructor: ClassConstructor<ValidationErrorsCollectable>,

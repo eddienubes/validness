@@ -2,13 +2,13 @@ import {
     FileValidationConfig,
     FileValidatorType,
     validationFilePipe
-} from '@src/index.js';
+} from '#src/index.ts';
 import {
     getFormidableUploadFolderPath,
     getTestFilePath
-} from '@test/test-utils/files.js';
-import { ConfigStore } from '@src/config/config-store.js';
-import { createRouteWithPipe } from '@test/utils/server-utils.js';
+} from '#test/test-utils/files.ts';
+import { ConfigStore } from '#src/config/config-store.ts';
+import { createRouteWithPipe } from '#test/utils/server-utils.ts';
 import {
     IsFilesDecoratorWithTransformDto,
     MultipleFilesDto,
@@ -22,8 +22,8 @@ import {
     SingleFileDto,
     SingleFileNoTextDto,
     SingleFileWithTypeDto
-} from '@test/validators/files/models.js';
-import { errorFactoryOverridden } from '@test/utils/error-utils.js';
+} from '#test/validators/files/models.ts';
+import { errorFactoryOverridden } from '#test/utils/error-utils.ts';
 import { request } from 'sagetest';
 
 const options: Partial<FileValidationConfig> = {

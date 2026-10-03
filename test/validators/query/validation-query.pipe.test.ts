@@ -1,12 +1,12 @@
 import { request } from 'sagetest';
-import { QueryDto } from './models.js';
+import { QueryDto } from './models.ts';
 import {
     errorFactory,
     errorFactoryOverridden
-} from '@test/utils/error-utils.js';
-import { createRouteWithPipe } from '@test/utils/server-utils.js';
-import { ConfigStore } from '@src/config/config-store.js';
-import { validationQueryPipe, validness } from '@src/index.js';
+} from '#test/utils/error-utils.ts';
+import { createRouteWithPipe } from '#test/utils/server-utils.ts';
+import { ConfigStore } from '#src/config/config-store.ts';
+import { validationQueryPipe, validness } from '#src/index.ts';
 
 describe('Validation Query Pipe', () => {
     afterEach(() => {

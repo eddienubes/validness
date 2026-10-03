@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsFile, IsFiles, ValidatedFile } from '@src/index.js';
+import { IsFile, IsFiles, ValidatedFile } from '#src/index.ts';
 import { Allow, IsEmail, IsNumberString, IsPhoneNumber } from 'class-validator';
 
 export class SingleFileDto {

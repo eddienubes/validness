@@ -1,14 +1,14 @@
 import { plainToInstance } from 'class-transformer';
 import { validateOrReject, ValidationError } from 'class-validator';
 import { Router } from 'express';
-import { ClassConstructor } from '@src/common/interfaces/class-constructor.interface.js';
-import { BodyValidationConfig } from '@src/validators/body/types.js';
-import { contentTypeValidationMiddleware } from '@src/validators/content-type-validation.middleware.js';
-import { DefaultBodyError } from '@src/validators/body/errors/default-body.error.js';
-import { ValidationConfigType } from '@src/config/validation-config-type.enum.js';
-import { ConfigStore } from '@src/config/config-store.js';
-import { findViolatedFields } from '@src/utils/find-violated-fields.js';
-import { ValidnessError } from '@src/common/errors/validness.error.js';
+import { ClassConstructor } from '../../common/interfaces/class-constructor.interface.ts';
+import { BodyValidationConfig } from './types.ts';
+import { contentTypeValidationMiddleware } from '../content-type-validation.middleware.ts';
+import { DefaultBodyError } from './errors/default-body.error.ts';
+import { ValidationConfigType } from '../../config/validation-config-type.enum.ts';
+import { ConfigStore } from '../../config/config-store.ts';
+import { findViolatedFields } from '../../utils/find-violated-fields.ts';
+import { ValidnessError } from '../../common/errors/validness.error.ts';
 
 /**
  * Validates the body of an incoming request.

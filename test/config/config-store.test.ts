@@ -1,5 +1,5 @@
-import { FileValidatorType } from '@src/index.js';
-import { ConfigStore } from '@src/config/config-store.js';
+import { FileValidatorType } from '#src/index.ts';
+import { ConfigStore } from '#src/config/config-store.ts';
 
 describe('Config Store', () => {
     it('should set config recursively in a proper way', function () {
