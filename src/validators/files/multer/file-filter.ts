@@ -60,7 +60,7 @@ export const fileFilter = (
 
         // Push new error field if current file violates something
         if (fileViolations.length) {
-            const contexts = !!metadata.context
+            const contexts = metadata.context
                 ? { [metadata.decorator]: metadata.context }
                 : {};
 

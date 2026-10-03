@@ -24,8 +24,8 @@ export const getMulterFileValidationChain: FileValidationChainGetter = (
 
     // Global config is undefined here. Validness() call doesn't make sense
     const coreConfig = {
-        ...((configStore.fileValidationConfig.coreConfig as Options) || {}),
-        ...(fileValidationConfig?.coreConfig || {})
+        ...(configStore.fileValidationConfig.coreConfig as Options),
+        ...fileValidationConfig?.coreConfig
     };
 
     router.use(

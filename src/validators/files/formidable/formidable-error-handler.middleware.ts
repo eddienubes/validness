@@ -8,7 +8,6 @@ export const formidableErrorHandler = (
     customErrorFactory?: CustomErrorFactory
 ): ErrorRequestHandler => {
     const formidable = loadFormidable();
-    // @ts-ignore
     const FormidableError = formidable.errors.default;
 
     return async (err, req, res, next) => {

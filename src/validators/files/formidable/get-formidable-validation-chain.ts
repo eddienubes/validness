@@ -22,8 +22,8 @@ export const getFormidableValidationChain: FileValidationChainGetter = (
     const configStore = ConfigStore.getInstance().getConfig();
 
     const coreConfig: Options = {
-        ...((configStore.fileValidationConfig.coreConfig as Options) || {}),
-        ...(fileValidationConfig?.coreConfig || {})
+        ...(configStore.fileValidationConfig.coreConfig as Options),
+        ...fileValidationConfig?.coreConfig
     };
 
     router.use(

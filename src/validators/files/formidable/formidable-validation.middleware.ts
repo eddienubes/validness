@@ -110,7 +110,7 @@ const validateFileField = (
         return null;
     }
 
-    const contexts = !!metadata.context
+    const contexts = metadata.context
         ? { [metadata.decorator]: metadata.context }
         : {};
 
@@ -184,7 +184,7 @@ const validateFileField = (
     }
 
     if (violations.length) {
-        const contexts = !!metadata.context
+        const contexts = metadata.context
             ? { [metadata.decorator]: metadata.context }
             : {};
 
@@ -224,7 +224,7 @@ export const wrapFormidableFileField = (
         return file;
     }
 
-    return !!file ? [file] : null;
+    return file ? [file] : null;
 };
 
 export const unwrapIfSingleTextField = (fields: Fields): AnyObject => {
