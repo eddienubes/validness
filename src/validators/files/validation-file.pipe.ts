@@ -1,12 +1,12 @@
 import { Router } from 'express';
-import { ConfigStore } from '@src/config/config-store.js';
-import { processFileDtoConstructor } from '@src/validators/files/process-file-dto-constructor.js';
-import { ClassConstructor } from '@src/common/interfaces/class-constructor.interface.js';
-import { FileValidationConfig } from '@src/config/file-validation-config.interface.js';
-import { FileValidatorType } from '@src/common/enums/file-validator-type.enum.js';
-import { FileValidationChainGetter } from '@src/validators/files/multer/types.js';
-import { getMulterFileValidationChain } from '@src/validators/files/multer/get-multer-file-validation-chain.js';
-import { getFormidableValidationChain } from '@src/validators/files/formidable/get-formidable-validation-chain.js';
+import { ConfigStore } from '../../config/config-store.ts';
+import { processFileDtoConstructor } from './process-file-dto-constructor.ts';
+import { ClassConstructor } from '../../common/interfaces/class-constructor.interface.ts';
+import { FileValidationConfig } from '../../config/file-validation-config.interface.ts';
+import { FileValidatorType } from '../../common/enums/file-validator-type.enum.ts';
+import { FileValidationChainGetter } from './multer/types.ts';
+import { getMulterFileValidationChain } from './multer/get-multer-file-validation-chain.ts';
+import { getFormidableValidationChain } from './formidable/get-formidable-validation-chain.ts';
 
 export const FILE_VALIDATOR_CHAIN_MAP: Record<
     FileValidatorType,

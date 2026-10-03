@@ -1,8 +1,8 @@
 import { request } from 'sagetest';
-import { validationFilePipe } from '@src/index.js';
+import { validationFilePipe } from '#src/index.ts';
 import { Options, diskStorage } from 'multer';
-import { ConfigStore } from '@src/config/config-store.js';
-import { createRouteWithPipe } from '@test/utils/server-utils.js';
+import { ConfigStore } from '#src/config/config-store.ts';
+import { createRouteWithPipe } from '#test/utils/server-utils.ts';
 import {
     IsFilesDecoratorWithTransformDto,
     MultipleFieldsWithWeirdSignDto,
@@ -18,9 +18,9 @@ import {
     SingleFileDtoWithContext,
     SingleFileNoTextDto,
     SingleFileWithTypeDto
-} from '@test/validators/files/models.js';
-import { getTestFilePath } from '@test/test-utils/files.js';
-import { errorFactoryOverridden } from '@test/utils/error-utils.js';
+} from '#test/validators/files/models.ts';
+import { getTestFilePath } from '#test/test-utils/files.ts';
+import { errorFactoryOverridden } from '#test/utils/error-utils.ts';
 import * as fs from 'fs';
 
 const uploadOptions: Options = {
@@ -143,7 +143,8 @@ describe('Multer validation file pipe', () => {
                     contexts: {},
                     field: 'photos',
                     violations: [
-                        'The following field contains a file of size 7894088 bytes that exceeds the specified maximum limit: 10000 bytes'
+                        // 7894090 is the request content-length (multipart body), not the file size: file-filter.ts falls back to it
+                        'The following field contains a file of size 7894090 bytes that exceeds the specified maximum limit: 10000 bytes'
                     ]
                 }
             ],
@@ -173,7 +174,8 @@ describe('Multer validation file pipe', () => {
                     contexts: {},
                     field: 'photos',
                     violations: [
-                        'The following field contains a file of size 7894088 bytes that is lower than the specified minimal limit: 10000000 bytes'
+                        // 7894090 is the request content-length (multipart body), not the file size: file-filter.ts falls back to it
+                        'The following field contains a file of size 7894090 bytes that is lower than the specified minimal limit: 10000000 bytes'
                     ]
                 }
             ],

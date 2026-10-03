@@ -1,12 +1,12 @@
 import { createRequire } from 'node:module';
-import { ValidnessError } from '@src/common/errors/validness.error.js';
+import { ValidnessError } from '../../../common/errors/validness.error.ts';
 
 const require = createRequire(import.meta.url);
 
-export const loadMulter = () => {
+export const loadMulter = (): typeof import('multer') => {
     try {
         return require('multer');
-    } catch (e) {
+    } catch {
         throw new ValidnessError(
             'multer is not installed. Please install it by running `npm/yarn/pnpm install multer`'
         );

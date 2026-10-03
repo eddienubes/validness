@@ -129,4 +129,3 @@ dist
 .pnp.*
 
 test/test-data/uploads/*
-.rollup.cache

@@ -23,7 +23,22 @@ parser required):
 - application/json
 - multipart/form-data (yes, with files and text fields)
 
-> Also, this library supports both ESM and CJS versions via dynamic exports in package.json.
+> This library is **ESM-only**. CommonJS projects can still `require()` it on Node 22.12+ thanks to
+> [require(esm)](https://nodejs.org/api/modules.html#loading-ecmascript-modules-using-require).
+
+### Support matrix
+
+| Dependency              | Supported version |
+| ----------------------- | ----------------- |
+| Node.js                 | >= 22.12          |
+| Express                 | 5                 |
+| class-validator         | 0.15              |
+| class-transformer       | 0.5               |
+| multer _(optional)_     | 2                 |
+| formidable _(optional)_ | 3                 |
+
+Need Express 4? Stay on validness 2.x.
+
 ---
 
 ## ⚙️ Installation:
@@ -35,18 +50,23 @@ parser required):
 - reflect-metadata
 
   _Optional, for multipart/form-data parsing only (These are truly optional):_
+
 - multer _(recommended)_
-- formidable (yes, we support an ESM version only)
+- formidable
+
+  _Optional, TypeScript only:_ `@types/multer` / `@types/formidable`. They are needed only if you use the
+  corresponding integration from TypeScript (and required if you set `skipLibCheck: false`).
 
 ```shell
-yarn add validness class-validator class-transformer reflect-metadata
-npm install validness class-validator class-transformer reflect-metadata
+pnpm add validness express class-validator class-transformer reflect-metadata
+yarn add validness express class-validator class-transformer reflect-metadata
+npm install validness express class-validator class-transformer reflect-metadata
 ```
 
 Please import reflect-metadata in an entry file of your project in order for this package to work
 
 ```typescript
-import 'reflect-metadata'
+import 'reflect-metadata';
 // your code
 ```
 
@@ -72,7 +92,7 @@ Let's create a DTO of commonly expected data:
 _registration.dto.ts_
 
 ```typescript
-import { IsEmail, IsPhoneNumber } from "class-validator";
+import { IsEmail, IsPhoneNumber } from 'class-validator';
 
 export class RegistrationDto {
   @IsPhoneNumber()
@@ -86,21 +106,25 @@ export class RegistrationDto {
 _registration.controller.ts_
 
 ```typescript
-import { Router } from "express";
-import { validationBodyPipe, DefaultBodyError } from "validness";
+import { Router } from 'express';
+import { validationBodyPipe, DefaultBodyError } from 'validness';
 import { RegistrationDto } from './registration.dto.ts';
-import { StatusCodes } from "http-status-codes";
+import { StatusCodes } from 'http-status-codes';
 
-const router = Router()
+const router = Router();
 
 // controller
-router.post('/', validationBodyPipe(RegistrationDto), async (req, res, next) => {
-  const validatedBody = req.body as RegistrationDto;
+router.post(
+  '/',
+  validationBodyPipe(RegistrationDto),
+  async (req, res, next) => {
+    const validatedBody = req.body as RegistrationDto;
 
-  await registerUser(validatedBody);
+    await registerUser(validatedBody);
 
-  res.json({ message: 'SUCCESS' })
-});
+    res.json({ message: 'SUCCESS' });
+  }
+);
 
 // Error handling
 router.use((err, req, res, next) => {
@@ -122,7 +146,12 @@ with [class-transformer](https://github.com/typestack/class-transformer) decorat
 _get-users-query.dto.ts_
 
 ```typescript
-import { IsEmail, IsNotEmpty, IsNumberString, IsPhoneNumber } from "class-validator";
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsNumberString,
+  IsPhoneNumber
+} from 'class-validator';
 
 export class GetUsersQueryDto {
   @IsString()
@@ -140,21 +169,25 @@ export class GetUsersQueryDto {
 _users.controller.ts_
 
 ```typescript
-import { Router } from "express";
+import { Router } from 'express';
 import { GetUsersQueryDto } from './get-users-query.dto.ts';
-import { validationQueryPipe, DefaultQueryError } from "validness";
-import { StatusCodes } from "http-status-codes";
+import { validationQueryPipe, DefaultQueryError } from 'validness';
+import { StatusCodes } from 'http-status-codes';
 
-const router = Router()
+const router = Router();
 
 // controller
-router.get('/', validationQueryPipe(GetUsersQueryDto), async (req, res, next) => {
-  const validatedQuery = req.query as GetUsersQueryDto;
+router.get(
+  '/',
+  validationQueryPipe(GetUsersQueryDto),
+  async (req, res, next) => {
+    const validatedQuery = req.query as GetUsersQueryDto;
 
-  await findUsers(validatedQuery);
+    await findUsers(validatedQuery);
 
-  res.json({ message: 'SUCCESS' })
-});
+    res.json({ message: 'SUCCESS' });
+  }
+);
 
 // Error handling
 router.use((err, req, res, next) => {
@@ -175,6 +208,9 @@ Install an underlying driver of your choice:
 - formidable (Has some nuances)
 
 ```shell
+pnpm add multer
+pnpm add -D @types/multer
+
 yarn add multer
 yarn add -D @types/multer
 
@@ -187,8 +223,14 @@ In the same simple way we create a new DTO.
 _sign-up.dto.ts_
 
 ```typescript
-import { IsEmail, IsNotEmpty, IsNumberString, IsPhoneNumber, IsString } from "class-validator";
-import { ValidatedFile, IsFiles, IsFile } from "validness";
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsNumberString,
+  IsPhoneNumber,
+  IsString
+} from 'class-validator';
+import { ValidatedFile, IsFiles, IsFile } from 'validness';
 
 export class SignUpDto {
   // form-data text field
@@ -203,23 +245,23 @@ export class SignUpDto {
 
   // a single file
   @IsFile({ type: 'image' })
-  photo: ValidatedFile
+  photo: ValidatedFile;
 
   // a multiple files
   @IsFiles({ type: 'image' })
-  documents: ValidatedFile[]
+  documents: ValidatedFile[];
 }
 ```
 
 _auth.controller.ts_
 
 ```typescript
-import { Router } from "express";
+import { Router } from 'express';
 import { SignUpDto } from './sign-up.dto.ts';
-import { validationFilePipe, DefaultFileError } from "validness";
-import { StatusCodes } from "http-status-codes";
+import { validationFilePipe, DefaultFileError } from 'validness';
+import { StatusCodes } from 'http-status-codes';
 
-const router = Router()
+const router = Router();
 
 // controller
 router.post('/', validationFilePipe(SignUpDto), async (req, res, next) => {
@@ -231,7 +273,7 @@ router.post('/', validationFilePipe(SignUpDto), async (req, res, next) => {
 
   await signUp(validatedBody);
 
-  res.json({ message: 'SUCCESS' })
+  res.json({ message: 'SUCCESS' });
 });
 
 // Error handling
@@ -272,13 +314,15 @@ Let's take a look at the **validationFilePipe** and **validationBodyPipe** signa
 
 ```typescript
 // ...
-export const validationFilePipe =
-  (DtoConstructor: ClassConstructor, config?: ValidationFileConfig): Router => {
-  }
+export const validationFilePipe = (
+  DtoConstructor: ClassConstructor,
+  config?: ValidationFileConfig
+): Router => {};
 // ...
-export const validationBodyPipe =
-  (DtoConstructor: ClassConstructor, config?: ValidationBodyConfig): RequestHandler => {
-  }
+export const validationBodyPipe = (
+  DtoConstructor: ClassConstructor,
+  config?: ValidationBodyConfig
+): RequestHandler => {};
 // ...
 ```
 
@@ -286,7 +330,7 @@ If you want to customise config globally for all pipes, use
 **validness** function and pass an object with options there. (Be careful with what you change in **coreConfig**)
 
 ```typescript
-import { validness } from "validness";
+import { validness } from 'validness';
 
 validness({
   // And many other options..
@@ -309,6 +353,16 @@ I think overall documentation for each property is not required because they're 
 code itself.
 
 If you feel a lack of examples - open an issue, I will add as many as you want. Thanks.
+
+---
+
+## 🚚 Migrating to 3.0
+
+- **ESM-only.** The package no longer ships a CJS build. CommonJS consumers can `require()` it on Node 22.12+.
+- **Node >= 22.12** is required.
+- **Express 5 is required.** Stay on validness 2.x if you still use Express 4.
+- **Peer dependency changes:** class-validator 0.15 and multer 2 (formidable 3 is unchanged).
+  `@types/multer` and `@types/formidable` are optional peers for TypeScript users of those integrations.
 
 ---
 

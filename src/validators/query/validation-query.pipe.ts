@@ -1,13 +1,13 @@
 import { Router } from 'express';
 import { plainToInstance } from 'class-transformer';
 import { validateOrReject, ValidationError } from 'class-validator';
-import { contentTypeValidationMiddleware } from '@src/validators/content-type-validation.middleware.js';
-import { ConfigStore } from '@src/config/config-store.js';
-import { findViolatedFields } from '@src/utils/find-violated-fields.js';
-import { ClassConstructor } from '@src/common/interfaces/class-constructor.interface.js';
-import { QueryValidationConfig } from './types.js';
-import { DefaultQueryError } from './errors/default-query.error.js';
-import { ValidationConfigType } from '@src/config/validation-config-type.enum.js';
+import { contentTypeValidationMiddleware } from '../content-type-validation.middleware.ts';
+import { ConfigStore } from '../../config/config-store.ts';
+import { findViolatedFields } from '../../utils/find-violated-fields.ts';
+import { ClassConstructor } from '../../common/interfaces/class-constructor.interface.ts';
+import { QueryValidationConfig } from './types.ts';
+import { DefaultQueryError } from './errors/default-query.error.ts';
+import { ValidationConfigType } from '../../config/validation-config-type.enum.ts';
 
 export const validationQueryPipe = (
     QueryDtoConstructor: ClassConstructor,
@@ -38,7 +38,13 @@ export const validationQueryPipe = (
             try {
                 await validateOrReject(instance, validatorConfig);
 
-                req.query = instance;
+                // Express 5 made req.query a read-only getter, so shadow it: https://expressjs.com/en/guide/migrating-5.html
+                Object.defineProperty(req, 'query', {
+                    value: instance,
+                    writable: true,
+                    configurable: true,
+                    enumerable: true
+                });
             } catch (e) {
                 const errors = findViolatedFields(e as ValidationError[]);
 

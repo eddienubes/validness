@@ -4,7 +4,7 @@ import express, {
     ErrorRequestHandler,
     json as bodyParser
 } from 'express';
-import { parseReqBody } from '@src/index.js';
+import { parseReqBody } from '#src/index.ts';
 
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     // console.log(util.inspect(err, { depth: null }));

@@ -10,41 +10,42 @@ jobs:
   CI:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        node-version: [ '18.x', 20.x ]
+        node: ['22', '24', '26']
+    env:
+      MISE_NODE_VERSION: ${{ matrix.node }}
     steps:
-      - uses: actions/checkout@v4
-        name: Checkout Repository
+      - name: Checkout Repository
+        uses: actions/checkout@v7
 
-      - name: Install PNPM
-        uses: pnpm/action-setup@v3
-        with:
-          version: latest
-
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'pnpm'
+      - name: Set up toolchain (Node ${{ matrix.node }}, pnpm)
+        uses: jdx/mise-action@v5
 
       - name: Install Dependencies
-        run: pnpm install
+        run: pnpm install --frozen-lockfile
 
-      - run: pnpm run lint:check
-        name: Lint Check
+      - name: Format Check
+        run: pnpm run format:check
 
-      - run: pnpm run build:dev
-        name: Build Development
+      - name: Lint
+        run: pnpm run lint
 
-      - run: pnpm run test:ci
-        name: Test All
+      - name: Typecheck
+        run: pnpm run typecheck
+
+      - name: Build
+        run: pnpm run build
+
+      - name: Test
+        run: pnpm run test:ci
+
+      - name: Check Package
+        run: pnpm run check:package
 
       - name: Upload coverage reports to Codecov
-        if: ${{ matrix.node-version == '20.x' }}
-        uses: codecov/codecov-action@v4.0.1
+        if: ${{ matrix.node == '24' }}
+        uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: eddienubes/validness
-
-
-

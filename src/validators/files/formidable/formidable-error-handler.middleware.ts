@@ -1,14 +1,13 @@
-import { CustomErrorFactory } from '@src/common/types/types.js';
+import { CustomErrorFactory } from '../../../common/types/types.ts';
 import { ErrorRequestHandler } from 'express';
-import { ConfigStore } from '@src/config/config-store.js';
-import { DefaultFileError } from '@src/validators/files/errors/default-file.error.js';
-import { loadFormidable } from '@src/validators/files/formidable/formidableLoader.js';
+import { ConfigStore } from '../../../config/config-store.ts';
+import { DefaultFileError } from '../errors/default-file.error.ts';
+import { loadFormidable } from './formidableLoader.ts';
 
 export const formidableErrorHandler = (
     customErrorFactory?: CustomErrorFactory
 ): ErrorRequestHandler => {
     const formidable = loadFormidable();
-    // @ts-ignore
     const FormidableError = formidable.errors.default;
 
     return async (err, req, res, next) => {

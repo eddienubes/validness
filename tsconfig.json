@@ -2,46 +2,21 @@
   "compilerOptions": {
     "noEmit": true,
     "experimentalDecorators": true,
-    "incremental": true,
+    "emitDecoratorMetadata": true,
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
-    "target": "ESNext",
-    "lib": [
-      "es6"
-    ],
+    "target": "ES2023",
+    "lib": ["ES2023"],
+    "types": ["node"],
+    "allowImportingTsExtensions": true,
     "allowJs": false,
-    "sourceMap": true,
     "strict": true,
     "noImplicitAny": true,
     "strictPropertyInitialization": false,
-    "baseUrl": ".",
-    "paths": {
-      "@src/*": [
-        "src/*"
-      ],
-      "@src": [
-        "src"
-      ],
-      "@test/*": [
-        "test/*"
-      ],
-      "@test": [
-        "test"
-      ]
-    },
-    "rootDirs": [
-      "src"
-    ],
     "esModuleInterop": true,
-    "emitDecoratorMetadata": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": [
-    "src",
-    "test",
-    "examples",
-    "vitest.config.ts"
-  ]
+  "include": ["src", "test", "vitest.config.ts"]
 }

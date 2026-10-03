@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
-import type { Options, errors } from 'formidable';
-import { loadFormidable } from '@src/validators/files/formidable/formidableLoader.js';
+import type { Options, FormidableError } from 'formidable';
+import { loadFormidable } from './formidableLoader.ts';
 
 export const formidableUploadMiddleware = (
     coreConfig: Options
@@ -18,7 +18,7 @@ export const formidableUploadMiddleware = (
             };
         } catch (e) {
             req.formidablePayload = {
-                error: e as typeof errors.FormidableError
+                error: e as FormidableError
             };
         }
 

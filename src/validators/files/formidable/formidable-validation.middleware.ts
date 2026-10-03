@@ -1,19 +1,16 @@
 import { RequestHandler } from 'express';
 import type { Fields, File, Files } from 'formidable';
 import * as fs from 'node:fs/promises';
-import { ConfigStore } from '@src/config/config-store.js';
-import {
-    isValidMimeType,
-    isValidTextFields
-} from '@src/validators/files/helpers.js';
-import { MIME_TYPE_MAP } from '@src/validators/files/constants.js';
-import { ProcessedFileDtoConstructor } from '@src/validators/files/interfaces/processed-file-dto-constructor.interface.js';
-import { FileValidationConfig } from '@src/config/file-validation-config.interface.js';
-import { ClassConstructor } from '@src/common/interfaces/class-constructor.interface.js';
-import { ErrorField } from '@src/common/errors/error-field.js';
-import { DefaultFileError } from '@src/validators/files/errors/default-file.error.js';
-import { FileMetadata } from '@src/validators/files/interfaces/file-metadata.interface.js';
-import { AnyObject } from '@src/common/types/types.js';
+import { ConfigStore } from '../../../config/config-store.ts';
+import { isValidMimeType, isValidTextFields } from '../helpers.ts';
+import { MIME_TYPE_MAP } from '../constants.ts';
+import { ProcessedFileDtoConstructor } from '../interfaces/processed-file-dto-constructor.interface.ts';
+import { FileValidationConfig } from '../../../config/file-validation-config.interface.ts';
+import { ClassConstructor } from '../../../common/interfaces/class-constructor.interface.ts';
+import { ErrorField } from '../../../common/errors/error-field.ts';
+import { DefaultFileError } from '../errors/default-file.error.ts';
+import { FileMetadata } from '../interfaces/file-metadata.interface.ts';
+import { AnyObject } from '../../../common/types/types.ts';
 
 export const formidableValidationMiddleware =
     (
@@ -78,7 +75,7 @@ export const formidableValidationMiddleware =
         // For cases where upload directory is specified
         if (errors.length) {
             await removeFormidableUploadedFiles(files as Files);
-            next(new DefaultFileError(errors));
+            return next(new DefaultFileError(errors));
         }
 
         req.formidablePayload = {
@@ -110,7 +107,7 @@ const validateFileField = (
         return null;
     }
 
-    const contexts = !!metadata.context
+    const contexts = metadata.context
         ? { [metadata.decorator]: metadata.context }
         : {};
 
@@ -184,7 +181,7 @@ const validateFileField = (
     }
 
     if (violations.length) {
-        const contexts = !!metadata.context
+        const contexts = metadata.context
             ? { [metadata.decorator]: metadata.context }
             : {};
 
@@ -224,7 +221,7 @@ export const wrapFormidableFileField = (
         return file;
     }
 
-    return !!file ? [file] : null;
+    return file ? [file] : null;
 };
 
 export const unwrapIfSingleTextField = (fields: Fields): AnyObject => {

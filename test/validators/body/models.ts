@@ -6,7 +6,7 @@ import {
     ValidateNested
 } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
-import { BaseHttpError, ErrorField } from '@src/index.js';
+import { BaseHttpError, ErrorField } from '#src/index.ts';
 import { StatusCodes } from 'http-status-codes';
 
 export class Picture {

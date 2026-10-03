@@ -1,0 +1,2 @@
+overrides:
+  '@types/express': ^5

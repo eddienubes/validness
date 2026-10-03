@@ -1,8 +1,4 @@
-import { FileValidationChainGetter } from '@src/validators/files/multer/types.js';
-import { getMulterFileValidationChain } from '@src/validators/files/multer/get-multer-file-validation-chain.js';
-import { getFormidableValidationChain } from '@src/validators/files/formidable/get-formidable-validation-chain.js';
-import { FileType } from '@src/validators/files/interfaces/single-file-config.interface.js';
-import { FileValidatorType } from '@src/common/enums/file-validator-type.enum.js';
+import { FileType } from './interfaces/single-file-config.interface.ts';
 
 export const FILE_VALIDATION_METADATA_KEY =
     'validness-validation-file-metadata';
