@@ -24,6 +24,7 @@ parser required):
 - multipart/form-data (yes, with files and text fields)
 
 > Also, this library supports both ESM and CJS versions via dynamic exports in package.json.
+
 ---
 
 ## ⚙️ Installation:
@@ -35,6 +36,7 @@ parser required):
 - reflect-metadata
 
   _Optional, for multipart/form-data parsing only (These are truly optional):_
+
 - multer _(recommended)_
 - formidable (yes, we support an ESM version only)
 
@@ -46,7 +48,7 @@ npm install validness class-validator class-transformer reflect-metadata
 Please import reflect-metadata in an entry file of your project in order for this package to work
 
 ```typescript
-import 'reflect-metadata'
+import 'reflect-metadata';
 // your code
 ```
 
@@ -72,7 +74,7 @@ Let's create a DTO of commonly expected data:
 _registration.dto.ts_
 
 ```typescript
-import { IsEmail, IsPhoneNumber } from "class-validator";
+import { IsEmail, IsPhoneNumber } from 'class-validator';
 
 export class RegistrationDto {
   @IsPhoneNumber()
@@ -86,21 +88,25 @@ export class RegistrationDto {
 _registration.controller.ts_
 
 ```typescript
-import { Router } from "express";
-import { validationBodyPipe, DefaultBodyError } from "validness";
+import { Router } from 'express';
+import { validationBodyPipe, DefaultBodyError } from 'validness';
 import { RegistrationDto } from './registration.dto.ts';
-import { StatusCodes } from "http-status-codes";
+import { StatusCodes } from 'http-status-codes';
 
-const router = Router()
+const router = Router();
 
 // controller
-router.post('/', validationBodyPipe(RegistrationDto), async (req, res, next) => {
-  const validatedBody = req.body as RegistrationDto;
+router.post(
+  '/',
+  validationBodyPipe(RegistrationDto),
+  async (req, res, next) => {
+    const validatedBody = req.body as RegistrationDto;
 
-  await registerUser(validatedBody);
+    await registerUser(validatedBody);
 
-  res.json({ message: 'SUCCESS' })
-});
+    res.json({ message: 'SUCCESS' });
+  }
+);
 
 // Error handling
 router.use((err, req, res, next) => {
@@ -122,7 +128,12 @@ with [class-transformer](https://github.com/typestack/class-transformer) decorat
 _get-users-query.dto.ts_
 
 ```typescript
-import { IsEmail, IsNotEmpty, IsNumberString, IsPhoneNumber } from "class-validator";
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsNumberString,
+  IsPhoneNumber
+} from 'class-validator';
 
 export class GetUsersQueryDto {
   @IsString()
@@ -140,21 +151,25 @@ export class GetUsersQueryDto {
 _users.controller.ts_
 
 ```typescript
-import { Router } from "express";
+import { Router } from 'express';
 import { GetUsersQueryDto } from './get-users-query.dto.ts';
-import { validationQueryPipe, DefaultQueryError } from "validness";
-import { StatusCodes } from "http-status-codes";
+import { validationQueryPipe, DefaultQueryError } from 'validness';
+import { StatusCodes } from 'http-status-codes';
 
-const router = Router()
+const router = Router();
 
 // controller
-router.get('/', validationQueryPipe(GetUsersQueryDto), async (req, res, next) => {
-  const validatedQuery = req.query as GetUsersQueryDto;
+router.get(
+  '/',
+  validationQueryPipe(GetUsersQueryDto),
+  async (req, res, next) => {
+    const validatedQuery = req.query as GetUsersQueryDto;
 
-  await findUsers(validatedQuery);
+    await findUsers(validatedQuery);
 
-  res.json({ message: 'SUCCESS' })
-});
+    res.json({ message: 'SUCCESS' });
+  }
+);
 
 // Error handling
 router.use((err, req, res, next) => {
@@ -187,8 +202,14 @@ In the same simple way we create a new DTO.
 _sign-up.dto.ts_
 
 ```typescript
-import { IsEmail, IsNotEmpty, IsNumberString, IsPhoneNumber, IsString } from "class-validator";
-import { ValidatedFile, IsFiles, IsFile } from "validness";
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsNumberString,
+  IsPhoneNumber,
+  IsString
+} from 'class-validator';
+import { ValidatedFile, IsFiles, IsFile } from 'validness';
 
 export class SignUpDto {
   // form-data text field
@@ -203,23 +224,23 @@ export class SignUpDto {
 
   // a single file
   @IsFile({ type: 'image' })
-  photo: ValidatedFile
+  photo: ValidatedFile;
 
   // a multiple files
   @IsFiles({ type: 'image' })
-  documents: ValidatedFile[]
+  documents: ValidatedFile[];
 }
 ```
 
 _auth.controller.ts_
 
 ```typescript
-import { Router } from "express";
+import { Router } from 'express';
 import { SignUpDto } from './sign-up.dto.ts';
-import { validationFilePipe, DefaultFileError } from "validness";
-import { StatusCodes } from "http-status-codes";
+import { validationFilePipe, DefaultFileError } from 'validness';
+import { StatusCodes } from 'http-status-codes';
 
-const router = Router()
+const router = Router();
 
 // controller
 router.post('/', validationFilePipe(SignUpDto), async (req, res, next) => {
@@ -231,7 +252,7 @@ router.post('/', validationFilePipe(SignUpDto), async (req, res, next) => {
 
   await signUp(validatedBody);
 
-  res.json({ message: 'SUCCESS' })
+  res.json({ message: 'SUCCESS' });
 });
 
 // Error handling
@@ -272,13 +293,15 @@ Let's take a look at the **validationFilePipe** and **validationBodyPipe** signa
 
 ```typescript
 // ...
-export const validationFilePipe =
-  (DtoConstructor: ClassConstructor, config?: ValidationFileConfig): Router => {
-  }
+export const validationFilePipe = (
+  DtoConstructor: ClassConstructor,
+  config?: ValidationFileConfig
+): Router => {};
 // ...
-export const validationBodyPipe =
-  (DtoConstructor: ClassConstructor, config?: ValidationBodyConfig): RequestHandler => {
-  }
+export const validationBodyPipe = (
+  DtoConstructor: ClassConstructor,
+  config?: ValidationBodyConfig
+): RequestHandler => {};
 // ...
 ```
 
@@ -286,7 +309,7 @@ If you want to customise config globally for all pipes, use
 **validness** function and pass an object with options there. (Be careful with what you change in **coreConfig**)
 
 ```typescript
-import { validness } from "validness";
+import { validness } from 'validness';
 
 validness({
   // And many other options..

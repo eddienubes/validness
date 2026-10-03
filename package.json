@@ -1,80 +1,65 @@
 {
   "name": "validness",
   "version": "2.1.0",
-  "engines": {
-    "node": ">=22.12"
+  "description": "Your favourite library for validating incoming data in express.js",
+  "keywords": [
+    "DTO",
+    "body",
+    "class-transformer",
+    "class-validator",
+    "correct",
+    "data",
+    "dto",
+    "express",
+    "form",
+    "formidable",
+    "free",
+    "github",
+    "incoming data",
+    "multer",
+    "multipart/form-data",
+    "nestjs",
+    "next",
+    "node",
+    "nodejs",
+    "opensource",
+    "proper",
+    "query",
+    "quora",
+    "source",
+    "star",
+    "transformer",
+    "tweet",
+    "valid",
+    "validation",
+    "validator",
+    "validness"
+  ],
+  "homepage": "https://github.com/eddienubes/validness#readme",
+  "bugs": {
+    "url": "https://github.com/eddienubes/validness/issues"
   },
-  "devEngines": {
-    "packageManager": {
-      "name": "pnpm",
-      "version": "^12",
-      "onFail": "download"
-    },
-    "runtime": {
-      "name": "node",
-      "version": ">=22.12",
-      "onFail": "error"
-    }
-  },
-  "type": "module",
+  "license": "MIT",
+  "author": "Eddie Nubes <cool.gegeg@gmail.com>",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/eddienubes/validness.git"
   },
-  "homepage": "https://github.com/eddienubes/validness#readme",
-  "author": "Eddie Nubes <cool.gegeg@gmail.com>",
-  "bugs": {
-    "url": "https://github.com/eddienubes/validness/issues"
-  },
-  "keywords": [
-    "express",
-    "dto",
-    "DTO",
-    "validation",
-    "data",
-    "incoming data",
-    "multer",
-    "formidable",
-    "query",
-    "body",
-    "form",
-    "multipart/form-data",
-    "nodejs",
-    "node",
-    "free",
-    "quora",
-    "tweet",
-    "github",
-    "opensource",
-    "source",
-    "star",
-    "nestjs",
-    "class-validator",
-    "class-transformer",
-    "transformer",
-    "validator",
-    "validness",
-    "valid",
-    "correct",
-    "proper",
-    "next"
-  ],
-  "description": "Your favourite library for validating incoming data in express.js",
-  "license": "MIT",
   "files": [
     "build/**/*"
   ],
+  "type": "module",
   "main": "build/index.js",
   "types": "build/index.d.ts",
+  "imports": {
+    "#src/*": "./src/*",
+    "#test/*": "./test/*"
+  },
   "exports": {
     ".": {
       "types": "./build/index.d.ts",
       "default": "./build/index.js"
     }
-  },
-  "imports": {
-    "#src/*": "./src/*",
-    "#test/*": "./test/*"
   },
   "scripts": {
     "build": "rm -rf build && tsc -p tsconfig.build.json",
@@ -86,6 +71,31 @@
     "lint": "oxlint --type-aware",
     "format": "oxfmt",
     "format:check": "oxfmt --check"
+  },
+  "dependencies": {
+    "http-status-codes": "^2.3.0"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.5",
+    "@types/express": "^5.0.6",
+    "@types/formidable": "^3.5.1",
+    "@types/multer": "^2.3.0",
+    "@types/node": "^26.6.4",
+    "@vitest/coverage-v8": "^5.0.3",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.15.1",
+    "coverage-badges-cli": "^2.2.0",
+    "express": "^5.2.1",
+    "formidable": "^3.5.4",
+    "multer": "^2.4.0",
+    "oxfmt": "^0.71.0",
+    "oxlint": "^1.86.0",
+    "oxlint-tsgolint": "^7.0.2003",
+    "publint": "^0.3.25",
+    "reflect-metadata": "^0.2.2",
+    "sagetest": "^0.1.27",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.3"
   },
   "peerDependencies": {
     "@types/formidable": "^3.0.0",
@@ -111,29 +121,19 @@
       "optional": true
     }
   },
-  "devDependencies": {
-    "@arethetypeswrong/cli": "^0.18.5",
-    "@types/express": "^5.0.6",
-    "@types/formidable": "^3.5.1",
-    "@types/multer": "^2.3.0",
-    "@types/node": "^26.6.4",
-    "@vitest/coverage-v8": "^5.0.3",
-    "class-transformer": "^0.5.1",
-    "class-validator": "^0.15.1",
-    "coverage-badges-cli": "^2.2.0",
-    "express": "^5.2.1",
-    "formidable": "^3.5.4",
-    "multer": "^2.4.0",
-    "oxfmt": "^0.71.0",
-    "oxlint": "^1.86.0",
-    "oxlint-tsgolint": "^7.0.2003",
-    "publint": "^0.3.25",
-    "reflect-metadata": "^0.2.2",
-    "sagetest": "^0.1.27",
-    "typescript": "^7.0.2",
-    "vitest": "^5.0.3"
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "^12",
+      "onFail": "download"
+    },
+    "runtime": {
+      "name": "node",
+      "version": ">=22.12",
+      "onFail": "error"
+    }
   },
-  "dependencies": {
-    "http-status-codes": "^2.3.0"
+  "engines": {
+    "node": ">=22.12"
   }
 }

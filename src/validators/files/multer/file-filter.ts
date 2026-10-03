@@ -1,8 +1,5 @@
 import type { FileFilterCallback } from 'multer';
-import {
-    FileValidationMap,
-    MulterFileFilter
-} from '../types.ts';
+import { FileValidationMap, MulterFileFilter } from '../types.ts';
 import { MulterFile } from './types.ts';
 import { isValidMimeType } from '../helpers.ts';
 import { MIME_TYPE_MAP } from '../constants.ts';

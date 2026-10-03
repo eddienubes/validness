@@ -2,10 +2,7 @@ import { RequestHandler } from 'express';
 import type { Fields, File, Files } from 'formidable';
 import * as fs from 'node:fs/promises';
 import { ConfigStore } from '../../../config/config-store.ts';
-import {
-    isValidMimeType,
-    isValidTextFields
-} from '../helpers.ts';
+import { isValidMimeType, isValidTextFields } from '../helpers.ts';
 import { MIME_TYPE_MAP } from '../constants.ts';
 import { ProcessedFileDtoConstructor } from '../interfaces/processed-file-dto-constructor.interface.ts';
 import { FileValidationConfig } from '../../../config/file-validation-config.interface.ts';
