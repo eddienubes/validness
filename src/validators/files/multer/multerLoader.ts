@@ -3,7 +3,7 @@ import { ValidnessError } from '../../../common/errors/validness.error.ts';
 
 const require = createRequire(import.meta.url);
 
-export const loadMulter = (): any => {
+export const loadMulter = (): typeof import('multer') => {
     try {
         return require('multer');
     } catch {
