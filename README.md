@@ -23,7 +23,21 @@ parser required):
 - application/json
 - multipart/form-data (yes, with files and text fields)
 
-> Also, this library supports both ESM and CJS versions via dynamic exports in package.json.
+> This library is **ESM-only**. CommonJS projects can still `require()` it on Node 22.12+ thanks to
+> [require(esm)](https://nodejs.org/api/modules.html#loading-ecmascript-modules-using-require).
+
+### Support matrix
+
+| Dependency              | Supported version |
+| ----------------------- | ----------------- |
+| Node.js                 | >= 22.12          |
+| Express                 | 5                 |
+| class-validator         | 0.15              |
+| class-transformer       | 0.5               |
+| multer _(optional)_     | 2                 |
+| formidable _(optional)_ | 3                 |
+
+Need Express 4? Stay on validness 2.x.
 
 ---
 
@@ -38,11 +52,15 @@ parser required):
   _Optional, for multipart/form-data parsing only (These are truly optional):_
 
 - multer _(recommended)_
-- formidable (yes, we support an ESM version only)
+- formidable
+
+  _Optional, TypeScript only:_ `@types/multer` / `@types/formidable`. They are needed only if you use the
+  corresponding integration from TypeScript (and required if you set `skipLibCheck: false`).
 
 ```shell
-yarn add validness class-validator class-transformer reflect-metadata
-npm install validness class-validator class-transformer reflect-metadata
+pnpm add validness express class-validator class-transformer reflect-metadata
+yarn add validness express class-validator class-transformer reflect-metadata
+npm install validness express class-validator class-transformer reflect-metadata
 ```
 
 Please import reflect-metadata in an entry file of your project in order for this package to work
@@ -190,6 +208,9 @@ Install an underlying driver of your choice:
 - formidable (Has some nuances)
 
 ```shell
+pnpm add multer
+pnpm add -D @types/multer
+
 yarn add multer
 yarn add -D @types/multer
 
@@ -332,6 +353,16 @@ I think overall documentation for each property is not required because they're 
 code itself.
 
 If you feel a lack of examples - open an issue, I will add as many as you want. Thanks.
+
+---
+
+## 🚚 Migrating to 3.0
+
+- **ESM-only.** The package no longer ships a CJS build. CommonJS consumers can `require()` it on Node 22.12+.
+- **Node >= 22.12** is required.
+- **Express 5 is required.** Stay on validness 2.x if you still use Express 4.
+- **Peer dependency changes:** class-validator 0.15 and multer 2 (formidable 3 is unchanged).
+  `@types/multer` and `@types/formidable` are optional peers for TypeScript users of those integrations.
 
 ---
 
