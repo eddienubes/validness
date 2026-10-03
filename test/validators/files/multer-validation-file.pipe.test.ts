@@ -143,6 +143,7 @@ describe('Multer validation file pipe', () => {
                     contexts: {},
                     field: 'photos',
                     violations: [
+                        // 7894090 is the request content-length (multipart body), not the file size: file-filter.ts falls back to it
                         'The following field contains a file of size 7894090 bytes that exceeds the specified maximum limit: 10000 bytes'
                     ]
                 }
@@ -173,6 +174,7 @@ describe('Multer validation file pipe', () => {
                     contexts: {},
                     field: 'photos',
                     violations: [
+                        // 7894090 is the request content-length (multipart body), not the file size: file-filter.ts falls back to it
                         'The following field contains a file of size 7894090 bytes that is lower than the specified minimal limit: 10000000 bytes'
                     ]
                 }

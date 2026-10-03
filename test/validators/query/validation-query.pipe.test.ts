@@ -1,5 +1,5 @@
 import { request } from 'sagetest';
-import { QueryDto } from './models.ts';
+import { QueryDto } from '#test/validators/query/models.ts';
 import {
     errorFactory,
     errorFactoryOverridden

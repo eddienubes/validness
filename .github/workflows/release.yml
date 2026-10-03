@@ -12,8 +12,6 @@ on:
           - minor
           - patch
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
   group: pushable
   cancel-in-progress: false
@@ -63,8 +61,8 @@ jobs:
 
       - name: Publish to NPM
         run: |
-          # Trusted publishing requires npm >= 11.5.1
-          npm install -g npm@latest
+          # Trusted publishing requires npm >= 11.5.1: https://docs.npmjs.com/trusted-publishers
+          npm install -g npm@11
           npm publish ./validness-*.tgz
 
       - name: Push Bumped Version

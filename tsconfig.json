@@ -7,7 +7,7 @@
     "moduleResolution": "NodeNext",
     "target": "ES2023",
     "lib": ["ES2023"],
-    "types": ["node", "vitest/globals"],
+    "types": ["node"],
     "allowImportingTsExtensions": true,
     "allowJs": false,
     "strict": true,

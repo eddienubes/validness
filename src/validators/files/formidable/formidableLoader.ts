@@ -3,7 +3,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 
-export const loadFormidable = (): any => {
+export const loadFormidable = (): typeof import('formidable') => {
     try {
         const formidable = require('formidable');
         return formidable;

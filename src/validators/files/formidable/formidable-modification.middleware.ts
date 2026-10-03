@@ -20,7 +20,6 @@ export const formidableModificationMiddleware =
             );
         }
 
-        // Express 5 no longer defaults req.body to {}
         req.body ??= {};
 
         for (const key in processedFileDtoConstructor.fileValidationMap) {

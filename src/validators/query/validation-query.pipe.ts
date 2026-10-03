@@ -38,7 +38,7 @@ export const validationQueryPipe = (
             try {
                 await validateOrReject(instance, validatorConfig);
 
-                // Express 5 req.query is a getter-only accessor on the prototype, so shadow it on the instance
+                // Express 5 made req.query a read-only getter, so shadow it: https://expressjs.com/en/guide/migrating-5.html
                 Object.defineProperty(req, 'query', {
                     value: instance,
                     writable: true,

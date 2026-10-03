@@ -1,1 +1,1 @@
-import 'vitest/globals.d.ts';
+/// <reference types="vitest/globals" />
